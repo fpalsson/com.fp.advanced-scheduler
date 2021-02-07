@@ -1,0 +1,33 @@
+{
+  "id": "change_schedule_state",
+  "title": {
+    "en": "Change schedule state (not yet implemented)"
+  },
+  "args": [
+    {
+      "name": "schedule",
+      "type": "autocomplete",
+      "placeholder": {
+        "en": "Schedule"
+      }
+    },
+    {
+      "name": "state",
+      "type": "dropdown",
+      "values": [
+        {
+          "id": "active",
+          "label": {
+            "en": "Active"
+          }
+        },
+        {
+          "id": "inactive",
+          "label": {
+            "en": "Inactive"
+          }
+        }    
+      ]
+    }
+  ]
+}

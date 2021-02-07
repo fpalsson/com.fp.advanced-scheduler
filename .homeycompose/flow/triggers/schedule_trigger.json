@@ -1,0 +1,15 @@
+{
+  "id": "schedule_trigger",
+  "title": {
+    "en": "Schedule triggered"
+  },
+  "args": [
+    {
+      "name": "schedule",
+      "type": "autocomplete",
+      "placeholder": {
+        "en": "Schedule"
+      }
+    }
+  ]
+}

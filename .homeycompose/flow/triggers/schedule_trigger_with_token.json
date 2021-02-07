@@ -1,0 +1,22 @@
+{
+  "id": "schedule_trigger_with_token",
+  "title": {
+    "en": "Schedule triggered with token (not yet implemented)"
+  },
+  "args": [
+    {
+      "name": "schedule",
+      "type": "autocomplete",
+      "placeholder": {
+        "en": "Schedule"
+      }
+    },
+    {
+      "name": "token",
+      "type": "autocomplete",
+      "placeholder": {
+        "en": "Tag"
+      }
+    }
+  ]
+}
