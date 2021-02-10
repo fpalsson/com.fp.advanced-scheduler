@@ -26,8 +26,8 @@ export class FlowAndTokenHandler {
         this.settings=settings;
     }
 
-    setupFlowAndTokens() {
-        this.homeyApp.log('Setting upp Flows and Tokens');
+    setupFlows() {
+        this.homeyApp.log('Setting upp Flows');
 
         try {
             let myTrigger = new FlowCardTrigger('schedule_trigger');
@@ -74,25 +74,54 @@ export class FlowAndTokenHandler {
             this.homeyApp.log('Not able to setup Flows! Error: ' + error);
         }
 
+        this.homeyApp.log('Setting up Flows done');
+    }
+
+    setupTokens() {
+        this.homeyApp.log('Setting up Tokens');
+
         try {
-            this.tokenwrappers = new Array();
-            this.settings.schedules.forEach(schedule => {
-              schedule.tokens.forEach(token => {
-                //this.homeyApp.log(token);
-                let myToken = new FlowToken(token.id, {
-                  type: token.type,
-                  title: schedule.name + ' - ' + token.name
-                })
-                this.tokenwrappers.push(new TokenWrapper(myToken,token));
-                myToken.register();
-              })
-            });
+            //This routine can be run when reinitialized. Therefore we must remove any old intances of tokens.
+            if (this.tokenwrappers==null) {
+                this.tokenwrappers = new Array();    
+            }
+            let mf = ManagerFlow;
+            let ps:Promise<any>[] = new Array();
+            this.tokenwrappers.forEach(tw => {
+                this.homeyApp.log('Unregistering token with id: ' + tw.token.id + ", name: " + tw.token.name);
+                
+                //let pr = new Promise
+                let promise = tw.flowtoken.unregister();
+                ps.push(promise);
+                //mf.unregisterToken(tw.flowtoken);  
+                this.homeyApp.log('Unregistered token with id: ' + tw.token.id + ", name: " + tw.token.name);
+            })
+            Promise.all(ps).then(() => {
+                this.homeyApp.log('All tokens unregged')
+
+                this.tokenwrappers = new Array();
+                this.settings.schedules.forEach(schedule => {
+                  schedule.tokens.forEach(token => {
+    
+                    let myToken = new FlowToken(token.id, {
+                      type: token.type,
+                      title: schedule.name + ' - ' + token.name
+                    })
+                    this.tokenwrappers.push(new TokenWrapper(myToken,token));
+                    myToken.register()
+                        .catch(e => {console.log('Error registering token: ' + token.id + ', ' + token.name )});
+                    this.homeyApp.log('Registered token with id: ' + token.id + ", name: " + token.name);
+                    })
+                    
+                });
+                    
+            })
+    
         } catch (error) {
             this.homeyApp.log('Not able to setup Tokens! Error: ' + error);
-
         }
 
-        this.homeyApp.log('Setting upp Flows and Tokens done');
+        this.homeyApp.log('Setting up Tokens done');
     }
 
     setTokenValue(token:Token, value:any) {

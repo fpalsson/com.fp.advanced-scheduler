@@ -27,6 +27,7 @@ export class TriggerHandler {
     private settings:AppSettings;
     private flowandtokenhandler:FlowAndTokenHandler;
     private triggers:Trigger[];
+    private runningtimer:NodeJS.Timeout;
 
     constructor(homeyApp:HomeyApp, settings:AppSettings, flowandtokenhandler:FlowAndTokenHandler) {
         this.selfie=this;
@@ -49,7 +50,7 @@ export class TriggerHandler {
                     }
                     else{
                         this.homeyApp.log('Not added (no match on day): ');
-                        this.homeyApp.log(schedule);
+                        this.homeyApp.log(schedule.name);
                         this.homeyApp.log(scheduleitem);
                     }
                 }
@@ -66,7 +67,7 @@ export class TriggerHandler {
             if (mode != 'midnight')
                 if (triggertime<timenow) {
                     this.homeyApp.log('Not added (too late this day): ');
-                    this.homeyApp.log(s);
+                    this.homeyApp.log(s.name);
                     this.homeyApp.log(si);
                     return; //time has already passed, a little crude but it will likely work :-)
                 }
@@ -132,7 +133,7 @@ export class TriggerHandler {
                 this.removeTrigger(earliesttrigger);
                 this.homeyApp.log('Removed trigger from list: ' + earliesttrigger);
                 
-                setTimeout(function() { this.timerCallback('next'); }.bind(this), 100);
+                this.runningtimer = setTimeout(function() { this.timerCallback('next'); }.bind(this), 100);
 
             }  
         } 
@@ -146,16 +147,16 @@ export class TriggerHandler {
                 if (delta < 100) delta = 100;
                 if (delta > 60000) {
                     delta = 60000;
-                    setTimeout(function() { this.timerCallback('next'); }.bind(this), delta);
+                    this.runningtimer = setTimeout(function() { this.timerCallback('next'); }.bind(this), delta);
                 }
                 else{
-                    setTimeout(function() { this.timerCallback('execute'); }.bind(this), delta);
+                    this.runningtimer = setTimeout(function() { this.timerCallback('execute'); }.bind(this), delta);
                     
                 }
             }
             else
             {
-                setTimeout(function() { this.timerCallback('idle'); }.bind(this), 100);
+                this.runningtimer = setTimeout(function() { this.timerCallback('idle'); }.bind(this), 100);
                 
             }
 
@@ -171,23 +172,23 @@ export class TriggerHandler {
             let delta = midnight.getTime()-now.getTime();
             if (delta > 60000) {
                 delta = 60000;
-                setTimeout(function() { this.timerCallback('idle'); }.bind(this), delta);
+                this.runningtimer = setTimeout(function() { this.timerCallback('idle'); }.bind(this), delta);
             }
             else{
                 
-                setTimeout(function() { this.timerCallback('midnight'); }.bind(this), delta);
+                this.runningtimer = setTimeout(function() { this.timerCallback('midnight'); }.bind(this), delta);
             }
         }
         else if (arg === 'midnight') {
             this.homeyApp.log('Midnight, getting new triggers for today!');
             this.setupTriggers('midnight');
-            setTimeout(function() { this.timerCallback('next'); }.bind(this), 100);
+            this.runningtimer = setTimeout(function() { this.timerCallback('next'); }.bind(this), 100);
             
         }
         else {
             //unexpected!
             this.homeyApp.log('Somehow we ended up with a timer callback that has unknown arg: ' + arg);
-            setTimeout(function() { this.timerCallback('next'); }.bind(this), 60000);
+            this.runningtimer = setTimeout(function() { this.timerCallback('next'); }.bind(this), 60000);
             
         }
         }
@@ -203,8 +204,14 @@ export class TriggerHandler {
     }
 
     startTimer() {
-        setTimeout(function() { this.timerCallback('next'); }.bind(this), 5000);
+        this.runningtimer = setTimeout(function() { this.timerCallback('next'); }.bind(this), 5000);
     }
+
+    stopTimer() {
+        if (this.runningtimer!=null)
+            clearTimeout(this.runningtimer);
+    }
+
         
 }
     

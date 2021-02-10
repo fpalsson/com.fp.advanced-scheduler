@@ -17,21 +17,23 @@ export class Settings {
     }
   
     readSettings() {
-        this.homeyApp.log('Reading settings...');
+        if (this.homeyApp != null) this.homeyApp.log('Reading settings...');
 
             try {
                 let rs = ManagerSettings.get('settings');
                 if (rs == null) { 
-                    this.homeyApp.log('Settings not found, starting blank')
+                    if (this.homeyApp != null) this.homeyApp.log('Settings not found, starting blank')
                     return;
                 }
 
                 let jsonsettings = JSON.parse(rs);
                 if (jsonsettings == null) { 
-                    this.homeyApp.log('Settings not possible to parse, starting blank')
+                    if (this.homeyApp != null) this.homeyApp.log('Settings not possible to parse, starting blank')
                     return;
                 }
         
+                this.schedules = new Array();
+                
                 jsonsettings.settings.schedules.forEach(sched => {
                     let localschedule = new Schedule(parseInt(sched.id),sched.name, Boolean(sched.active));
                     sched.tokens.forEach (token => {
@@ -57,7 +59,7 @@ export class Settings {
                             if (localtoken.type == 'boolean') { localtokenitem = new TokenItem(localtoken,Boolean(ti.value)); }
                             else if (localtoken.type == 'string') { localtokenitem = new TokenItem(localtoken,ti.value); }
                             else if (localtoken.type == 'number') { localtokenitem = new TokenItem(localtoken,Number(ti.value)); }
-                            else { this.homeyApp.log('Incorrect type for tokenitem'); }
+                            else { if (this.homeyApp != null) this.homeyApp.log('Incorrect type for tokenitem'); }
 
                             localsi.tokenitems.push(localtokenitem);
                         });
@@ -68,11 +70,11 @@ export class Settings {
                     this.schedules.push(localschedule);
                 });
 
-                this.homeyApp.log('Settings read');
+                if (this.homeyApp != null) this.homeyApp.log('Settings read');
                     
             } catch (error) {
-                this.homeyApp.log('Settings NOT read!');
-                this.homeyApp.log('Error: ' + error);
+                if (this.homeyApp != null) this.homeyApp.log('Settings NOT read!');
+                if (this.homeyApp != null) this.homeyApp.log('Error: ' + error);
             }
 
     }
