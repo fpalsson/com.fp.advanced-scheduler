@@ -184,7 +184,7 @@ export class TriggerHandler {
 
         }
         else if (arg === 'idle') {
-            this.homeyApp.log('Idle');
+            //this.homeyApp.log('Idle');
 
             //No more timers this day, lets wait for a new day. :-)
             let now = new Date();

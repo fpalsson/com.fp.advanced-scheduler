@@ -48,7 +48,7 @@ export class FlowAndTokenHandler {
             myTrigger.registerRunListener(async ( args, state:Trigger ) => {
                 let shalltrigger = true;
               
-                this.homeyApp.log('Trigger Run');
+                //this.homeyApp.log('Trigger Run');
                 let s = <Schedule>args.schedule;
                 shalltrigger = s.id===state.schedule.id;
                 this.homeyApp.log('Will trigger: ' + shalltrigger + ', schedule: ' + s.name);
@@ -102,7 +102,7 @@ export class FlowAndTokenHandler {
                 this.settings.schedules.forEach(schedule => {
                   schedule.tokens.forEach(token => {
     
-                    let myToken = new FlowToken(token.id, {
+                    let myToken = new FlowToken('schedule' + schedule.id + '-token' + token.id, {
                       type: token.type,
                       title: schedule.name + ' - ' + token.name
                     })
@@ -133,9 +133,9 @@ export class FlowAndTokenHandler {
     setTokenValue(token:Token, value:any) {
         let ftw:TokenWrapper;
 
-        this.homeyApp.log('Looking for token: ' + token.name + ', with id: ' + token.id);
-        this.homeyApp.log('in list with ' + this.tokenwrappers.length + ' elements.');
-        this.homeyApp.log(this.tokenwrappers);
+        //this.homeyApp.log('Looking for token: ' + token.name + ', with id: ' + token.id);
+        //this.homeyApp.log('in list with ' + this.tokenwrappers.length + ' elements.');
+        //this.homeyApp.log(this.tokenwrappers);
 
         ftw = this.tokenwrappers.find(tw=>tw.token.id == token.id);
         if (ftw != null) {
