@@ -5,6 +5,7 @@ import { App as HomeyApp, ManagerFlow } from "homey";
 import { Settings as AppSettings } from "../src/settings";
 import { Schedule, ScheduleItem, Token, DaysType, TimeType } from "./containerclasses";
 import { FlowAndTokenHandler } from "./flowandtokenhandler";
+import { SunWrapper } from "./SunWrapper";
 //import { FlowCardTrigger, FlowCardAction, FlowToken } from "homey";
 
 export class Trigger{
@@ -26,14 +27,16 @@ export class TriggerHandler {
     private homeyApp:HomeyApp;
     private settings:AppSettings;
     private flowandtokenhandler:FlowAndTokenHandler;
+    private sunWrapper:SunWrapper;
     private triggers:Trigger[];
     private runningtimer:NodeJS.Timeout;
 
-    constructor(homeyApp:HomeyApp, settings:AppSettings, flowandtokenhandler:FlowAndTokenHandler) {
+    constructor(homeyApp:HomeyApp, settings:AppSettings, flowandtokenhandler:FlowAndTokenHandler, sunWrapper:SunWrapper) {
         this.selfie=this;
         this.homeyApp=homeyApp;
         this.settings=settings;
         this.flowandtokenhandler=flowandtokenhandler;
+        this.sunWrapper=sunWrapper;
     }
 
     setupTriggers(mode:'startup'|'midnight'){
@@ -41,11 +44,13 @@ export class TriggerHandler {
 
         this.triggers = new Array();
 
+        this.sunWrapper.refreshTimes();
+
         this.settings.schedules.forEach(schedule => {
             schedule.scheduleitems.forEach(scheduleitem => {
-                if (scheduleitem.daytype === DaysType.DaysOfWeek)
+                if (scheduleitem.daystype === DaysType.DaysOfWeek)
                 {
-                    if (this.dayHitTest(scheduleitem.daysarg)){
+                    if (this.dayHitTest(scheduleitem.daystype, scheduleitem.daysarg)){
                         this.addScheduleItemToTriggers(mode, schedule, scheduleitem);
                     }
                     else{
@@ -60,31 +65,48 @@ export class TriggerHandler {
     }
 
     private addScheduleItemToTriggers(mode:'startup'|'midnight', s:Schedule, si:ScheduleItem){
+        let triggertime:Date;
+        let timenow = new Date();
         if (si.timetype == TimeType.TimeOfDay ){
-            let triggertime = this.parseTime(si.timearg);
-            let timenow = new Date();
-            
-            if (mode != 'midnight')
-                if (triggertime<timenow) {
-                    this.homeyApp.log('Not added (too late this day): ');
-                    this.homeyApp.log(s.name);
-                    this.homeyApp.log(si);
-                    return; //time has already passed, a little crude but it will likely work :-)
-                }
-
-            let trigger = new Trigger(triggertime,s,si);
-
-            this.triggers.push(trigger);
-            this.homeyApp.log('Trigger added');
-            this.homeyApp.log(trigger);
-
+            triggertime = this.parseTime(si.timearg);
         }
         else if (si.timetype === TimeType.Solar){
-            this.homeyApp.log('Solar trigger not yet supported');
+            let ti = this.sunWrapper.getTime(si.suneventtype);
+            if (ti==null)
+            {
+                this.homeyApp.log('Solar error' + si.suneventtype);
+            }
+            triggertime = ti.time;
+            let offset = this.parseTime(si.timearg);
+            offset = new Date(0,0,0,offset.getHours(),offset.getMinutes(), offset.getSeconds());
+            triggertime.setTime(triggertime.getTime() + offset.getTime());
+            if (triggertime==null) {
+                this.homeyApp.log('Solar event: ' + si.timearg + ' not known!');
+                return;    
+            }
+            this.homeyApp.log('Added solar event: ' + si.suneventtype + ' with time: ' + triggertime.toTimeString() + ' (offset: ' + offset.toTimeString() + ')');
         }
         else {
             this.homeyApp.log('Unknown trigger type!');
+            return;
+        }    
+
+        if (mode != 'midnight'){
+            if (triggertime<timenow) {
+                this.homeyApp.log('Not added (too late this day): ');
+                this.homeyApp.log(s.name);
+                this.homeyApp.log(si);
+                return; //time has already passed, a little crude but it will likely work :-)
+            }
         }
+
+        let trigger = new Trigger(triggertime,s,si);
+
+        this.triggers.push(trigger);
+        this.homeyApp.log('Trigger added');
+        this.homeyApp.log(trigger);
+
+        
     }
 
     private parseTime(timeString):Date {
@@ -97,7 +119,7 @@ export class TriggerHandler {
         return d;
     } // parseTime()
 
-    private dayHitTest(days:number){
+    private dayHitTest(daystype:DaysType, days:number){
         let date = new Date();
         let dayofweek = date.getDay();
         if (dayofweek===0) dayofweek=7; //sunday returns 0 we want it to be 7
@@ -138,7 +160,7 @@ export class TriggerHandler {
             }  
         } 
         else if (arg === 'next') {
-            this.homeyApp.log('Next');
+            //this.homeyApp.log('Next');
 
             if (earliesttrigger != null) {
                 let now = new Date();

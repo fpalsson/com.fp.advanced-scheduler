@@ -49,10 +49,9 @@ export class FlowAndTokenHandler {
                 let shalltrigger = true;
               
                 this.homeyApp.log('Trigger Run');
-                this.homeyApp.log(args);
-                //this.homeyApp.log('Trigger Run');
-                shalltrigger = args.schedule.id===state.schedule.id;
-                this.homeyApp.log('Will trigger: ' + shalltrigger + ', schedule: ' + args.schedule.name);
+                let s = <Schedule>args.schedule;
+                shalltrigger = s.id===state.schedule.id;
+                this.homeyApp.log('Will trigger: ' + shalltrigger + ', schedule: ' + s.name);
                 return Promise.resolve( shalltrigger );
           
             })
@@ -107,10 +106,17 @@ export class FlowAndTokenHandler {
                       type: token.type,
                       title: schedule.name + ' - ' + token.name
                     })
+
+
                     this.tokenwrappers.push(new TokenWrapper(myToken,token));
-                    myToken.register()
+                    let promise = myToken.register()
                         .catch(e => {console.log('Error registering token: ' + token.id + ', ' + token.name )});
                     this.homeyApp.log('Registered token with id: ' + token.id + ", name: " + token.name);
+                    promise.then(()=>{
+                            if (token.type == 'boolean') this.setTokenValue(token,false);
+                            else if (token.type == 'string') this.setTokenValue(token,'Not set');
+                            else if (token.type == 'number') this.setTokenValue(token,0);
+                        })
                     })
                     
                 });
@@ -125,19 +131,23 @@ export class FlowAndTokenHandler {
     }
 
     setTokenValue(token:Token, value:any) {
-        let fts:any;
-        let tw:TokenWrapper;
+        let ftw:TokenWrapper;
 
-        fts = this.tokenwrappers.find(tw=>tw.token.id == token.id);
-        if (fts.lenght == 1) {
-            tw = fts[0];
-            if (tw.token.type == 'boolean') tw.flowtoken.setValue(Boolean(value));
-            else if (tw.token.type == 'string') tw.flowtoken.setValue(String(value));
-            else if (tw.token.type == 'number') tw.flowtoken.setValue(Number(value));
-            this.homeyApp.log('Token: ' + token.name + ', value set to: ' + value);
+        this.homeyApp.log('Looking for token: ' + token.name + ', with id: ' + token.id);
+        this.homeyApp.log('in list with ' + this.tokenwrappers.length + ' elements.');
+        this.homeyApp.log(this.tokenwrappers);
+
+        ftw = this.tokenwrappers.find(tw=>tw.token.id == token.id);
+        if (ftw != null) {
+            let t = ftw.token;
+            let ft = ftw.flowtoken;
+            if (t.type == 'boolean') ft.setValue(Boolean(value));
+            else if (t.type == 'string') ft.setValue(String(value));
+            else if (t.type == 'number') ft.setValue(Number(value));
+            this.homeyApp.log('Token: ' + t.name + ', value set to: ' + value);
         }
         else{
-            this.homeyApp.log('No or multiple tokens found when attempting to set value. Nothing done. Token: ' + token.name);
+            this.homeyApp.log('No tokens found when attempting to set value. Nothing done. Token: ' + token.name);
         }
     }
 

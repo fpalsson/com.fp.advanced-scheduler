@@ -5,14 +5,14 @@ import { Settings as AppSettings } from "../src/settings";
 import { FlowAndTokenHandler } from "../src/flowandtokenhandler";
 import { TriggerHandler } from "../src/triggerhandler";
 import { ManagerSettings } from "homey";
-//import { WebSettings } from "../settings/websettings";
+import { SunWrapper } from "../src/SunWrapper";
 
 export class MainApp {
     private homeyApp:HomeyApp;
     private settings:AppSettings;
     private flowAndTokenHandler:FlowAndTokenHandler;
     private triggerHandler:TriggerHandler;
-  //  private managersettings:ManagerSettings;
+    private sunWrapper:SunWrapper;
     
     constructor(homeyApp:HomeyApp) {
         this.homeyApp=homeyApp;
@@ -25,11 +25,14 @@ export class MainApp {
         this.settings = new AppSettings(this.homeyApp);
         this.settings.readSettings();
        
+        this.sunWrapper = new SunWrapper(this.homeyApp);
+        this.sunWrapper.init();
+
         this.flowAndTokenHandler = new FlowAndTokenHandler(this.homeyApp,this.settings);
         this.flowAndTokenHandler.setupFlows();
         this.flowAndTokenHandler.setupTokens();
 
-        this.triggerHandler = new TriggerHandler(this.homeyApp, this.settings, this.flowAndTokenHandler);
+        this.triggerHandler = new TriggerHandler(this.homeyApp, this.settings, this.flowAndTokenHandler, this.sunWrapper);
         this.triggerHandler.setupTriggers('startup');
         this.triggerHandler.startTimer();
 

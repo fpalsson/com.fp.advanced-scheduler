@@ -2,26 +2,67 @@
     "settings" :
     {
         "schedules" : [
+            {
+                "id":"3",
+                "name":"Test",
+                "active":"true",
+                "tokens":[
+                    {
+                        "id":"10",
+                        "name":"onff",
+                        "type":"string"
+                    },
+                    {
+                        "id":"11",
+                        "name":"dimvalue",
+                        "type":"number"
+                    }
+                ],
+                "scheduleitems":[
+                    {
+                        "id":"9",
+
+                        "daystype":"daysofweek",
+                        "daysarg":"127",
+                        "timetype":"timeofday",
+                        "timearg":"09:38",
+                        "tokenitems":[
+                            {
+                                "id":"10",
+                                "value":"on"
+                            }
+                            
+                        ]
+                    },
+                    {
+                        "id":"10",
+                        "daystype":"daysofweek",
+                        "daysarg":"127",
+                        "timetype":"timeofday",
+                        "timearg":"09:39",
+                        "tokenitems":[
+                            {
+                                "id":"10",
+                                "value":"off"
+                            }
+                    
+                        ]
+                    }
+
+                ]
+            },
+            
+            
             
             {
                 "id":"1",
-                "name":"Schedule 1",
+                "name":"Akvarium",
                 "active":"true",
                 "tokens":[
                     {
                         "id":"1",
-                        "name":"onoff",
+                        "name":"onff",
                         "type":"string"
-                    },
-                    {
-                        "id":"2",
-                        "name":"dimvalue1",
-                        "type":"number"
-                    },
-                    {
-                        "id":"5",
-                        "name":"boolvalue1",
-                        "type":"boolean"
                     }
                 ],
                 "scheduleitems":[
@@ -29,9 +70,9 @@
                         "id":"1",
 
                         "daystype":"daysofweek",
-                        "daysarg":"127",
+                        "daysarg":"31",
                         "timetype":"timeofday",
-                        "timearg":"00:17",
+                        "timearg":"06:45",
                         "tokenitems":[
                             {
                                 "id":"1",
@@ -43,9 +84,9 @@
                     {
                         "id":"2",
                         "daystype":"daysofweek",
-                        "daysarg":"127",
+                        "daysarg":"31",
                         "timetype":"timeofday",
-                        "timearg":"00:18",
+                        "timearg":"07:45",
                         "tokenitems":[
                             {
                                 "id":"1",
@@ -59,7 +100,7 @@
                         "daystype":"daysofweek",
                         "daysarg":"127",
                         "timetype":"timeofday",
-                        "timearg":"00:19",
+                        "timearg":"17:00",
                         "tokenitems":[
                             {
                                 "id":"1",
@@ -73,7 +114,35 @@
                         "daystype":"daysofweek",
                         "daysarg":"127",
                         "timetype":"timeofday",
-                        "timearg":"00:20",
+                        "timearg":"21:00",
+                        "tokenitems":[
+                            {
+                                "id":"1",
+                                "value":"off"
+                            }
+                    
+                        ]
+                    },
+                    {
+                        "id":"7",
+                        "daystype":"daysofweek",
+                        "daysarg":"96",
+                        "timetype":"timeofday",
+                        "timearg":"09:00",
+                        "tokenitems":[
+                            {
+                                "id":"1",
+                                "value":"on"
+                            }
+                    
+                        ]
+                    },
+                    {
+                        "id":"8",
+                        "daystype":"daysofweek",
+                        "daysarg":"96",
+                        "timetype":"timeofday",
+                        "timearg":"11:00",
                         "tokenitems":[
                             {
                                 "id":"1",
@@ -82,44 +151,31 @@
                     
                         ]
                     }
+
                 ]
             },
             {
                 "id":"2",
-                "name":"Schedule 2",
+                "name":"Utebelysning",
                 "active":"true",
                 "tokens":[
                     {
                         "id":"3",
-                        "name":"onoff2",
+                        "name":"onff",
                         "type":"string"
-                    },
-                    {
-                        "id":"4",
-                        "name":"dimvalue2",
-                        "type":"number"
-                    },
-                    {
-                        "id":"6",
-                        "name":"boolvalue2",
-                        "type":"boolean"
                     }
-        ],
+                ],
                 "scheduleitems":[
                     {
                         "id":"3",
                         "daystype":"daysofweek",
                         "daysarg":"127",
-                        "timetype":"timeofday",
-                        "timearg":"23:35",
+                        "timetype":"solar:sunset",
+                        "timearg":"00:00",
                         "tokenitems":[
                             {
                                 "id":"3",
-                                "value":"true"
-                            },
-                            {
-                                "id":"4",
-                                "value":"48"
+                                "value":"on"
                             }
                         ]
                     },
@@ -128,15 +184,11 @@
                         "daystype":"daysofweek",
                         "daysarg":"127",
                         "timetype":"timeofday",
-                        "timearg":"23:11",
+                        "timearg":"23:00",
                         "tokenitems":[
                             {
                                 "id":"3",
-                                "value":"false"
-                            },
-                            {
-                                "id":"4",
-                                "value":"7"
+                                "value":"off"
                             }
                         ]
                     }

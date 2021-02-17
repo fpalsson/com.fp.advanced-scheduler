@@ -47,11 +47,14 @@ export class Settings {
                             case 'daysofmonth': { dt = DaysType.DaysOfMonth; break; }
                         }
                         let tt:TimeType;
-                        switch (si.timetype){
-                            case 'timeofday': { tt = TimeType.TimeOfDay; break; }
-                            case 'solar': { tt = TimeType.Solar; break; }
+                        let setype = '';
+                        if (si.timetype == 'timeofday') { tt = TimeType.TimeOfDay; }
+                        else if (si.timetype.search('solar:') > -1 ) { 
+                            tt = TimeType.Solar; 
+                            setype = si.timetype.replace('solar:','');
                         }
-                        let localsi = new ScheduleItem(parseInt(si.id), dt, si.daysarg, tt, si.timearg);
+
+                        let localsi = new ScheduleItem(parseInt(si.id), dt, si.daysarg, tt, setype, si.timearg);
                         
                         si.tokenitems.forEach(ti => {
                             let localtoken = localschedule.tokens.find(t=>t.id==ti.id)

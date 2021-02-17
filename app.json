@@ -13,7 +13,9 @@
   "category": [
     "tools"
   ],
-  "permissions": [],
+  "permissions": [
+    "homey:manager:geolocation"
+  ],
   "images": {
     "large": "/assets/images/large.png",
     "small": "/assets/images/small.png"

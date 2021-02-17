@@ -8,7 +8,7 @@
     },
     "include": [
       "./app.ts",
-      
+      "./settings/websettings.ts"
 	],
 	
   }

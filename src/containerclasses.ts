@@ -46,19 +46,22 @@ export class ScheduleItem {
                 daytype:DaysType,
                 daysarg:number,
                 timetype:TimeType,
+                suneventtype:string,
                 timearg:string){
         this.id=id;
-        this.daytype=daytype;
+        this.daystype=daytype;
         this.daysarg=daysarg;
         this.timetype=timetype;
+        this.suneventtype=suneventtype;
         this.timearg=timearg;
         this.tokenitems = new Array();
     }
 
     id:number;
-    daytype:DaysType;
+    daystype:DaysType;
     daysarg:number // 0..127, monday is 1, tuesday is 2 and so on;
     timetype:TimeType;
+    suneventtype:string;
     timearg:string;
     tokenitems:TokenItem[];
 }

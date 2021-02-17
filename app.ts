@@ -4,6 +4,8 @@
 import { App as HomeyApp } from "homey";
 import { MainApp as MainApp } from "./src/mainapp";
 
+var SunCalc = require('suncalc');
+
 
 class AdvSchedulerApp extends HomeyApp {
   /**
