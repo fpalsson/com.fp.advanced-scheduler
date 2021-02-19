@@ -22,10 +22,10 @@ Make sure debugging works.
 
 Add error handling in relevant places.
 
-Adding monthly shedule.
+Adding monthly shedule 
 
-Adding solar events, based on SunEvent app.
+Adding solar events, based on suncalc (first version is implemented, testing needed)
 
-Create a HTML GUI for editing settings, instead of just pasting a json file in one place.
+Create a HTML GUI for editing settings, instead of just pasting a json file in one place (on its way, a lot more work is needed to get Vue, Vuetify, Webpack and so on to work well)
 
 LOTS AND LOTS OF TESTING.
