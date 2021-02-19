@@ -57,12 +57,14 @@ export class Settings {
                         let localsi = new ScheduleItem(parseInt(si.id), dt, si.daysarg, tt, setype, si.timearg);
                         
                         si.tokenitems.forEach(ti => {
-                            let localtoken = localschedule.tokens.find(t=>t.id==ti.id)
+                            let localtoken:Token = localschedule.tokens.find(t=>t.id==ti.id)
                             let localtokenitem:TokenItem;
-                            if (localtoken.type == 'boolean') { localtokenitem = new TokenItem(localtoken,Boolean(ti.value)); }
+                            if (localtoken.type == 'boolean') { localtokenitem = new TokenItem(localtoken,this.parseBool(ti.value)); }
                             else if (localtoken.type == 'string') { localtokenitem = new TokenItem(localtoken,ti.value); }
                             else if (localtoken.type == 'number') { localtokenitem = new TokenItem(localtoken,Number(ti.value)); }
-                            else { if (this.homeyApp != null) this.homeyApp.log('Incorrect type for tokenitem'); }
+                            else { if (this.homeyApp != null) this.homeyApp.log('Incorrect type for tokenitem: ' + ti); }
+                            
+                            if (localtokenitem != null) this.homeyApp.log('TokenItem added: ' + localtokenitem.token.name + ' value: ' + localtokenitem.value); 
 
                             localsi.tokenitems.push(localtokenitem);
                         });
@@ -80,6 +82,10 @@ export class Settings {
                 if (this.homeyApp != null) this.homeyApp.log('Error: ' + error);
             }
 
+    }
+
+    parseBool(value:any){
+        return value ? (value.toLowerCase() == "true") : false
     }
 }
 

@@ -24,6 +24,8 @@
         <div id="app">
             <v-app>
                 <v-main>
+                    <button-counter></button-counter>
+                    <button-counter></button-counter>
                     <v-expansion-panels>
                         <v-expansion-panel v-for="schedule in settings.schedules">
                             <v-expansion-panel-header>{{ schedule.name }}, Active:{{ schedule.active }}</v-expansion-panel-header>
@@ -48,7 +50,7 @@
                                 <v-expansion-panels>
                                     <v-expansion-panel>
 
-                                        <v-expansion-panel-header>Tokens </v-expansion-panel-header>
+                                        <v-expansion-panel-header>Tokens</v-expansion-panel-header>
                                         <v-expansion-panel-content>
                                             <v-row no-gutters v-for="token in schedule.tokens">
                                                 <v-col cols="6">
@@ -267,6 +269,17 @@
             }
 
             function setupVue(settings){
+
+                // Define a new component called button-counter
+                Vue.component('button-counter', {
+                data: function () {
+                    return {
+                    count: 0
+                    }
+                },
+                template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+                })
+
                 let ws = new WebSettings(settings);
                 let c = ws.readSettings();
                 //document.getElementById('demo').innerText = ws.getSchedules();

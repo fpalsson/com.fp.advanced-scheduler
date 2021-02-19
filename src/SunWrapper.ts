@@ -69,7 +69,7 @@ export class SunWrapper {
         let result:TimeInfo;
         //this.homeyApp.log('Advanced Scheduler MainApp is reinitializing...');
         this.timeInfos.forEach((timeinfo)=>{
-            this.homeyApp.log('Checking: ' + timeinfo.id);
+            //this.homeyApp.log('Checking: ' + timeinfo.id);
             if (timeinfo.id == timeid) {
                 result = timeinfo;
             }

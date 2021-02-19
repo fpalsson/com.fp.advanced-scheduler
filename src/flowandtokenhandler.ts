@@ -100,23 +100,23 @@ export class FlowAndTokenHandler {
 
                 this.tokenwrappers = new Array();
                 this.settings.schedules.forEach(schedule => {
-                  schedule.tokens.forEach(token => {
+                    schedule.tokens.forEach(token => {
     
-                    let myToken = new FlowToken('schedule' + schedule.id + '-token' + token.id, {
-                      type: token.type,
-                      title: schedule.name + ' - ' + token.name
-                    })
-
-
-                    this.tokenwrappers.push(new TokenWrapper(myToken,token));
-                    let promise = myToken.register()
-                        .catch(e => {console.log('Error registering token: ' + token.id + ', ' + token.name )});
-                    this.homeyApp.log('Registered token with id: ' + token.id + ", name: " + token.name);
-                    promise.then(()=>{
-                            if (token.type == 'boolean') this.setTokenValue(token,false);
-                            else if (token.type == 'string') this.setTokenValue(token,'Not set');
-                            else if (token.type == 'number') this.setTokenValue(token,0);
+                        let myToken = new FlowToken('schedule' + schedule.id + '-token' + token.id, {
+                        type: token.type,
+                        title: schedule.name + ' - ' + token.name
                         })
+
+
+                        this.tokenwrappers.push(new TokenWrapper(myToken,token));
+                        let promise = myToken.register()
+                            .catch(e => {console.log('Error registering token: ' + token.id + ', ' + token.name )});
+                        this.homeyApp.log('Registered token with id: ' + token.id + ", name: " + token.name);
+                //     promise.then(()=>{
+                //             if (token.type == 'boolean') this.setTokenValue(token,false);
+                //             else if (token.type == 'string') this.setTokenValue(token,'Not set');
+                //             else if (token.type == 'number') this.setTokenValue(token,0);
+                //      })
                     })
                     
                 });

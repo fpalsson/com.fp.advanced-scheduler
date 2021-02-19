@@ -124,17 +124,17 @@ export class TriggerHandler {
         let dayofweek = date.getDay();
         if (dayofweek===0) dayofweek=7; //sunday returns 0 we want it to be 7
 
-        this.homeyApp.log('Current day: ' + dayofweek + ', days: ' + days);
-
         let dayofweekbit = 1 << (dayofweek - 1);
 
-        this.homeyApp.log('Bit: ' + dayofweekbit);
-
         let hit = (dayofweekbit & days) > 0;
-        this.homeyApp.log('Hit: ' + hit);
+
+        this.homeyApp.log('Current day: ' + dayofweek + ', days: ' + this.dec2bin(days) + ', daybit: ' + this.dec2bin(dayofweekbit) + ', hit: ' + hit);
         return hit;
     }
 
+    private dec2bin(dec){
+        return (dec >>> 0).toString(2);
+    }
     
     private timerCallback(arg: 'execute'|'next'|'idle'|'midnight') {
 
