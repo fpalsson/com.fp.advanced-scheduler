@@ -34,12 +34,31 @@
 
                                 <v-container>
                                     <v-row no-gutters>
-                                        <v-col cols="8">
+                                        <v-col cols="6">
                                             <v-text-field label="Schedule name" placeholder="Enter a schedule name" v-model="schedule.name"></v-text-field>
                                         </v-col>
                                         <v-col cols="4">
                                             <v-switch label="Active" v-model="schedule.active"></v-switch>
                                         </v-col>
+                                        <v-col cols="2">
+                                            <!--v-btn fab dark x-small color="red"><v-icon dark>mdi-delete-circle</v-icon></v-btn-->
+
+                                            <v-dialog v-model="schedule.deletedialogopen" > <!-- max-width="290"-->
+                                                <template v-slot:activator="{ on, attrs }">
+                                                    <v-btn fab dark x-small color="red" v-bind="attrs" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn>
+                                                </template>
+                                                <v-card>
+                                                    <v-card-title class="headline">Delete Schedule?</v-card-title>
+                                                    <v-card-text>Do you want to delete schedule?</v-card-text>
+                                                    <v-card-actions>
+                                                        <v-spacer></v-spacer>
+                                                        <v-btn color="green darken-1" text @click="schedule.deletedialogopen = false">No</v-btn>
+                                                        <v-btn color="red darken-1" text @click="scheduleDeleteAndCloseDialog(schedule.id)">Yes, delete</v-btn>
+                                                    </v-card-actions>
+                                                </v-card>
+                                            </v-dialog>
+                                        </v-col>
+
                                     </v-row>
                                 </v-container>
                                
@@ -95,7 +114,7 @@
                                                             Day
                                                         </v-col-->
                                                         <v-col cols="10">
-                                                            Days: {{ si.daysArgText }}
+                                                            {{ si.daysArgShortText }}                                                            
                                                         </v-col>
                                                         <v-col cols="2">
                                                             <!--v-btn fab dark x-small color="green" v-bind="attrs" v-on="on"><v-icon dark>mdi-edit</v-icon></v-btn-->
@@ -112,15 +131,20 @@
                                                                     <v-card-text>
                                                                         <v-container>
                                                                             <v-row>
+                                                                                    <!--v-select>  v-model="si.selectedDays"-->
+
                                                                                 <v-select
-                                                                                    v-model="si.daysarg"
-                                                                                    :items="['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']"
-                                                                                    label="Select"
+                                                                                    v-model="si.selectedDays"
+                                                                                    :items="si.getAllDays()"
+                                                                                    item-value="value"
+                                                                                    item-text="day"
+                                                                                    return-object
                                                                                     multiple
                                                                                     chips
+                                                                                    label="Select"
                                                                                     hint="Select days of week"
                                                                                     persistent-hint
-                                                                                    ></v-select>
+                                                                                ></v-select>
                                                                             </v-row>
                                                                             <v-row>
                                                                                 <v-radio-group
@@ -140,7 +164,19 @@
                                                                                     </v-radio-group>
                                                                             </v-row>
                                                                             <v-row>
-                                                                                <v-text-field label="Trigger time" placeholder="Enter a time" v-model="si.timearg"></v-text-field>
+                                                                                <v-select
+                                                                                    :disabled="si.timetype==1"
+                                                                                    v-model="si.suneventtype"
+                                                                                    :items="getSunEvents()"
+                                                                                    item-value="id"
+                                                                                    item-text="desc"
+                                                                                    label="Sun event"
+                                                                                    hint="Choose sun event"
+                                                                                    persistent-hint
+                                                                                    ></v-select>
+                                                                            </v-row>
+                                                                            <v-row>
+                                                                                <v-text-field label="Trigger/offset time" placeholder="Enter a time" v-model="si.timearg"></v-text-field>
                                                                                 <!--v-time-picker
                                                                                 format="24hr"
                                                                                 use-seconds
@@ -159,11 +195,8 @@
                                                         </v-col>
                                                     </v-row>
                                                     <v-row>
-                                                        <v-col cols="8">
-                                                            {{ si.timetype }}
-                                                        </v-col>
-                                                        <v-col cols="2">
-                                                            {{ si.timearg }}
+                                                        <v-col cols="10">
+                                                            {{ scheduleItemTimeString(si.timetype,si.suneventtype,si.timearg) }}
                                                         </v-col>
                                                         <v-col cols="2">
                                                             <!--v-btn fab dark x-small color="red"><v-icon dark>mdi-delete-circle</v-icon></v-btn-->
@@ -300,19 +333,37 @@
                             schedules:[]
 
                         },
-                        homey:homey,    
+                        homey:homey,
+                        selecteddays:[]    
 
                     },
-                    //computed: {
-                    //    shortenTokenType() {
-                    //        var type='number';
-                    //        if (type=='number') return 'num';
-                    //        else if (type=='boolean') return 'bool';
-                    //        else return 'string';
-                    //    }
-                    //},
+                    computed: {
+                        shortenTokenType : function () {
+                            var type='number';
+                            if (type=='number') return 'num';
+                            else if (type=='boolean') return 'bool';
+                            else return 'string';
+                        },
+
+                    },
                     methods: {
-                        
+
+
+                        getSunEvents : function (){
+                            let ws = new WebSettings();
+                            let suntimes = ws.getSunTimes();
+                            //console.log('suntimes');
+                            //console.log(suntimes);
+                            return suntimes;
+                        },
+
+                        scheduleItemTimeString : function (tt,se,ta) {
+                            //console.log('scheduleItemTimeString')
+
+                            if (tt==1) return 'Time: ' + ta;
+                            if (tt==2) return 'Solar: ' + se + ', offset: ' + ta;
+                        },
+
                         saveSettings : function () {
                             var ws = new WebSettings()
                             var settings = ws.buildSettings(this.settings.schedules)
@@ -394,9 +445,9 @@
                         scheduleDeleteAndCloseDialog : function (scheduleid) {
                             this.settings.schedules.forEach(schedule => {
                                 if (schedule.id == scheduleid) {
-                                    var index = schedules.indexOf(schedule);
+                                    var index = this.settings.schedules.indexOf(schedule);
                                     if (index !== -1) {
-                                        schedules.splice(index, 1);
+                                        this.settings.schedules.splice(index, 1);
                                         console.log('Deleted schedule with id: ' +schedule.id)
                                     }
 
@@ -441,7 +492,11 @@
 
                             this.settings.schedules.forEach(schedule => {
                                 if (schedule.id == scheduleid) {
-                                    schedule.scheduleitems.push(new ScheduleItem(maxid+1, DaysType.DaysOfWeek, 0, TimeType.TimeOfDay, '00:00'))        
+                                    console.log('before new si');
+                                    let si = new ScheduleItem(maxid+1, DaysType.DaysOfWeek, 1+2+4+8+16+32+64, TimeType.TimeOfDay, '', '00:00')
+                                    console.log('after  new si ' + si);
+                                    si.editdialogopen=true;
+                                    schedule.scheduleitems.push(si)        
                                 }
                             })
                             
