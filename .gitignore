@@ -3,9 +3,6 @@ node_modules/
 src/mainapp.js.map
 app.js
 app.js.map
-app.js.map
-settings/websettings.js
-settings/websettings.js.map
 src/containerclasses.js
 src/containerclasses.js.map
 src/flowandtokenhandler.js
@@ -18,5 +15,20 @@ src/SunWrapper.js.map
 src/triggerhandler.js
 src/triggerhandler.js.map
 test.ts
-app.js.map
 
+settings-src/node_modules
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
