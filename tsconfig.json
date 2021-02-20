@@ -1,14 +1,13 @@
 {
-    "compilerOptions": {
-      "target": "es6",
-      "module": "commonjs",
-      "sourceMap": true,
-	    "esModuleInterop": true,
-      "baseUrl": ".",
-    },
-    "include": [
-      "./app.ts",
-      "./settings/websettings.ts"
-	],
-	
-  }
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "baseUrl": "."
+  },
+  "include": [
+    "./app.ts",
+    "./settings-old/websettings.ts"
+  ]
+}
