@@ -85,6 +85,7 @@ export class Settings {
     }
 
     parseBool(value:any){
+        if (typeof value == 'boolean') return value;
         return value ? (value.toLowerCase() == "true") : false
     }
 }

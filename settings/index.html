@@ -24,10 +24,10 @@
         <div id="app">
             <v-app>
                 <v-main>
-                    <button-counter></button-counter>
-                    <button-counter></button-counter>
+                    <!--button-counter></button-counter>
+                    <button-counter></button-counter-->
                     <v-expansion-panels>
-                        <v-expansion-panel v-for="schedule in settings.schedules">
+                        <v-expansion-panel v-for="schedule in settings.schedules" :key="schedule.id">
                             <v-expansion-panel-header>{{ schedule.name }}, Active:{{ schedule.active }}</v-expansion-panel-header>
                             <v-expansion-panel-content> 
                                 <!--v-switch v-model="switch1" :label="`Switch 1: ${switch1.toString()}`" ></v-switch-->
@@ -42,17 +42,12 @@
                                         </v-col>
                                     </v-row>
                                 </v-container>
-
-
-
-                                
                                
                                 <v-expansion-panels>
                                     <v-expansion-panel>
-
                                         <v-expansion-panel-header>Tokens</v-expansion-panel-header>
                                         <v-expansion-panel-content>
-                                            <v-row no-gutters v-for="token in schedule.tokens">
+                                            <v-row no-gutters v-for="token in schedule.tokens" :key="token.id">
                                                 <v-col cols="6">
                                                     <v-text-field label="Token name" placeholder="Enter a token name" v-model="token.name"></v-text-field>
                                                 </v-col>
@@ -62,28 +57,37 @@
                                                 <v-col cols="2">
                                                     <!--v-btn fab dark x-small color="red"><v-icon dark>mdi-delete-circle</v-icon></v-btn-->
 
-                                                    <v-dialog v-model="dialog" > <!-- max-width="290"-->
-                                                        <template v-slot:activator="{ on, attrs }">
-                                                            <v-btn fab dark x-small color="red" v-bind="attrs" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn>
+                                                    <!--v-dialog v-model="tokendeletedialog[token.id]" -->
+                                                    <v-dialog v-model="token.deletedialogopen"> 
+                                                    <!--v-dialog v-model="tokendeletedialog[token.id].open" -->
+                                                            <!--template v-slot:activator="{ on, attrs }">
+                                                            <v-btn fab dark x-small color="red" v-bind="attrs" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn-->
+                                                        <template v-slot:activator="{ on }">
+                                                            <v-btn fab dark x-small color="red" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn>
                                                         </template>
                                                         <v-card>
                                                             <v-card-title class="headline">Delete Token?</v-card-title>
                                                             <v-card-text>Do you want to delete token? All tokens in schedule will be removed!</v-card-text>
                                                             <v-card-actions>
                                                                 <v-spacer></v-spacer>
-                                                                <v-btn color="green darken-1" text @click="dialog = false">No</v-btn>
-                                                                <v-btn color="red darken-1" text @click="dialog = false">Yes, delete</v-btn>
-                                                            </v-card-actions>
+                                                                <!--v-btn color="green darken-1" text @click="tokenCloseDeleteDialog(token.id)">No</v-btn-->
+                                                                <v-btn color="green darken-1" text @click="token.deletedialogopen=false">No</v-btn>
+                                                                <v-btn color="red darken-1" text @click="tokenDeleteAndCloseDialog(token.id)">Yes, delete</v-btn>
+                                                            </v-card-actions>  
                                                         </v-card>
                                                     </v-dialog>
                                                 </v-col>
                                             </v-row>
+                                            <v-btn color="green darken-1" text @click="addToken(schedule.id, 'boolean')">Add bool token</v-btn>
+                                            <v-btn color="green darken-1" text @click="addToken(schedule.id, 'number')">Add number token</v-btn>
+                                            <v-btn color="green darken-1" text @click="addToken(schedule.id, 'string')">Add string token</v-btn>
+
                                         </v-expansion-panel-content>
                                     </v-expansion-panel>
                                     <v-expansion-panel>
                                         <v-expansion-panel-header>Schedule Items </v-expansion-panel-header>
                                         <v-expansion-panel-content>
-                                            <v-row no-gutters v-for="si in schedule.scheduleitems">
+                                            <v-row no-gutters v-for="si in schedule.scheduleitems" :key="si.id">
                                                 <v-container>
                                                     <v-sheet>
                                                     <v-row>
@@ -96,7 +100,7 @@
                                                         <v-col cols="2">
                                                             <!--v-btn fab dark x-small color="green" v-bind="attrs" v-on="on"><v-icon dark>mdi-edit</v-icon></v-btn-->
                                                             <!--v-dialog v-model="'dialogsi' + si.id" --> <!-- max-width="290"-->
-                                                            <v-dialog v-model="sieditdialog"> <!-- max-width="290"-->
+                                                            <v-dialog v-model="si.editdialogopen"> <!-- max-width="290"-->
                                                                 <template v-slot:activator="{ on }">
                                                                     <!--v-btn fab dark x-small color="green" v-bind="attrs" v-on="on"><v-icon dark>mdi-pencil</v-icon></v-btn-->
                                                                     <v-btn fab dark x-small color="green" v-on="on"><v-icon dark>mdi-pencil</v-icon></v-btn>
@@ -109,7 +113,7 @@
                                                                         <v-container>
                                                                             <v-row>
                                                                                 <v-select
-                                                                                    v-model="days"
+                                                                                    v-model="si.daysarg"
                                                                                     :items="['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']"
                                                                                     label="Select"
                                                                                     multiple
@@ -120,18 +124,18 @@
                                                                             </v-row>
                                                                             <v-row>
                                                                                 <v-radio-group
-                                                                                    v-model="blabla"
+                                                                                    v-model="si.timetype"
                                                                                     row
                                                                                     mandatory
                                                                                     >
                                                                                     <v-radio
                                                                                         label="Time"
-                                                                                        value="radio-time"
+                                                                                        value="1"
                                                                                         
                                                                                     ></v-radio>
                                                                                     <v-radio
                                                                                         label="Solar"
-                                                                                        value="radio-solar"
+                                                                                        value="2"
                                                                                     ></v-radio>
                                                                                     </v-radio-group>
                                                                             </v-row>
@@ -143,8 +147,7 @@
                                                                                 ></v-time-picker-->
                                                                             </v-row>
                                                                             <v-row>
-                                                                                <v-btn  color="green darken-1" text @click="sieditdialog=false">Close 1</v-btn>
-                                                                                <v-btn  color="green darken-1" text @click="sieditdialog2=false">Close 2</v-btn>
+                                                                                <v-btn  color="green darken-1" text @click="si.editdialogopen=false">Close</v-btn>
                                                                                 <!--v-btn color="green darken-1" text @click="'dialogsi' + si.id + ' = false'">Close</v-btn-->
                                                                             </v-row>
                                                                         </v-container>
@@ -165,7 +168,7 @@
                                                         <v-col cols="2">
                                                             <!--v-btn fab dark x-small color="red"><v-icon dark>mdi-delete-circle</v-icon></v-btn-->
 
-                                                            <v-dialog v-model="sideletedialog" > <!-- max-width="290"-->
+                                                            <v-dialog v-model="si.deletedialogopen" > <!-- max-width="290"-->
                                                                 <template v-slot:activator="{ on, attrs }">
                                                                     <v-btn fab dark x-small color="red" v-bind="attrs" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn>
                                                                 </template>
@@ -174,8 +177,8 @@
                                                                     <v-card-text>Do you want to delete scheduleitem?</v-card-text>
                                                                     <v-card-actions>
                                                                         <v-spacer></v-spacer>
-                                                                        <v-btn color="green darken-1" text @click="sideletedialog = false">No</v-btn>
-                                                                        <v-btn color="red darken-1" text @click="sideletedialog = false">Yes, delete</v-btn>
+                                                                        <v-btn color="green darken-1" text @click="si.deletedialogopen = false">No</v-btn>
+                                                                        <v-btn color="red darken-1" text @click="scheduleItemDeleteAndCloseDialog(si.id)">Yes, delete</v-btn>
                                                                     </v-card-actions>
                                                                 </v-card>
                                                             </v-dialog>
@@ -184,6 +187,8 @@
                                                 </v-sheet>
                                                 </v-container>
                                             </v-row>
+                                            <v-btn color="green darken-1" text @click="addScheduleItem(schedule.id)">Add new schedule item</v-btn>
+
                                         </v-expansion-panel-content>
                                     </v-expansion-panel>
                                 </v-expansion-panels>
@@ -192,45 +197,48 @@
                         </v-expansion-panel>
                     </v-expansion-panels>
                     
-                    <v-container>Hello world</v-container>
-                    <v-collapse-wrapper>
-                        <ul>
-                            <li v-for="schedule in settings.schedules" v-collapse-toggle>
-                                {{ schedule.name }}, Active: {{ schedule.active }} 
-                                <div v-collapse-content>Tokens
+                    <v-btn color="green darken-1" text @click="addSchedule()">Add new schedule</v-btn>
+                    <v-btn color="green darken-1" text @click="saveSettings()">Save settings</v-btn>
+
+                    <!--v-container>Hello world</v-container>
+                    <ul>
+                        <li v-for="schedule in settings.schedules">
+                            {{ schedule.name }}, Active: {{ schedule.active }} 
+                            <div>Tokens
+                                <ul>
+                                    <li v-for="token in schedule.tokens">
+                                    {{ token.name }}:{{token.type}} <BR>
+                                    
+                                    </li>
+                                </ul>
+                                ScheduleItems <BR>
+                                <ul>
+                                    <li v-for="si in schedule.scheduleitems">
+                                    {{ si.daystype }}, {{ si.daysarg }}, {{ si.timetype }}, {{ si.timearg }} <BR>
+    
                                     <ul>
-                                        <li v-for="token in schedule.tokens">
-                                        {{ token.name }}:{{token.type}} <BR>
+                                        <li v-for="ti in si.tokenitems">
+                                        {{ ti.token.name }}, {{ ti.value }}:{{ti.token.type}} <BR>
                                         
                                         </li>
                                     </ul>
-                                    ScheduleItems <BR>
-                                    <ul>
-                                        <li v-for="si in schedule.scheduleitems">
-                                        {{ si.daystype }}, {{ si.daysarg }}, {{ si.timetype }}, {{ si.timearg }} <BR>
-        
-                                        <ul>
-                                            <li v-for="ti in si.tokenitems">
-                                            {{ ti.token.name }}, {{ ti.value }}:{{ti.token.type}} <BR>
-                                            
-                                            </li>
-                                        </ul>
-                    
-                                        </li>
-                                    </ul>
-                                </div>                        
-        
-                            </li>
-                    </ul>
-                </v-collapse-wrapper>                </v-main>
-                </v-app>
+                
+                                    </li>
+                                </ul>
+                            </div>                        
+    
+                        </li>
+                    </ul-->
+
+                </v-main>
+            </v-app>
 
                 
         </div>
 
 
         <h1>
-			Settings	
+			Settings (old)	
 		</h1>
 
         <div>
@@ -252,7 +260,7 @@
                 if( err ) return Homey.alert( err );
                     settingsElement.value = settings;
                     try {
-                       setupVue(settings);
+                       setupVue(Homey);
                     } catch (error) {
                         
                     } 
@@ -268,20 +276,19 @@
                 });
             }
 
-            function setupVue(settings){
+            function setupVue(homey){
 
                 // Define a new component called button-counter
-                Vue.component('button-counter', {
-                data: function () {
-                    return {
-                    count: 0
-                    }
-                },
-                template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
-                })
+//                Vue.component('button-counter', {
+ //               data: function () {
+  //                  return {
+   //                 count: 0
+    //                }
+     //           },
+      //          template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+       //         })
 
-                let ws = new WebSettings(settings);
-                let c = ws.readSettings();
+                
                 //document.getElementById('demo').innerText = ws.getSchedules();
 
                 let vuedata = {
@@ -291,36 +298,202 @@
                     data: {
                         settings:{
                             schedules:[]
+
                         },
-                        sideletedialog:false,
-                        sieditdialog:[],
-                        sieditdialog1:false,
-                        sieditdialog2:false,
+                        homey:homey,    
 
                     },
-                    computed: {
-                        shortenTokenType() {
-                            var type='number';
-                            if (type=='number') return 'num';
-                            else if (type=='boolean') return 'bool';
-                            else return 'string';
-                        }
-                    },
+                    //computed: {
+                    //    shortenTokenType() {
+                    //        var type='number';
+                    //        if (type=='number') return 'num';
+                    //        else if (type=='boolean') return 'bool';
+                    //        else return 'string';
+                    //    }
+                    //},
                     methods: {
-                        closeSIEdit: function () {
-                            //alert ('hej');
-                            vuedata.data.sieditdialog[1]=false;
-                            }
-                        }
+                        
+                        saveSettings : function () {
+                            var ws = new WebSettings()
+                            var settings = ws.buildSettings(this.settings.schedules)
+                            
+                            console.log('Settings:');
+                            console.log(settings);
+                            
+                            this.homey.set('settings', settings, function( err ){
+                                if( err ) return this.homey.alert( err );
+                            });
+                        },
+
+
+                        tokenDeleteAndCloseDialog : function (tokenid) {
+                        
+                            this.settings.schedules.forEach(schedule => {
+                                schedule.tokens.forEach(token => {
+                                    if (token.id == tokenid) {
+                                        var index = schedule.tokens.indexOf(token);
+                                        if (index !== -1) {
+                                            schedule.tokens.splice(index, 1);
+                                            console.log('Deleted token with id: ' +token.id)
+                                        }
+                                        schedule.scheduleitems.forEach(si => {
+                                            si.tokenitems.forEach(ti => {
+                                                if (ti.id=tokenid){
+                                                    index = si.tokenitems.indexOf(ti);
+                                                    if (index !== -1) {
+                                                        si.tokenitems.splice(index, 1);
+                                                        console.log('Deleted tokenitem with id: ' +ti.id)
+                                                    }
+                                                }
+                                            })
+                                        })
+
+                                    }
+                                })
+                            })
+                            
+                            token.deletedialogopen=false;
+                        },
+
+                        tokenItemDeleteAndCloseDialog : function (scheduleitemid, tokenid) {
+                        
+                            this.settings.schedules.forEach(schedule => {
+                                schedule.scheduleitems.forEach(si => {
+                                    if (si.id == scheduleitemid) {
+                                        si.tokenitems.forEach(ti => {
+                                            if (ti.id=tokenid){
+                                                index = si.tokenitems.indexOf(ti);
+                                                if (index !== -1) {
+                                                    si.tokenitems.splice(index, 1);
+                                                    console.log('Deleted tokenitem with id: ' +ti.id)
+                                                }
+                                                ti.deletedialogopen=false;
+                                            }
+                                        })
+                                    }
+                                })
+                            })
+                        },
+
+                        scheduleItemDeleteAndCloseDialog : function (scheduleitemid) {
+                            
+                            this.settings.schedules.forEach(schedule => {
+                                schedule.scheduleitems.forEach(si => {
+                                    if (si.id == scheduleitemid) {
+                                        var index = schedule.scheduleitems.indexOf(si);
+                                        if (index !== -1) {
+                                            schedule.scheduleitems.splice(index, 1);
+                                            console.log('Deleted schedule item with id: ' +scheduleitemid)
+                                        }
+                                        si.deletedialogopen=false;
+                                    }
+                                })
+                            })
+                        },
+
+                        scheduleDeleteAndCloseDialog : function (scheduleid) {
+                            this.settings.schedules.forEach(schedule => {
+                                if (schedule.id == scheduleid) {
+                                    var index = schedules.indexOf(schedule);
+                                    if (index !== -1) {
+                                        schedules.splice(index, 1);
+                                        console.log('Deleted schedule with id: ' +schedule.id)
+                                    }
+
+                                }
+                            })
+                            
+                            schedule.deletedialogopen=false;
+                        },
+
+                        addToken : function (scheduleid, type) {
+                            var maxid = 0;
+                            this.settings.schedules.forEach(schedule => {
+                                schedule.tokens.forEach(token => {
+                                    if (token.id > maxid) maxid = token.id;
+                                })
+                            })
+
+                            this.settings.schedules.forEach(schedule => {
+                                if (schedule.id == scheduleid) {
+                                    schedule.tokens.push(new Token(maxid+1, 'New token', type))        
+                                }
+                            })
+                            
+                        },
+
+                        addSchedule : function () {
+                            var maxid = 0;
+                            this.settings.schedules.forEach(schedule => {
+                                if (schedule.id > maxid) maxid = schedule.id;
+                            })
+
+                            this.settings.schedules.push(new Schedule(maxid+1, 'New Schedule', true))        
+                        },
+
+                        addScheduleItem : function (scheduleid) {
+                            var maxid = 0;
+                            this.settings.schedules.forEach(schedule => {
+                                schedule.scheduleitems.forEach(si => {
+                                    if (si.id > maxid) maxid = si.id;
+                                })
+                            })
+
+                            this.settings.schedules.forEach(schedule => {
+                                if (schedule.id == scheduleid) {
+                                    schedule.scheduleitems.push(new ScheduleItem(maxid+1, DaysType.DaysOfWeek, 0, TimeType.TimeOfDay, '00:00'))        
+                                }
+                            })
+                            
+                        },
+                    }
+
                 };
                 
-                var arr = new Array(100);
-                for (i=0;i<100;i++) { arr[i]=false; }
+                homey.get('settings', function( err, settings ) {
+
+                    if( err ) return homey.alert( err );
+
+                    let ws = new WebSettings();
+                    let c = ws.readSettings(settings);
+                    var schedules = ws.getSchedules();
+                    vuedata.data.settings.schedules = schedules;
+
+                    console.log ('Settings');
+                    console.log (settings);
+                    console.log (homey);
+
+                    var app = new Vue(vuedata);
+
+                });
+      /*          var maxScheduleItems = 100; //Max(vuedata.data.settings.schedules);
+                var maxTokens = 100; //Max(vuedata.data.settings.schedules);
+
+                var arr = new Array(maxScheduleItems);
+                for (i=0;i<maxScheduleItems;i++) { arr[i]=false; }
                 vuedata.data.sieditdialog=arr;
-                vuedata.data.settings.schedules = ws.getSchedules();
+
+                arr = new Array(maxScheduleItems);
+                for (i=0;i<maxScheduleItems;i++) { arr[i]=false; }
+                vuedata.data.sideletedialog=arr;
+
+                //arr = new Array(maxTokens);
+                for (i=0;i<maxTokens;i++) { arr[i]= {
+                    open:false
+                }
+                    
+                    ; }
+                var map = new Map();
+                schedules.forEach(schedule => {
+                    schedule.tokens.forEach(token => {
+                        map.set(token.id,)
+                    })
+                })
+                vuedata.data.tokendeletedialog=
+
+           */     
 
                 //var app = new window.Vue(vuedata);
-                var app = new Vue(vuedata);
 
             }
 
