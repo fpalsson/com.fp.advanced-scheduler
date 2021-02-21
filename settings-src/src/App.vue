@@ -2,8 +2,8 @@
   <v-app>
     <v-main>
       <v-expansion-panels>
-        <ul>
-          <!--li v-for="schedule in settings.schedules" :key="schedule.id" > 
+        <!--ul>
+          <li v-for="schedule in settings.schedules" :key="schedule.id" > 
             {{schedule.name}}
           </li>
         </ul-->
