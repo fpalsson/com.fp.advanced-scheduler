@@ -113,59 +113,68 @@
         </v-sheet>
         </v-container>
     </v-row>
+
 </template>
 
 <script>
-import { ScheduleItem } from '../websettings';
+import { WebSettings, ScheduleItem } from '../websettings';
+
 export default {
-  name: 'ScheduleItemV',
+  name: 'AsvScheduleItem',
   props: {
     scheduleitem: {
       type: ScheduleItem,
       required: true
+    },
+    settings: {
+      type: Object,
+      required: true
     }
+
   },
   data() {
     return {
-      deletedialogopen: false,
-      editdialogopen: false,
-      //days: 'Mo',
-      //time: null
+      dialog: false,
+      editDialog: false,
+      days: 'Mo',
+      time: null
     };
   },
   methods : {
-        scheduleItemDeleteAndCloseDialog : function (scheduleitemid) {
-            
-            this.settings.schedules.forEach(schedule => {
-                schedule.scheduleitems.forEach(si => {
-                    if (si.id == scheduleitemid) {
-                        var index = schedule.scheduleitems.indexOf(si);
-                        if (index !== -1) {
-                            schedule.scheduleitems.splice(index, 1);
-                            console.log('Deleted schedule item with id: ' +scheduleitemid)
-                        }
-                        si.deletedialogopen=false;
-                    }
-                })
-            })
-        },
+      scheduleItemDeleteAndCloseDialog : function (scheduleitemid) {
+          
+          this.settings.schedules.forEach(schedule => {
+              schedule.scheduleitems.forEach(si => {
+                  if (si.id == scheduleitemid) {
+                      var index = schedule.scheduleitems.indexOf(si);
+                      if (index !== -1) {
+                          schedule.scheduleitems.splice(index, 1);
+                          console.log('Deleted schedule item with id: ' +scheduleitemid)
+                      }
+                      si.deletedialogopen=false;
+                  }
+              })
+          })
+      },
 
-        getSunEvents : function (){
-            let ws = new WebSettings();
-            let suntimes = ws.getSunTimes();
-            //console.log('suntimes');
-            //console.log(suntimes);
-            return suntimes;
-        },
+      getSunEvents : function (){
+          let ws = new WebSettings();
+          let suntimes = ws.getSunTimes();
+          
+          //console.log('suntimes');
+          //console.log(suntimes);
+          return suntimes;
+      },
 
-        scheduleItemTimeString : function (tt,se,ta) {
-            //console.log('scheduleItemTimeString')
+      scheduleItemTimeString : function (tt,se,ta) {
+          //console.log('scheduleItemTimeString')
 
-            if (tt==1) return 'Time: ' + ta;
-            if (tt==2) return 'Solar: ' + se + ', offset: ' + ta;
-        },
+          if (tt==1) return 'Time: ' + ta;
+          if (tt==2) return 'Solar: ' + se + ', offset: ' + ta;
+      },
 
   }
+
 };
 </script>
 

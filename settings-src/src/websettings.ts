@@ -14,13 +14,13 @@ export class WebSettings {
         return this.schedules;
     }
 
-    buildSettings(schedules:Schedule[]):string {
-        let settings = {settings:{
+    buildSettings(settings) {
+        let localsettings = {settings:{
                 schedules:[]
             }
         }
 
-        schedules.forEach(schedule => {
+        settings.schedules.forEach(schedule => {
             let jsonsched = {
                 'id':schedule.id,
                 'name':schedule.name,
@@ -68,12 +68,12 @@ export class WebSettings {
                 })
                 
             })
-            settings.settings.schedules.push(jsonsched);
+            localsettings.settings.schedules.push(jsonsched);
             
 
         })
 
-        return JSON.stringify(settings);
+        return JSON.stringify(localsettings);
     }
 
     readSettings(settings:string):number {

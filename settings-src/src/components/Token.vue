@@ -33,52 +33,60 @@
 </template>
 
 <script>
-import { Token } from '../websettings';
+import Token from '../websettings'
+
 export default {
-  name: 'TokenV',
+  name: 'AsvToken',
   props: {
     token: {
       type: Token,
       required: true
+    },
+    settings: {
+      type: Object,
+      required: true
     }
+
   },
   data() {
     return {
-      deletedialogopen: false
+      dialog: false
     }
   },
   methods: {
-      tokenDeleteAndCloseDialog : function (tokenid) {
-      
-          this.settings.schedules.forEach(schedule => {
-              schedule.tokens.forEach(token => {
-                  if (token.id == tokenid) {
-                      var index = schedule.tokens.indexOf(token);
-                      if (index !== -1) {
-                          schedule.tokens.splice(index, 1);
-                          console.log('Deleted token with id: ' +token.id)
-                      }
-                      schedule.scheduleitems.forEach(si => {
-                          si.tokenitems.forEach(ti => {
-                              if (ti.id==tokenid){
-                                  index = si.tokenitems.indexOf(ti);
-                                  if (index !== -1) {
-                                      si.tokenitems.splice(index, 1);
-                                      console.log('Deleted tokenitem with id: ' +ti.id)
-                                  }
-                              }
-                          })
-                      })
+    tokenDeleteAndCloseDialog : function (tokenid) {
+        //console.log('tokenDeleteAndCloseDialog' + this.seetings);
+        //console.log('tokenDeleteAndCloseDialog root' + this.settings.schedules.length);
 
-                  }
-                  token.deletedialogopen=false;
-              })
-          })
-          
-          
-      },
+        this.settings.schedules.forEach(schedule => {
+            schedule.tokens.forEach(token => {
+                if (token.id == tokenid) {
+                    var index = schedule.tokens.indexOf(token);
+                    if (index !== -1) {
+                        schedule.tokens.splice(index, 1);
+                        console.log('Deleted token with id: ' +token.id)
+                    }
+                    schedule.scheduleitems.forEach(si => {
+                        si.tokenitems.forEach(ti => {
+                            if (ti.id==tokenid){
+                                index = si.tokenitems.indexOf(ti);
+                                if (index !== -1) {
+                                    si.tokenitems.splice(index, 1);
+                                    console.log('Deleted tokenitem with id: ' +ti.id)
+                                }
+                            }
+                        })
+                    })
 
+                }
+                token.deletedialogopen=false;
+            })
+        })
+        
+        
+    },
   }
+
 };
 </script>
 

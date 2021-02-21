@@ -2,15 +2,8 @@
   <v-app>
     <v-main>
       <v-expansion-panels>
-        <!--ul>
-          <li v-for="schedule in settings.schedules" :key="schedule.id" > 
-            {{schedule.name}}
-          </li>
-        </ul-->
-
-
-        <schedule-v v-for="schedule in settings.schedules" :key="schedule.id" :schedule="schedule" />
-      <v-expansion-panels>
+        <asv-schedule v-for="(schedule, i) in settings.schedules" :key="i" :schedule="schedule" :settings="settings" />
+      </v-expansion-panels>
       <v-btn color="green darken-1" text @click="addSchedule()">Add new schedule</v-btn>
       <v-btn color="green darken-1" text @click="saveSettings()">Save settings</v-btn>
 
@@ -19,31 +12,33 @@
 </template>
 
 <script>
-'use strict'
 import { WebSettings, Schedule } from './websettings';
-import { ScheduleV } from '@/components/ScheduleV';
+import AsvSchedule from '@/components/Schedule';
 export default {
   name: 'App',
   components: {
-    ScheduleV
+    AsvSchedule
+
   },
   data() {
     return {
       settings: {
-        schedules:[]
-      },
+        schedules:{}
+      }
     };
   },
   mounted() {
     this.Homey.get('settings', (err, settings) => {
       if (err) return this.Homey.alert(err);
+
       //this.settings = JSON.parse(settings).settings;
+
       let ws = new WebSettings();
       ws.readSettings(settings);
       this.settings.schedules = ws.getSchedules();
     });
   },
-  methods: {
+    methods: {
       addSchedule : function () {
           var maxid = 0;
           this.settings.schedules.forEach(schedule => {
@@ -55,7 +50,7 @@ export default {
 
       saveSettings : function () {
           var ws = new WebSettings();
-          var settings = ws.buildSettings(this.settings.schedules)
+          var settings = ws.buildSettings(this.settings)
           
           console.log('Settings:');
           console.log(settings);
