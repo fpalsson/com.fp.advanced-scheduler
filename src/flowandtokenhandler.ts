@@ -3,7 +3,7 @@
 import { App as HomeyApp } from "homey";
 import { Settings as AppSettings } from "../src/settings";
 import { FlowCardTrigger, FlowCardAction, FlowToken, ManagerFlow } from "homey";
-import { Token } from "./containerclasses";
+import { Token, Schedule } from "./containerclasses";
 import { Trigger } from "./triggerhandler";
 import { timeStamp } from "console";
 

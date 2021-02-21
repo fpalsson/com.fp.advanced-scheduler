@@ -1,6 +1,6 @@
 'use strict';
 
-class WebSettings {
+export class WebSettings {
     
     public schedules:Schedule[]; //Lets expose it publicly for now, refactor later.
 
@@ -169,7 +169,7 @@ class WebSettings {
 
 }
 
-class Schedule {
+export class Schedule {
     constructor(id:number, name:string, active:boolean){
         this.id=id;
         this.name=name;
@@ -188,7 +188,7 @@ class Schedule {
 
 }
 
-class Token {
+export class Token {
     constructor(id:number, name:string, type: "boolean" | "number" | "string"){
         this.id=id;
         this.name=name;
@@ -202,17 +202,17 @@ class Token {
     deletedialogopen:boolean;
 }
 
-enum DaysType {
+export enum DaysType {
     DaysOfWeek = 1,
     DaysOfMonth = 2
 }
 
-enum TimeType {
+export enum TimeType {
     TimeOfDay = 1,
     Solar = 2
 }
 
-class Day{
+export class Day{
     constructor (day:string, value:number){
         this.day=day;
         this.value=value;
@@ -221,7 +221,7 @@ class Day{
     value:number;
 }
 
-class ScheduleItem {
+export class ScheduleItem {
     constructor(id:number,
                 daytype:DaysType,
                 daysarg:number,
@@ -361,7 +361,7 @@ class ScheduleItem {
 
 }
 
-class TokenItem {
+export class TokenItem {
     constructor(token:Token, value:any) {
         this.token=token;
         this.value=value;
@@ -373,7 +373,7 @@ class TokenItem {
     deletedialogopen:boolean;
 }
 
-class TimeInfo{
+export class TimeInfo{
     constructor(id:string,desc:string){//,time:Date){
         this.id = id;
         this.desc = desc;
