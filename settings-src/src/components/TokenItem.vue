@@ -12,7 +12,7 @@
         <v-col cols="2">
             <v-dialog v-model="deletedialogopen"> 
                 <template v-slot:activator="{ on }">
-                    <v-btn class="pt-4 text-right" fab dark x-small color="red" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn>
+                    <v-btn class="mt-4 text-right" fab dark x-small color="red" v-on="on"><v-icon dark>mdi-minus-circle-outline</v-icon></v-btn>
                 </template>
                 <v-card>
                     <v-card-title class="headline">Delete Token item?</v-card-title>

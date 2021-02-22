@@ -1,11 +1,11 @@
 <template>
   <v-app>
-    <v-main>
+    <v-main class="ma-1">
       <v-expansion-panels>
         <asv-schedule v-for="(schedule) in settings.schedules" :key="schedule.id" :schedule="schedule" :settings="settings" />
       </v-expansion-panels>
-      <v-btn color="green darken-1" text @click="addSchedule()">Add new schedule</v-btn>
-      <v-btn color="green darken-1" text @click="saveSettings()">Save settings</v-btn>
+      <v-btn color="green darken-1" text @click="addSchedule()"><v-icon dark>mdi-plus-circle-outline</v-icon> Add new schedule</v-btn>
+      <v-btn color="green darken-1" text @click="saveSettings()"><v-icon dark>mdi-content-save</v-icon> Save settings</v-btn>
 
     </v-main>
   </v-app>

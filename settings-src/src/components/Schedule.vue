@@ -37,16 +37,16 @@
           <v-expansion-panel-header>Tokens</v-expansion-panel-header>
           <v-expansion-panel-content>
             <asv-token v-for="(token) in schedule.tokens" :key="token.id" :token="token" :settings="settings"/>
-              <v-btn color="green darken-1" text @click="addToken(schedule.id, 'boolean')">Add bool token</v-btn>
-              <v-btn color="green darken-1" text @click="addToken(schedule.id, 'number')">Add number token</v-btn>
-              <v-btn color="green darken-1" text @click="addToken(schedule.id, 'string')">Add string token</v-btn>
+              <v-btn color="green darken-1" text @click="addToken(schedule.id, 'boolean')"><v-icon dark>mdi-plus-circle-outline</v-icon> Add bool token</v-btn>
+              <v-btn color="green darken-1" text @click="addToken(schedule.id, 'number')"><v-icon dark>mdi-plus-circle-outline</v-icon> Add number token</v-btn>
+              <v-btn color="green darken-1" text @click="addToken(schedule.id, 'string')"><v-icon dark>mdi-plus-circle-outline</v-icon> Add string token</v-btn>
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
           <v-expansion-panel-header>Schedule Items</v-expansion-panel-header>
           <v-expansion-panel-content>
             <asv-schedule-item v-for="(si) in schedule.scheduleitems" :key="si.id" :scheduleitem="si" :settings="settings"/>
-            <v-btn color="green darken-1" text @click="addScheduleItem(schedule.id)">Add new schedule item</v-btn>
+            <v-btn color="green darken-1" text @click="addScheduleItem(schedule.id)"><v-icon dark>mdi-plus-circle-outline</v-icon> Add new schedule item</v-btn>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
