@@ -76,6 +76,8 @@ Make sure debugging works.
 
 Add error handling in relevant places.
 
+Refactor relevant parts and move some logic from Vue to websettings. Refactor websettings into containerclasses (possible namechange also), now that webpack makes modules with export usable.
+
 Adding monthly shedule.
 
 Adding solar events, based on suncalc (first version is implemented, testing needed).
@@ -85,3 +87,9 @@ Adding conditional ScheduleItems (trigger at sunrise if it is before/after fixed
 Make sure the HTML GUI for editing settings is user friendly and looking nice. Today margins and similar is bananas! :-)
 
 LOTS AND LOTS OF TESTING.
+
+Build (needs more work):
+install needed stuff (npm install)
+transpile TypeScript (tsc)
+pack (cd settings-src, npm run build)
+run (cd .., homey app run)
