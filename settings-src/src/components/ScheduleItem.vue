@@ -1,7 +1,7 @@
 <template>
     <v-row no-gutters>
         <v-container>
-            <v-sheet>
+            <v-sheet elevation="5">
             <v-row>
                 <!--v-col cols="2">
                     Day
@@ -12,7 +12,7 @@
                 <v-col cols="2">
                     <!--v-btn fab dark x-small color="green" v-bind="attrs" v-on="on"><v-icon dark>mdi-edit</v-icon></v-btn-->
                     <!--v-dialog v-model="'dialogsi' + scheduleitem.id" --> <!-- max-width="290"-->
-                    <v-dialog v-model="scheduleitem.editdialogopen"> <!-- max-width="290"-->
+                    <v-dialog v-model="editdialogopen"> <!-- max-width="290"-->
                         <template v-slot:activator="{ on }">
                             <!--v-btn fab dark x-small color="green" v-bind="attrs" v-on="on"><v-icon dark>mdi-pencil</v-icon></v-btn-->
                             <v-btn fab dark x-small color="green" v-on="on"><v-icon dark>mdi-pencil</v-icon></v-btn>
@@ -76,7 +76,7 @@
                                         ></v-time-picker-->
                                     </v-row>
                                     <v-row>
-                                        <v-btn  color="green darken-1" text @click="scheduleitem.editdialogopen=false">Close</v-btn>
+                                        <v-btn  color="green darken-1" text @click="editdialogopen=false">Close</v-btn>
                                         <!--v-btn color="green darken-1" text @click="'dialogsi' + scheduleitem.id + ' = false'">Close</v-btn-->
                                     </v-row>
                                 </v-container>
@@ -94,7 +94,7 @@
                 <v-col cols="2">
                     <!--v-btn fab dark x-small color="red"><v-icon dark>mdi-delete-circle</v-icon></v-btn-->
 
-                    <v-dialog v-model="scheduleitem.deletedialogopen" > <!-- max-width="290"-->
+                    <v-dialog v-model="deletedialogopen" > <!-- max-width="290"-->
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn fab dark x-small color="red" v-bind="attrs" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn>
                         </template>
@@ -103,13 +103,42 @@
                             <v-card-text>Do you want to delete scheduleitem?</v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn color="green darken-1" text @click="scheduleitem.deletedialogopen = false">No</v-btn>
+                                <v-btn color="green darken-1" text @click="deletedialogopen = false">No</v-btn>
                                 <v-btn color="red darken-1" text @click="scheduleItemDeleteAndCloseDialog(scheduleitem.id)">Yes, delete</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
                 </v-col>
             </v-row>
+            <v-divider light="false"></v-divider>
+            <asv-token-item v-for="(tokenitem) in scheduleitem.tokenitems" :key="tokenitem.token.id" :tokenitem="tokenitem" :settings="settings"/>
+
+            <v-dialog v-model="addTokenItemOpen" > <!-- max-width="290"-->
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn color="green darken-1" :disabled="getNonAddedTokenItems().lenght==0" text v-bind="attrs" v-on="on">Add new TokenItem</v-btn>
+                </template>
+                <v-card>
+                    <v-card-title class="headline">Add TokenItem</v-card-title>
+                    <v-card-text>Select TokenItem to add</v-card-text>
+
+                        <v-select  
+                            v-model="tokenItemToAdd"
+                            :items="getNonAddedTokenItems()"
+                            item-value="id"
+                            item-text="name"
+                            label="Select"
+                            hint="Select token to add"
+                            persistent-hint
+                        ></v-select>
+
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="red darken-1" text @click="addTokenItemOpen = false">Cancel</v-btn>
+                        <v-btn color="green darken-1" :disabled="tokenItemToAdd==-1" text @click="addTokenItemAndCloseDialog(tokenItemToAdd)">Add</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
         </v-sheet>
         </v-container>
     </v-row>
@@ -117,10 +146,15 @@
 </template>
 
 <script>
-import { WebSettings, ScheduleItem } from '../websettings';
+import { WebSettings, Schedule, ScheduleItem, TokenItem } from '../websettings';
+import AsvTokenItem from '@/components/TokenItem';
 
 export default {
   name: 'AsvScheduleItem',
+  components: {
+    AsvTokenItem,
+  },
+
   props: {
     scheduleitem: {
       type: ScheduleItem,
@@ -134,10 +168,10 @@ export default {
   },
   data() {
     return {
-      dialog: false,
-      editDialog: false,
-      days: 'Mo',
-      time: null
+      deletedialogopen: false,
+      editdialogopen: false,
+      addTokenItemOpen: false,
+      tokenItemToAdd: -1,
     };
   },
   methods : {
@@ -151,7 +185,7 @@ export default {
                           schedule.scheduleitems.splice(index, 1);
                           console.log('Deleted schedule item with id: ' +scheduleitemid)
                       }
-                      si.deletedialogopen=false;
+                      this.deletedialogopen=false;
                   }
               })
           })
@@ -171,6 +205,60 @@ export default {
 
           if (tt==1) return 'Time: ' + ta;
           if (tt==2) return 'Solar: ' + se + ', offset: ' + ta;
+      },
+
+      addTokenItemAndCloseDialog : function (tokenid) {
+          let s;
+          this.settings.schedules.forEach(schedule=>{
+              schedule.scheduleitems.forEach(si=>{
+                  if (si.id == this.scheduleitem.id) s=schedule;
+              })
+          })
+          s.tokens.forEach(token=> {
+              if (token.id == tokenid){
+                  let ti;
+                  if (token.type === 'string') ti = new TokenItem(token,'Not set');
+                  else if (token.type === 'number') ti = new TokenItem(token,0);
+                  else if (token.type === 'boolean') ti = new TokenItem(token,false);
+                  this.scheduleitem.tokenitems.push(ti);
+
+              }
+              this.addTokenItemOpen=false;
+              this.tokenItemToAdd=-1;
+          })
+          
+      },
+
+      getNonAddedTokenItems : function () {
+          let sched;
+          let res = new Array();
+          this.settings.schedules.forEach(schedule=>{
+              schedule.scheduleitems.forEach(si=>{
+                  if (si.id == this.scheduleitem.id) sched=schedule;
+              })
+          })
+          
+          console.log('Found schedule: ' +sched.name);
+          sched.tokens.forEach(token=> {
+             console.log('Checking token: ' +token.name + ' with id: ' + token.id);
+
+              var tifound = false;
+              this.scheduleitem.tokenitems.forEach(ti=>{
+                    console.log('Comparing with tokenitem with id : ' + ti.token.id);
+                    if (token.id == ti.token.id) {
+                        console.log('Same');
+                        tifound = true;
+                    }
+              })
+
+              if (tifound==false){
+                    console.log('pushing token: ' + token.name);
+                    res.push(token);
+              }
+              
+          })
+          return res;
+          
       },
 
   }

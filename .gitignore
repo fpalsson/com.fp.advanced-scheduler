@@ -38,3 +38,4 @@ settings/*
 app.js.map
 settings-src/src/websettings.js
 settings-src/src/websettings.js.map
+settings-src/src/websettings.js

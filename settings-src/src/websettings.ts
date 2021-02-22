@@ -176,7 +176,7 @@ export class Schedule {
         this.active=active;
         this.tokens = new Array();
         this.scheduleitems = new Array();
-        this.deletedialogopen=false;
+        //this.deletedialogopen=false;
     }
 
     id:number;
@@ -184,7 +184,7 @@ export class Schedule {
     active:boolean;
     tokens:Token[];
     scheduleitems:ScheduleItem[];
-    deletedialogopen:boolean;
+    //deletedialogopen:boolean;
 
 }
 
@@ -193,13 +193,13 @@ export class Token {
         this.id=id;
         this.name=name;
         this.type=type;
-        this.deletedialogopen=false;
+        //this.deletedialogopen=false;
     }
 
     id:number;
     name:string;
     type: "boolean" | "number" | "string" ;
-    deletedialogopen:boolean;
+    //deletedialogopen:boolean;
 }
 
 export enum DaysType {
@@ -240,8 +240,8 @@ export class ScheduleItem {
         this.timearg=timearg;
         this.suneventtype=suneventtype;
         this.tokenitems = new Array();
-        this.deletedialogopen=false;
-        this.editdialogopen=false;
+        //this.deletedialogopen=false;
+        //this.editdialogopen=false;
         this.updateSelectedDays();
     }
 
@@ -252,8 +252,8 @@ export class ScheduleItem {
     suneventtype:string;
     timearg:string;
     tokenitems:TokenItem[];
-    deletedialogopen:boolean;
-    editdialogopen:boolean;
+    //deletedialogopen:boolean;
+    //editdialogopen:boolean;
     private allDays:Day[];
     private internalSelectedDays:Day[];
 
@@ -365,12 +365,12 @@ export class TokenItem {
     constructor(token:Token, value:any) {
         this.token=token;
         this.value=value;
-        this.deletedialogopen=false;
+        //this.deletedialogopen=false;
     }
 
     token:Token;
     value:any;
-    deletedialogopen:boolean;
+   // deletedialogopen:boolean;
 }
 
 export class TimeInfo{

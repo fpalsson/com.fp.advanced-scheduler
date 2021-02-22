@@ -56,7 +56,7 @@ export class ScheduleItem {
         this.timearg=timearg;
         this.tokenitems = new Array();
     }
-
+ 
     id:number;
     daystype:DaysType;
     daysarg:number // 0..127, monday is 1, tuesday is 2 and so on;

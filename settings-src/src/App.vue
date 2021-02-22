@@ -2,7 +2,7 @@
   <v-app>
     <v-main>
       <v-expansion-panels>
-        <asv-schedule v-for="(schedule, i) in settings.schedules" :key="i" :schedule="schedule" :settings="settings" />
+        <asv-schedule v-for="(schedule) in settings.schedules" :key="schedule.id" :schedule="schedule" :settings="settings" />
       </v-expansion-panels>
       <v-btn color="green darken-1" text @click="addSchedule()">Add new schedule</v-btn>
       <v-btn color="green darken-1" text @click="saveSettings()">Save settings</v-btn>

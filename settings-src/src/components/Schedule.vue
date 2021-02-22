@@ -12,7 +12,7 @@
               <v-switch label="Active" v-model="schedule.active"></v-switch>
             </v-col>
             <v-col cols="2">
-              <v-dialog v-model="schedule.deletedialogopen" > 
+              <v-dialog v-model="deletedialogopen" > 
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn fab dark x-small color="red" v-bind="attrs" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn>
                 </template>
@@ -21,7 +21,7 @@
                   <v-card-text>Do you want to delete schedule?</v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" text @click="schedule.deletedialogopen = false">No</v-btn>
+                    <v-btn color="green darken-1" text @click="deletedialogopen = false">No</v-btn>
                     <v-btn color="red darken-1" text @click="scheduleDeleteAndCloseDialog(schedule.id)">Yes, delete</v-btn>
                   </v-card-actions>
                 </v-card>
@@ -36,7 +36,7 @@
 
           <v-expansion-panel-header>Tokens</v-expansion-panel-header>
           <v-expansion-panel-content>
-            <asv-token v-for="(token, i) in schedule.tokens" :key="i" :token="token" :settings="settings"/>
+            <asv-token v-for="(token) in schedule.tokens" :key="token.id" :token="token" :settings="settings"/>
               <v-btn color="green darken-1" text @click="addToken(schedule.id, 'boolean')">Add bool token</v-btn>
               <v-btn color="green darken-1" text @click="addToken(schedule.id, 'number')">Add number token</v-btn>
               <v-btn color="green darken-1" text @click="addToken(schedule.id, 'string')">Add string token</v-btn>
@@ -45,7 +45,7 @@
         <v-expansion-panel>
           <v-expansion-panel-header>Schedule Items</v-expansion-panel-header>
           <v-expansion-panel-content>
-            <asv-schedule-item v-for="(si, i) in schedule.scheduleitems" :key="i" :scheduleitem="si" :settings="settings"/>
+            <asv-schedule-item v-for="(si) in schedule.scheduleitems" :key="si.id" :scheduleitem="si" :settings="settings"/>
             <v-btn color="green darken-1" text @click="addScheduleItem(schedule.id)">Add new schedule item</v-btn>
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -78,7 +78,7 @@ export default {
   },
   data() {
     return {
-      dialog: false
+      deletedialogopen: false
     };
   },
   methods: {
@@ -92,7 +92,7 @@ export default {
               }
 
           }
-          schedule.deletedialogopen=false;
+          this.deletedialogopen=false;
         })
       },
 
@@ -124,7 +124,7 @@ export default {
                 console.log('before new si');
                 let si = new ScheduleItem(maxid+1, DaysType.DaysOfWeek, 1+2+4+8+16+32+64, TimeType.TimeOfDay, '', '00:00')
                 console.log('after  new si ' + si);
-                si.editdialogopen=true;
+                //si.editdialogopen=true;
                 schedule.scheduleitems.push(si)        
             }
         })

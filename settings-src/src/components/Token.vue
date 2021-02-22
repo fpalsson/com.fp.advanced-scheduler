@@ -10,7 +10,7 @@
             <!--v-btn fab dark x-small color="red"><v-icon dark>mdi-delete-circle</v-icon></v-btn-->
 
             <!--v-dialog v-model="tokendeletedialog[token.id]" -->
-            <v-dialog v-model="token.deletedialogopen"> 
+            <v-dialog v-model="deletedialogopen"> 
             <!--v-dialog v-model="tokendeletedialog[token.id].open" -->
                     <!--template v-slot:activator="{ on, attrs }">
                     <v-btn fab dark x-small color="red" v-bind="attrs" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn-->
@@ -23,7 +23,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <!--v-btn color="green darken-1" text @click="tokenCloseDeleteDialog(token.id)">No</v-btn-->
-                        <v-btn color="green darken-1" text @click="token.deletedialogopen=false">No</v-btn>
+                        <v-btn color="green darken-1" text @click="deletedialogopen=false">No</v-btn>
                         <v-btn color="red darken-1" text @click="tokenDeleteAndCloseDialog(token.id)">Yes, delete</v-btn>
                     </v-card-actions>  
                 </v-card>
@@ -50,7 +50,7 @@ export default {
   },
   data() {
     return {
-      dialog: false
+      deletedialogopen: false
     }
   },
   methods: {
@@ -79,7 +79,7 @@ export default {
                     })
 
                 }
-                token.deletedialogopen=false;
+                this.deletedialogopen=false;
             })
         })
         

@@ -12,7 +12,7 @@ This means you can setup a flow triggering on for exaple Mondays, Tuesdays, Thur
 
 Todo:
 
-Ask someone to do formal checks of code, as this is my first ever TypeScript/Javascript adventure.
+Ask someone to do formal checks of code, as this is my first ever TypeScript/Javascript adventure. Review of code from a semantics perspective.
 
 Create a task in VS Code that transpiles TS automatically and then does "homey app run".
 
@@ -24,6 +24,6 @@ Adding monthly shedule
 
 Adding solar events, based on suncalc (first version is implemented, testing needed)
 
-Create a HTML GUI for editing settings, instead of just pasting a json file in one place (on its way, a lot more work is needed to get Vue, Vuetify, Webpack and so on to work well)
+Make sure the HTML GUI for editing settings is user friendly and looking nice
 
 LOTS AND LOTS OF TESTING.
