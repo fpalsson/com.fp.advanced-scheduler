@@ -1,33 +1,87 @@
 # Advanced Scheduler
 
-An advanced scheduler for weekly and monthly (comming) schedules with fixed time or solar (comming) events.
+An advanced scheduler for weekly and monthly (comming) schedules with fixed time or solar events (sunset, sunrise, dusk, dawn, midday and so on).
 
-Currently with no well working Settings GUI. Change settings in examplesettings.json and paste it on the settings webpage. A better UI will come as soon as there is time for implementing it.
+Currently with a Settings GUI that will be improved from a layout perspective and user friendlyness. 
 
 The idea is not having to setup LOTS of flows if you have complex rules of when to do things based on a weekly schedule (with possibly diffrent times at different days of week). The structure of the settings are:
 
-Shedule Tokens Token 1 (describes a token (tag) with name and type) Token 2 Token ... ScheduleItems ScheduleItem 1 (describes 0 or more days to trigger and the time to trigger, time can also be solar events with offset in the future) TokenItems TokenItem 1 (refers to a token above and adds a value to set for the token when triggered. TokenItem is optional, if not set, the token will retain its value) TokenItem 2 TokenItem .. ScheduleItem 2 TokenItems TokenItem 1 TokenItem ..
+Scanarios and solutions
+-----------------------
+Scenario 1: Turn lamp or other on/off device on/off at regular times, in this scenario turn on at 19:00 and turn off at 07:00 every day.
+Solution: 
+Open app settings and then Advanced Scheduler. 
+Create a new schedule, call it "Weekly night lights on" for example. 
+Add a token of type boolean, call it "On". 
+Add A new ScheduleItem. Edit it and set the time to 19:00. Click Close. Back at the main UI set the value to true. 
+Repeat the process for a new ScheduleItem, but set the time to 07:00 and TokenItem value to false.
+Now create a flow with trigger card Advanced Schedule. Select "Weekly night lights on" in the card.
+Add a When-card of type "Logic is true/yes" (don't know the English translation). Browse for the token/tag called "Weekly night on - On".
+Add a Then-card that does what you want when to turn the light on, and an Else-card to turn off.
+This can all seem excessive, it could be accomplished with two simple flows, but the power of the app will be shown in the comming scenarios.
 
-The App triggers a flow when a ScheduleItem matches days and time. Before triggering the flow, the tokens that are configured have their values set according to TokenItem. This means that a logic expression can be used in the when card (Homeys built in Logic "app" can check for token values). That way you can have an argument for turning lights on or off for example, or to set a dim value. Or anything else that needs a value. The token values can be used in the When-part or in the Then-part.
+Scenario 2: Turn lamp or other on/off device on/off at solar triggered times (with offsets of desired), in this scenario turn on at sunset and turn off at sunrise every day.
+Solution: 
+Open app settings and then Advanced Scheduler. 
+Expand the Schedule created in scenario 1. Click the edit button for both ScheduleItems, update trigger time to solar sunset/sunrise. Add offset if desired.
+This can all seem excessive, it could be accomplished with two flows using the Sun Event app, but the power of the app will be shown in the comming scenarios.
 
-This means you can setup a flow triggering on for exaple Mondays, Tuesdays, Thursdays, Fridays at 09:00, 11:00, 23:00 and 23:30, Wednesdays, Saturdays and Sundays at 10:00 and 23:00. At each of these triggering times you can set values for tokens (tags). Example values could be (tagname/value): (activate/true or false) (dimvalue/anything between 0 and 1). The resulting logic could then be set up as desired.
+Scenario 3: Turn lamp or other on/off device on/off at solar triggered times (with offsets of desired) and have it turned off during part of the night, in this scenario turn on at sunset and turn off at sunrise every day. Also have turned off between 23:00 and 05:00. 
+Solution: 
+Open app settings and then Advanced Scheduler. 
+Expand the Schedule created in scenario 1 and 2. Add two new ScheduleItems. Set trigger time to 23:00 and 05:00 respectively. Set TokenItem value to false/true respectively.
+This can all seem excessive, it could be accomplished with two flows using the Sun Event app, but the power of the app will be shown in the comming scenarios.
+
+Scenario 4: Turn lamp or other on/off device on/off at regular times, different times for different days of week. 
+Open app settings and then Advanced Scheduler. 
+Create a new schedule, call it "Lights on during breakfast" for example. 
+Add a token of type boolean, call it "On". 
+Add A new ScheduleItem. Edit it and set the time to 06:00. Select weekdays (mo-fr) in the selection dropdown. Click Close. Back at the main UI set the value to true. 
+Add A new ScheduleItem. Edit it and set the time to 07:00. Select weekdays (mo-fr) in the selection dropdown. Click Close. Back at the main UI set the value to false. 
+Add A new ScheduleItem. Edit it and set the time to 09:00. Select weekends (sa, su) in the selection dropdown. Click Close. Back at the main UI set the value to true. 
+Add A new ScheduleItem. Edit it and set the time to 10:00. Select weekends (sa, su) in the selection dropdown. Click Close. Back at the main UI set the value to false. 
+Now create a flow with trigger card Advanced Schedule. Select "Lights on during breakfast" in the card.
+Add a When-cards of type "Logic is true/yes" (don't know the English translation). Browse for the token/tag called "Lights on during breakfast - On".
+Add one or more Then-card that does what you want when to turn the light on, and one or more Else-card to turn off.
+
+Scenario 5, alternative 1: Turn lamp or other on/off device on/off at regular times AND dim dimmable device at the same time, different times for different days of week. 
+Open app settings and then Advanced Scheduler. 
+Open schedule created in scenario 4, 
+Add a token of type number, call it "Dimval". 
+For all ScheduleItems created in scenario 4, add TokenItem "Dimval" for all of them and set desired dim values (by now you should know how to do that)
+Go back to flow created in scenario 4.
+Add one or more Then-card for dimming lights, and one or more Else-card to dimming as well.
+Call the flow for example "Lights on during breakfast".
+The drawback of this is that you need two action cards for dimming as we have "Then/Else" logic.
+
+Scenario 5, alternative 2: Turn lamp or other on/off device on/off at regular times AND dim dimmable device at the same time, different times for different days of week. 
+Open app settings and then Advanced Scheduler. 
+Open schedule created in scenario 4, 
+Repeat alternative 1 until it is time for the flow partl
+Now create a flow with trigger card Advanced Schedule. Select "Lights on during breakfast" in the card.
+Call the flow for example "Lights dim during breakfast".
+Add one or more Then-cards that dims devices. Select a token/tag as the value to dim to. 
+The drawback of this is that you need an additional flow for dimabale devices, but you only need one action card in the flow, as opposed to two needed cards in alternative 1.
+
+As you see, you can create VERY complex schedules easily with this app, without the need of complex flows.
+
 
 Todo:
 
-Ask someone to do formal checks of code, as this is my first ever TypeScript/Javascript adventure. Review of code from a semantics perspective.
+Ask someone to do formal checks of code, as this is my first ever TypeScript/Javascript adventure. Review of code from a semantics perspective. 
 
-Create a task in VS Code that transpiles TS automatically and then does "homey app run".
+Create a task in VS Code that transpiles TS automatically and then does "npm run build" from settings-src folder and then "homey app run" from root folder
 
 Make sure debugging works.
 
 Add error handling in relevant places.
 
-Adding monthly shedule 
+Adding monthly shedule.
 
-Adding solar events, based on suncalc (first version is implemented, testing needed)
+Adding solar events, based on suncalc (first version is implemented, testing needed).
 
-Make sure the HTML GUI for editing settings is user friendly and looking nice
+Adding conditional ScheduleItems (trigger at sunrise if it is before/after fixed time)
 
-
+Make sure the HTML GUI for editing settings is user friendly and looking nice. Today margins and similar is bananas! :-)
 
 LOTS AND LOTS OF TESTING.

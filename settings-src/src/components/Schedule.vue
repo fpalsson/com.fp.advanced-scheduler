@@ -58,7 +58,7 @@
 <script>
 import AsvToken from '@/components/Token';
 import AsvScheduleItem from '@/components/ScheduleItem';
-import { Schedule, ScheduleItem, Token, DaysType, TimeType } from '../websettings'
+import { Schedule, ScheduleItem, Token, DaysType, TimeType, TokenItem } from '../websettings'
 
 export default {
   name: 'AsvSchedule',
@@ -125,6 +125,16 @@ export default {
                 let si = new ScheduleItem(maxid+1, DaysType.DaysOfWeek, 1+2+4+8+16+32+64, TimeType.TimeOfDay, '', '00:00')
                 console.log('after  new si ' + si);
                 //si.editdialogopen=true;
+
+                //add all tokens default
+                schedule.tokens.forEach(token=>{
+                  let ti;
+                  if (token.type === 'string') ti = new TokenItem(token,'Not set');
+                  else if (token.type === 'number') ti = new TokenItem(token,0);
+                  else if (token.type === 'boolean') ti = new TokenItem(token,false);
+                  si.tokenitems.push(ti);
+                })
+
                 schedule.scheduleitems.push(si)        
             }
         })
