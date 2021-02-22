@@ -1,10 +1,10 @@
 <template>
     <v-row no-gutters>
-        <v-col cols="6">
+        <v-col cols="7">
             <v-text-field label="Token name" placeholder="Enter a token name" v-model="token.name"></v-text-field>
         </v-col>
-        <v-col cols="4">
-            <v-chip color="primary">{{ token.type }}</v-chip>
+        <v-col cols="3">
+            <v-chip class="mt-4" color="primary">{{ token.type }}</v-chip>
         </v-col>
         <v-col cols="2">
             <!--v-btn fab dark x-small color="red"><v-icon dark>mdi-delete-circle</v-icon></v-btn-->
@@ -15,7 +15,7 @@
                     <!--template v-slot:activator="{ on, attrs }">
                     <v-btn fab dark x-small color="red" v-bind="attrs" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn-->
                 <template v-slot:activator="{ on }">
-                    <v-btn fab dark x-small color="red" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn>
+                    <v-btn fab dark x-small color="red" class="mt-4 text-right" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn>
                 </template>
                 <v-card>
                     <v-card-title class="headline">Delete Token?</v-card-title>

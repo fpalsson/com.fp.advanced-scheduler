@@ -86,6 +86,10 @@ Adding conditional ScheduleItems (trigger at sunrise if it is before/after fixed
 
 Make sure the HTML GUI for editing settings is user friendly and looking nice. Today margins and similar is bananas! :-)
 
+Input validation.
+
+Making sure offsets that cross day limits from previous or following day are handeled.
+
 LOTS AND LOTS OF TESTING.
 
 Build (needs more work):

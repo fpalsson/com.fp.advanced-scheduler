@@ -3,10 +3,10 @@
     <v-expansion-panel-header>{{ schedule.name }}, Active:{{ schedule.active }}</v-expansion-panel-header>
     <v-expansion-panel-content>
       <!--v-switch v-model="switch1" :label="`Switch 1: ${switch1.toString()}`" ></v-switch-->
-       <v-container>
+       <v-container class="px-0">
           <v-row no-gutters>
             <v-col cols="6">
-              <v-text-field label="Schedule name" placeholder="Enter a schedule name" v-model="schedule.name"></v-text-field>
+              <v-text-field label="Schedule name" placeholder="Enter a schedule name" hide-details="auto" v-model="schedule.name"></v-text-field>
           </v-col>
             <v-col cols="4">
               <v-switch label="Active" v-model="schedule.active"></v-switch>
@@ -14,7 +14,7 @@
             <v-col cols="2">
               <v-dialog v-model="deletedialogopen" > 
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn fab dark x-small color="red" v-bind="attrs" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn>
+                  <v-btn fab dark x-small color="red" class="mt-4 text-right" v-bind="attrs" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn>
                 </template>
                 <v-card>
                   <v-card-title class="headline">Delete Schedule?</v-card-title>
