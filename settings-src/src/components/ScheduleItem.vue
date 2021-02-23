@@ -12,78 +12,81 @@
             <v-col cols="2">
                 <!--v-btn fab dark x-small color="green" v-bind="attrs" v-on="on"><v-icon dark>mdi-edit</v-icon></v-btn-->
                 <!--v-dialog v-model="'dialogsi' + scheduleitem.id" --> <!-- max-width="290"-->
-                <v-dialog v-model="editdialogopen"> <!-- max-width="290"-->
+                <v-dialog v-model="editdialogopen" persistent> <!-- max-width="290"-->
                     <template v-slot:activator="{ on }">
                         <!--v-btn fab dark x-small color="green" v-bind="attrs" v-on="on"><v-icon dark>mdi-pencil</v-icon></v-btn-->
                         <v-btn fab dark x-small color="green" v-on="on"><v-icon dark>mdi-pencil</v-icon></v-btn>
                     </template>
-                    <v-card>
-                        <v-card-title>
-                            <span class="headline">Edit Scheduleitem</span>
-                        </v-card-title>
-                        <v-card-text>
-                            <v-container>
-                                <v-row>
-                                        <!--v-select>  v-model="scheduleitem.selectedDays"-->
+                    <v-form v-model="isEditFormValid">
+                        <v-card>
+                            <v-card-title>
+                                <span class="headline">Edit Scheduleitem</span>
+                            </v-card-title>
+                            <v-card-text>
+                                <v-container>
+                                    <v-row>
+                                            <!--v-select>  v-model="scheduleitem.selectedDays"-->
 
-                                    <v-select
-                                        v-model="scheduleitem.selectedDays"
-                                        :items="scheduleitem.getAllDays()"
-                                        item-value="value"
-                                        item-text="day"
-                                        return-object
-                                        multiple
-                                        chips
-                                        label="Select"
-                                        hint="Select days of week"
-                                        persistent-hint
-                                    ></v-select>
-                                </v-row>
-                                <v-row>
-                                    <v-radio-group
-                                        v-model="scheduleitem.timetype"
-                                        row
-                                        mandatory
-                                        >
-                                        <v-radio
-                                            label="Time"
-                                            value="1"
-                                            
-                                        ></v-radio>
-                                        <v-radio
-                                            label="Solar"
-                                            value="2"
-                                        ></v-radio>
-                                        </v-radio-group>
-                                </v-row>
-                                <v-row>
-                                    <v-select
-                                        :disabled="scheduleitem.timetype==1"
-                                        v-model="scheduleitem.suneventtype"
-                                        :items="getSunEvents()"
-                                        item-value="id"
-                                        item-text="desc"
-                                        label="Sun event"
-                                        hint="Choose sun event"
-                                        persistent-hint
+                                        <v-select
+                                            v-model="scheduleitem.selectedDays"
+                                            :items="scheduleitem.getAllDays()"
+                                            item-value="value"
+                                            item-text="day"
+                                            return-object
+                                            multiple
+                                            chips
+                                            label="Select"
+                                            hint="Select days of week"
+                                            persistent-hint
                                         ></v-select>
-                                </v-row>
-                                <v-row>
-                                    <v-text-field label="Trigger/offset time" placeholder="Enter a time" v-model="scheduleitem.timearg"></v-text-field>
-                                    <!--v-time-picker
-                                    format="24hr"
-                                    use-seconds
-                                    ></v-time-picker-->
-                                </v-row>
-                                <v-row>
-                                    <v-btn  color="green darken-1" text @click="editdialogopen=false">Close</v-btn>
-                                    <!--v-btn color="green darken-1" text @click="'dialogsi' + scheduleitem.id + ' = false'">Close</v-btn-->
-                                </v-row>
-                            </v-container>
-                        </v-card-text>
-                    </v-card>
+                                    </v-row>
+                                    <v-row>
+                                        <v-radio-group
+                                            v-model="scheduleitem.timetype"
+                                            row
+                                            mandatory
+                                            >
+                                            <v-radio
+                                                label="Time"
+                                                value="1"
+                                                
+                                            ></v-radio>
+                                            <v-radio
+                                                label="Solar"
+                                                value="2"
+                                            ></v-radio>
+                                            </v-radio-group>
+                                    </v-row>
+                                    <v-row>
+                                        <v-select
+                                            :disabled="scheduleitem.timetype==1"
+                                            v-model="scheduleitem.suneventtype"
+                                            :items="getSunEvents()"
+                                            item-value="id"
+                                            item-text="desc"
+                                            label="Sun event"
+                                            hint="Choose sun event"
+                                            persistent-hint
+                                            ></v-select>
+                                    </v-row>
+                                    <v-row>
+                                        <v-text-field v-if="scheduleitem.timetype==1" label="Trigger time" placeholder="Enter a time" v-model="scheduleitem.timearg" :rules="rules.isTime"></v-text-field>
+                                        <v-text-field v-if="scheduleitem.timetype==2" label="Offset time" placeholder="Enter an offset" v-model="scheduleitem.timearg" :rules="rules.isOffsetMaxOneDay"></v-text-field>
+                                        <!--v-time-picker
+                                        format="24hr"
+                                        use-seconds
+                                        ></v-time-picker-->
+                                    </v-row>
+                                    <v-row>
+                                        <v-btn  color="green darken-1" text @click="editdialogopen=false" :disabled="!isEditFormValid">Close</v-btn>
+                                        <!--v-btn color="green darken-1" text @click="'dialogsi' + scheduleitem.id + ' = false'">Close</v-btn-->
+                                    </v-row>
+                                </v-container>
+                            </v-card-text>
+                        </v-card>
+                    </v-form>>
                 </v-dialog>
-
+                
 
             </v-col>
         </v-row>
@@ -172,10 +175,29 @@ export default {
   },
   data() {
     return {
-      deletedialogopen: false,
-      editdialogopen: false,
-      addTokenItemOpen: false,
-      tokenItemToAdd: -1,
+        deletedialogopen: false,
+        editdialogopen: false,
+        addTokenItemOpen: false,
+        tokenItemToAdd: -1,
+        isEditFormValid: false,
+
+        rules: {
+
+            isOffsetMaxOneDay: [
+                value => {
+                                    
+                    const pattern = /^(-?)([01]\d?|2[0-3]):[0-5]\d(:[0-5]\d)?$/;
+                    return pattern.test(value) || 'Enter offset in format (-)HH:MM or (-)HH:MM:SS. Negative offset means before event'
+                }
+            ],
+            isTime: [
+                value => {
+                    const pattern = /^([01]\d?|2[0-3]):[0-5]\d(:[0-5]\d)?$/
+                    return pattern.test(value) || 'Enter time in format HH:MM or HH:MM:SS.'
+                }
+            ]
+
+        },
     };
   },
   methods : {
@@ -242,13 +264,13 @@ export default {
               })
           })
           
-          console.log('Found schedule: ' +sched.name);
+          //console.log('Found schedule: ' +sched.name);
           sched.tokens.forEach(token=> {
-             console.log('Checking token: ' +token.name + ' with id: ' + token.id);
+             //console.log('Checking token: ' +token.name + ' with id: ' + token.id);
 
               var tifound = false;
               this.scheduleitem.tokenitems.forEach(ti=>{
-                    console.log('Comparing with tokenitem with id : ' + ti.token.id);
+                    //console.log('Comparing with tokenitem with id : ' + ti.token.id);
                     if (token.id == ti.token.id) {
                         console.log('Same');
                         tifound = true;
@@ -256,7 +278,7 @@ export default {
               })
 
               if (tifound==false){
-                    console.log('pushing token: ' + token.name);
+                    //console.log('pushing token: ' + token.name);
                     res.push(token);
               }
               

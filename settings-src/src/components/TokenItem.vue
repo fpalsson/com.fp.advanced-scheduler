@@ -5,7 +5,7 @@
         </v-col>
         <v-col cols="5">
             <v-text-field v-if="tokenitem.token.type==='string'" label="Token Item value string" placeholder="Enter a string value" v-model="tokenitem.value"></v-text-field>
-            <v-text-field v-if="tokenitem.token.type==='number'" label="Token Item value number" placeholder="Enter a number value" v-model="tokenitem.value"></v-text-field>
+            <v-text-field v-if="tokenitem.token.type==='number'" label="Token Item value number" placeholder="Enter a numberic value" v-model.number="tokenitem.value" type="number"></v-text-field> <!-- :rules="isNumeric"-->
             <v-switch v-if="tokenitem.token.type==='boolean'" label="Value" v-model="tokenitem.value"></v-switch>
             
         </v-col>
@@ -47,8 +47,15 @@ export default {
   },
   data() {
     return {
-      deletedialogopen: false
+        deletedialogopen: false,
+
+       
+
+        isNumeric: [
+            value => !isNaN(value) || 'Enter numeric value.'
+        ]
     }
+    
   },
   methods: {
     tokenItemDeleteAndCloseDialog : function (sheduleitemid, tokenid) {

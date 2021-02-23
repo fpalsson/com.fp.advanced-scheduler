@@ -1,7 +1,7 @@
 <template>
     <v-row no-gutters>
         <v-col cols="7">
-            <v-text-field label="Token name" placeholder="Enter a token name" v-model="token.name"></v-text-field>
+            <v-text-field label="Token name" placeholder="Enter a token name" v-model="token.name" :rules="requiredText"></v-text-field>
         </v-col>
         <v-col cols="3">
             <v-chip class="mt-4" color="primary">{{ token.type }}</v-chip>
@@ -50,7 +50,11 @@ export default {
   },
   data() {
     return {
-      deletedialogopen: false
+      deletedialogopen: false,
+      requiredText: [
+        value => !!value || 'Required',
+      ],
+
     }
   },
   methods: {

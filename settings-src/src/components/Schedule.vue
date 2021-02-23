@@ -6,7 +6,7 @@
        <v-container class="px-0">
           <v-row no-gutters>
             <v-col cols="6">
-              <v-text-field label="Schedule name" placeholder="Enter a schedule name" hide-details="auto" v-model="schedule.name"></v-text-field>
+              <v-text-field label="Schedule name" placeholder="Enter a schedule name" hide-details="auto" v-model="schedule.name" :rules="rules.requiredText"></v-text-field>
           </v-col>
             <v-col cols="4">
               <v-switch label="Active" v-model="schedule.active"></v-switch>
@@ -37,16 +37,16 @@
           <v-expansion-panel-header>Tokens</v-expansion-panel-header>
           <v-expansion-panel-content>
             <asv-token v-for="(token) in schedule.tokens" :key="token.id" :token="token" :settings="settings"/>
-              <v-btn color="green darken-1" text @click="addToken(schedule.id, 'boolean')"><v-icon dark>mdi-plus-circle-outline</v-icon> Add bool token</v-btn>
-              <v-btn color="green darken-1" text @click="addToken(schedule.id, 'number')"><v-icon dark>mdi-plus-circle-outline</v-icon> Add number token</v-btn>
-              <v-btn color="green darken-1" text @click="addToken(schedule.id, 'string')"><v-icon dark>mdi-plus-circle-outline</v-icon> Add string token</v-btn>
+              <v-btn class="mt-2" color="green darken-1" text @click="addToken(schedule.id, 'boolean')"><v-icon dark>mdi-plus-circle-outline</v-icon> Add bool token</v-btn>
+              <v-btn class="mt-2" color="green darken-1" text @click="addToken(schedule.id, 'number')"><v-icon dark>mdi-plus-circle-outline</v-icon> Add number token</v-btn>
+              <v-btn class="mt-2" color="green darken-1" text @click="addToken(schedule.id, 'string')"><v-icon dark>mdi-plus-circle-outline</v-icon> Add string token</v-btn>
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
           <v-expansion-panel-header>Schedule Items</v-expansion-panel-header>
           <v-expansion-panel-content>
             <asv-schedule-item v-for="(si) in schedule.scheduleitems" :key="si.id" :scheduleitem="si" :settings="settings"/>
-            <v-btn color="green darken-1" text @click="addScheduleItem(schedule.id)"><v-icon dark>mdi-plus-circle-outline</v-icon> Add new schedule item</v-btn>
+            <v-btn class="mt-2" color="green darken-1" text @click="addScheduleItem(schedule.id)"><v-icon dark>mdi-plus-circle-outline</v-icon> Add new schedule item</v-btn>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -78,7 +78,12 @@ export default {
   },
   data() {
     return {
-      deletedialogopen: false
+      deletedialogopen: false,
+      rules: {
+        requiredText: [
+          value => !!value || 'Required',
+        ],
+      }
     };
   },
   methods: {
