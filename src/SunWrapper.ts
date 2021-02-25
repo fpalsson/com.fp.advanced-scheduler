@@ -12,7 +12,7 @@ export class SunWrapper {
     private lat:number;
     private lon:number;
     private times:SunCalc.GetTimesResult;
-    private timeInfos:TimeInfo[];
+    //private timeInfos:TimeInfo[];
 
     constructor(homeyApp:HomeyApp) {
         this.homeyApp=homeyApp;
@@ -28,18 +28,17 @@ export class SunWrapper {
 
         this.homeyApp.log('Retreived latitude: ' + this.lat + '. Retreived longitude: ' + this.lon);
 
-        this.refreshTimes();
+        //this.refreshTimes();
 
         this.homeyApp.log('Advanced Scheduler SunWrapper has been initialized');
     }
 
-    refreshTimes(){
-        var now = new Date();
-        var today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0, 0);
+    internalGetTimes(date: Date){
+        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0, 0);
 	        
         this.times = SunCalc.getTimes(today,this.lat,this.lon);
 
-        this.timeInfos = [ new TimeInfo("dawn","Dawn", this.times.dawn ),
+        return [ new TimeInfo("dawn","Dawn", this.times.dawn ),
             new TimeInfo("dusk","Dusk", this.times.dusk ),
             new TimeInfo("goldenHour","Golden Hour", this.times.goldenHour ),
             new TimeInfo("goldenHourEnd","Golden Hour End", this.times.goldenHourEnd ),
@@ -58,17 +57,17 @@ export class SunWrapper {
 
     }
 
-    getTimes() {
+    //getTimes() {
 
         //this.homeyApp.log('Advanced Scheduler MainApp is reinitializing...');
-        return this.timeInfos;
+    //    return this.timeInfos;
         //this.homeyApp.log('Advanced Scheduler MainApp has been reinitialized');
-    }
+    //}
 
-    getTime(timeid:string):TimeInfo {
+    getTime(date:Date, timeid:string):TimeInfo {
         let result:TimeInfo;
         //this.homeyApp.log('Advanced Scheduler MainApp is reinitializing...');
-        this.timeInfos.forEach((timeinfo)=>{
+        this.internalGetTimes(date).forEach((timeinfo)=>{
             //this.homeyApp.log('Checking: ' + timeinfo.id);
             if (timeinfo.id == timeid) {
                 result = timeinfo;

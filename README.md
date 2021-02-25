@@ -134,16 +134,20 @@ Adding solar events, based on suncalc (first version is implemented, testing nee
 
 Adding conditional ScheduleItems (trigger at sunrise if it is before/after fixed time)
 
-Make sure the HTML GUI for editing settings is user friendly and looking nice. Today margins and similar is bananas! :-)
+Make sure the HTML GUI for editing settings is user friendly and looking nice. Most things are ok now, but things can always be improved.
 
-Input validation.
+Implement a visual representation of a schedule that is clickable to enter edit GUI.
 
-Making sure offsets that cross day limits from previous or following day are handeled.
+
 
 LOTS AND LOTS OF TESTING.
 
 Build (needs more work):
+
 install needed stuff (npm install)
+
 transpile TypeScript (tsc)
+
 pack (cd settings-src, npm run build)
+
 run (cd .., homey app run)

@@ -5,7 +5,15 @@
         </v-col>
         <v-col cols="5">
             <v-text-field v-if="tokenitem.token.type==='string'" label="Token Item value string" placeholder="Enter a string value" v-model="tokenitem.value"></v-text-field>
-            <v-text-field v-if="tokenitem.token.type==='number'" label="Token Item value number" placeholder="Enter a numberic value" v-model.number="tokenitem.value" type="number"></v-text-field> <!-- :rules="isNumeric"-->
+            <v-currency-field v-if="tokenitem.token.type==='number'" label="Token Item value number" placeholder="Enter a numberic value" v-model="tokenitem.value"
+                
+                >    
+            </v-currency-field>
+<!--@change="numKeyMonitor($event)"-->
+            <money-text-field v-if="tokenitem.token.type==='number'" label="Token Item value number" placeholder="Enter a numberic value" v-model="tokenitem.value">    
+            </money-text-field>
+
+
             <v-switch v-if="tokenitem.token.type==='boolean'" label="Value" v-model="tokenitem.value"></v-switch>
             
         </v-col>
@@ -31,9 +39,15 @@
 
 <script>
 import { TokenItem } from '../websettings'
+//import { AsvNumericInput } from './NumericInput'
+//import { MoneyTextField } from './MoneyTextField'
+
 
 export default {
   name: 'AsvTokenItem',
+  components: {
+  //  MoneyTextField,
+  },
   props: {
     tokenitem: {
       type: TokenItem,
@@ -42,7 +56,10 @@ export default {
     settings: {
       type: Object,
       required: true
-    }
+    },
+//    components:{
+//        onlyFloat
+//    }
 
   },
   data() {
@@ -51,13 +68,26 @@ export default {
 
        
 
-        isNumeric: [
-            value => !isNaN(value) || 'Enter numeric value.'
-        ]
+        //isNumeric: [
+        //    value => !isNaN(value) || 'Enter numeric value.'
+        //]
     }
     
   },
   methods: {
+      numKeyMonitor : function (ev){
+            try {
+                console.log('numKeyMonitor event: ' + ev);
+                if (isNaN(ev)) console.log('Not a number');
+                        //ev.preventDefault();
+            } catch (error) {
+                console.log('numKeyMonitor error: ' + error)
+            }
+            
+          
+          //this.$data.name = $event.target.value
+      },
+
     tokenItemDeleteAndCloseDialog : function (sheduleitemid, tokenid) {
         //console.log('tokenDeleteAndCloseDialog' + this.seetings);
         //console.log('tokenDeleteAndCloseDialog root' + this.settings.schedules.length);

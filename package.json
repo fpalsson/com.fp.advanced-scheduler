@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/suncalc": "^1.8.0",
+    "moment": "^2.29.1",
     "suncalc": "^1.8.0"
   }
 }
