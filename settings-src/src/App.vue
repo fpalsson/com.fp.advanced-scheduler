@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { WebSettings, Schedule } from './websettings';
+import { WebSettings, Schedule } from '@/WebSettings';
 import AsvSchedule from '@/components/Schedule';
 export default {
   name: 'App',

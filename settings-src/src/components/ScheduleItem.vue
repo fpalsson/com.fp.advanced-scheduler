@@ -153,7 +153,7 @@
 </template>
 
 <script>
-import { WebSettings, Schedule, ScheduleItem, TokenSetter } from '../WebSettings';
+import { WebSettings, Schedule, ScheduleItem, TokenSetter } from '@/WebSettings';
 import AsvTokenSetter from '@/components/TokenSetter';
 
 export default {

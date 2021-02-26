@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import Token from '../WebSettings'
+import Token from '@/WebSettings'
 
 export default {
   name: 'AsvToken',

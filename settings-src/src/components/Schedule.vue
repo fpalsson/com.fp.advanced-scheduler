@@ -58,7 +58,7 @@
 <script>
 import AsvToken from '@/components/Token';
 import AsvScheduleItem from '@/components/ScheduleItem';
-import { Schedule, ScheduleItem, Token, DaysType, TimeType, TokenItem } from '../WebSettings'
+import { Schedule, ScheduleItem, Token, DaysType, TimeType, TokenItem } from '@/WebSettings'
 
 export default {
   name: 'AsvSchedule',
