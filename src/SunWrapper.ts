@@ -11,8 +11,6 @@ export class SunWrapper {
     private homeyApp:HomeyApp;
     private lat:number;
     private lon:number;
-    private times:SunCalc.GetTimesResult;
-    //private timeInfos:TimeInfo[];
 
     constructor(homeyApp:HomeyApp) {
         this.homeyApp=homeyApp;
@@ -33,25 +31,25 @@ export class SunWrapper {
         this.homeyApp.log('Advanced Scheduler SunWrapper has been initialized');
     }
 
-    internalGetTimes(date: Date){
+    private internalGetTimes(date: Date){
         var today = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0, 0);
-	        
-        this.times = SunCalc.getTimes(today,this.lat,this.lon);
+        
+        let times:SunCalc.GetTimesResult = SunCalc.getTimes(today,this.lat,this.lon);
 
-        return [ new TimeInfo("dawn","Dawn", this.times.dawn ),
-            new TimeInfo("dusk","Dusk", this.times.dusk ),
-            new TimeInfo("goldenHour","Golden Hour", this.times.goldenHour ),
-            new TimeInfo("goldenHourEnd","Golden Hour End", this.times.goldenHourEnd ),
-            new TimeInfo("nadir","Nadir", this.times.nadir ),
-            new TimeInfo("nauticalDawn","Nautical Dawn", this.times.nauticalDawn ),
-            new TimeInfo("nauticalDusk","Nautical Dusk", this.times.nauticalDusk ),
-            new TimeInfo("night","Night", this.times.night ),
-            new TimeInfo("nightEnd","Night End", this.times.nightEnd ),
-            new TimeInfo("solarNoon","Solar Noon", this.times.solarNoon ),
-            new TimeInfo("sunrise","Sunrise", this.times.sunrise ),
-            new TimeInfo("sunriseEnd","Sunrise End", this.times.sunriseEnd ),
-            new TimeInfo("sunset","Sunset", this.times.sunset ),
-            new TimeInfo("sunsetStart","Sunset Start", this.times.sunsetStart ),
+        return [ new TimeInfo("dawn","Dawn", times.dawn ),
+            new TimeInfo("dusk","Dusk", times.dusk ),
+            new TimeInfo("goldenHour","Golden Hour", times.goldenHour ),
+            new TimeInfo("goldenHourEnd","Golden Hour End", times.goldenHourEnd ),
+            new TimeInfo("nadir","Nadir", times.nadir ),
+            new TimeInfo("nauticalDawn","Nautical Dawn", times.nauticalDawn ),
+            new TimeInfo("nauticalDusk","Nautical Dusk", times.nauticalDusk ),
+            new TimeInfo("night","Night", times.night ),
+            new TimeInfo("nightEnd","Night End", times.nightEnd ),
+            new TimeInfo("solarNoon","Solar Noon", times.solarNoon ),
+            new TimeInfo("sunrise","Sunrise", times.sunrise ),
+            new TimeInfo("sunriseEnd","Sunrise End", times.sunriseEnd ),
+            new TimeInfo("sunset","Sunset", times.sunset ),
+            new TimeInfo("sunsetStart","Sunset Start", times.sunsetStart ),
         ]
 
 

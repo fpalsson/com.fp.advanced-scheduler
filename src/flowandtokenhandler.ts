@@ -1,25 +1,25 @@
 'use strict';
 
 import { App as HomeyApp } from "homey";
-import { Settings as AppSettings } from "../src/settings";
+import { Settings as AppSettings } from "./Settings";
 import { FlowCardTrigger, FlowCardAction, FlowToken, ManagerFlow } from "homey";
-import { Token, Schedule } from "./containerclasses";
-import { Trigger } from "./triggerhandler";
+import { Token, Schedule } from "./ContainerClasses";
+import { Trigger } from "./TriggerHandler";
 import { timeStamp } from "console";
 
 class TokenWrapper{
-    constructor(flowtoken:FlowToken, token:Token) {
-        this.flowtoken=flowtoken;
+    constructor(flowToken:FlowToken, token:Token) {
+        this.flowToken=flowToken;
         this.token=token;
     }
-    flowtoken:FlowToken;
+    flowToken:FlowToken;
     token:Token;
 }
 
 export class FlowAndTokenHandler {
     private homeyApp:HomeyApp;
     private settings:AppSettings;
-    private tokenwrappers:TokenWrapper[];
+    private tokenWrappers:TokenWrapper[];
     
     constructor(homeyApp:HomeyApp, settings:AppSettings) {
         this.homeyApp=homeyApp;
@@ -46,13 +46,13 @@ export class FlowAndTokenHandler {
             }); 
         
             myTrigger.registerRunListener(async ( args, state:Trigger ) => {
-                let shalltrigger = true;
+                let shallTrigger = true;
               
                 //this.homeyApp.log('Trigger Run');
                 let s = <Schedule>args.schedule;
-                shalltrigger = s.id===state.schedule.id;
-                this.homeyApp.log('Will trigger: ' + shalltrigger + ', schedule: ' + s.name);
-                return Promise.resolve( shalltrigger );
+                shallTrigger = s.id===state.schedule.id;
+                this.homeyApp.log('Will trigger: ' + shallTrigger + ', schedule: ' + s.name);
+                return Promise.resolve( shallTrigger );
           
             })
         
@@ -81,16 +81,16 @@ export class FlowAndTokenHandler {
 
         try {
             //This routine can be run when reinitialized. Therefore we must remove any old intances of tokens.
-            if (this.tokenwrappers==null) {
-                this.tokenwrappers = new Array();    
+            if (this.tokenWrappers==null) {
+                this.tokenWrappers = new Array();    
             }
             let mf = ManagerFlow;
             let ps:Promise<any>[] = new Array();
-            this.tokenwrappers.forEach(tw => {
+            this.tokenWrappers.forEach(tw => {
                 this.homeyApp.log('Unregistering token with id: ' + tw.token.id + ", name: " + tw.token.name);
                 
                 //let pr = new Promise
-                let promise = tw.flowtoken.unregister();
+                let promise = tw.flowToken.unregister();
                 ps.push(promise);
                 //mf.unregisterToken(tw.flowtoken);  
                 this.homeyApp.log('Unregistered token with id: ' + tw.token.id + ", name: " + tw.token.name);
@@ -98,7 +98,7 @@ export class FlowAndTokenHandler {
             Promise.all(ps).then(() => {
                 this.homeyApp.log('All tokens unregged')
 
-                this.tokenwrappers = new Array();
+                this.tokenWrappers = new Array();
                 this.settings.schedules.forEach(schedule => {
                     schedule.tokens.forEach(token => {
     
@@ -108,7 +108,7 @@ export class FlowAndTokenHandler {
                         })
 
 
-                        this.tokenwrappers.push(new TokenWrapper(myToken,token));
+                        this.tokenWrappers.push(new TokenWrapper(myToken,token));
                         let promise = myToken.register()
                             .catch(e => {console.log('Error registering token: ' + token.id + ', ' + token.name )});
                         this.homeyApp.log('Registered token with id: ' + token.id + ", name: " + token.name);
@@ -137,10 +137,10 @@ export class FlowAndTokenHandler {
         //this.homeyApp.log('in list with ' + this.tokenwrappers.length + ' elements.');
         //this.homeyApp.log(this.tokenwrappers);
 
-        ftw = this.tokenwrappers.find(tw=>tw.token.id == token.id);
+        ftw = this.tokenWrappers.find(tw=>tw.token.id == token.id);
         if (ftw != null) {
             let t = ftw.token;
-            let ft = ftw.flowtoken;
+            let ft = ftw.flowToken;
             if (t.type == 'boolean') ft.setValue(Boolean(value));
             else if (t.type == 'string') ft.setValue(String(value));
             else if (t.type == 'number') ft.setValue(Number(value));

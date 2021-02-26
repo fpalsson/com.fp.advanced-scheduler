@@ -8,14 +8,14 @@ export class Schedule {
         this.name=name;
         this.active=active;
         this.tokens = new Array();
-        this.scheduleitems = new Array();
+        this.scheduleItems = new Array();
     }
 
     id:number;
     name:string;
     active:boolean;
     tokens:Token[];
-    scheduleitems:ScheduleItem[];
+    scheduleItems:ScheduleItem[];
 
 }
 
@@ -43,27 +43,27 @@ export enum TimeType {
 
 export class ScheduleItem {
     constructor(id:number,
-                daytype:DaysType,
-                daysarg:number,
-                timetype:TimeType,
-                suneventtype:string,
-                timearg:string){
+                dayType:DaysType,
+                daysArg:number,
+                timeType:TimeType,
+                sunEventType:string,
+                timeArg:string){
         this.id=id;
-        this.daystype=daytype;
-        this.daysarg=daysarg;
-        this.timetype=timetype;
-        this.suneventtype=suneventtype;
-        this.timearg=timearg;
-        this.tokensetters = new Array();
+        this.daysType=dayType;
+        this.daysArg=daysArg;
+        this.timeType=timeType;
+        this.sunEventType=sunEventType;
+        this.timeArg=timeArg;
+        this.tokenSetters = new Array();
     }
  
     id:number;
-    daystype:DaysType;
-    daysarg:number // 0..127, monday is 1, tuesday is 2 and so on;
-    timetype:TimeType;
-    suneventtype:string;
-    timearg:string;
-    tokensetters:TokenSetter[];
+    daysType:DaysType;
+    daysArg:number // 0..127, monday is 1, tuesday is 2 and so on;
+    timeType:TimeType;
+    sunEventType:string;
+    timeArg:string;
+    tokenSetters:TokenSetter[];
 }
 
 export class TokenSetter {

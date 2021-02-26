@@ -2,9 +2,9 @@
 
 import { executionAsyncResource } from "async_hooks";
 import { App as HomeyApp, ManagerFlow } from "homey";
-import { Settings as AppSettings } from "../src/settings";
-import { Schedule, ScheduleItem, Token, DaysType, TimeType } from "./containerclasses";
-import { FlowAndTokenHandler } from "./flowandtokenhandler";
+import { Settings as AppSettings } from "./Settings";
+import { Schedule, ScheduleItem, Token, DaysType, TimeType } from "./ContainerClasses";
+import { FlowAndTokenHandler } from "./FlowAndTokenHandler";
 import { SunWrapper, TimeInfo } from "./SunWrapper";
 import  * as moment  from 'moment';
 //import { FlowCardTrigger, FlowCardAction, FlowToken } from "homey";
@@ -48,8 +48,8 @@ export class TriggerHandler {
         //this.sunWrapper.refreshTimes();
 
         this.settings.schedules.forEach(schedule => {
-            schedule.scheduleitems.forEach(scheduleitem => {
-                if (scheduleitem.daystype === DaysType.DaysOfWeek)
+            schedule.scheduleItems.forEach(scheduleitem => {
+                if (scheduleitem.daysType === DaysType.DaysOfWeek)
                 {
                     let now = new Date();
                     let yesterday = new Date(); yesterday.setTime(now.getTime()-24*60*60*1000);
@@ -67,7 +67,7 @@ export class TriggerHandler {
 
         this.homeyApp.log('Summary all triggers');
         this.triggers.forEach(trigger => {
-            this.homeyApp.log('Schedule: ' + trigger.schedule.name + ', time: ' + trigger.triggertime + '(' + trigger.scheduleitem.suneventtype + ')');
+            this.homeyApp.log('Schedule: ' + trigger.schedule.name + ', time: ' + trigger.triggertime + '(' + trigger.scheduleitem.sunEventType + ')');
         })
 
 
@@ -86,21 +86,21 @@ export class TriggerHandler {
 
         //this.homeyApp.log('addScheduleItemToTriggers, midnight: ' + dateAtMidnightToday);
 
-        if (si.timetype == TimeType.TimeOfDay ){
-            triggertime = new Date(dateAtMidnightCallingDate.getTime() + this.parseTime(si.timearg));
+        if (si.timeType == TimeType.TimeOfDay ){
+            triggertime = new Date(dateAtMidnightCallingDate.getTime() + this.parseTime(si.timeArg));
         }
-        else if (si.timetype === TimeType.Solar){
-            let ti:TimeInfo = this.sunWrapper.getTime(date, si.suneventtype);
+        else if (si.timeType === TimeType.Solar){
+            let ti:TimeInfo = this.sunWrapper.getTime(date, si.sunEventType);
             if (ti==null)
             {
-                this.homeyApp.log('Solar error' + si.suneventtype);
+                this.homeyApp.log('Solar error' + si.sunEventType);
             }
             triggertime = ti.time;
             if (triggertime==null) {
-                this.homeyApp.log('Solar event: ' + si.timearg + ' not known!');
+                this.homeyApp.log('Solar event: ' + si.timeArg + ' not known!');
                 return;    
             }
-            let offset = this.parseOffset(si.timearg);
+            let offset = this.parseOffset(si.timeArg);
             this.homeyApp.log('Solar offset: ' + offset);
             triggertime.setTime(triggertime.getTime() + offset);
 
@@ -111,7 +111,7 @@ export class TriggerHandler {
             return;
         }    
 
-        if (!this.dayHitTest(si.daystype,si.daysarg,date)){
+        if (!this.dayHitTest(si.daysType,si.daysArg,date)){
             this.homeyApp.log('Dayhit failed ' + s.name + ', time: ' + triggertime) ;
             return;
         }
@@ -138,10 +138,10 @@ export class TriggerHandler {
         let trigger = new Trigger(triggertime,s,si);
 
         this.triggers.push(trigger);
-        if (trigger.scheduleitem.timetype == TimeType.TimeOfDay)
+        if (trigger.scheduleitem.timeType == TimeType.TimeOfDay)
             this.homeyApp.log('Trigger added, schedule: ' + trigger.schedule.name + ', Time: ' + trigger.triggertime);
-        else if (trigger.scheduleitem.timetype == TimeType.Solar)
-            this.homeyApp.log('Trigger added, schedule: ' + trigger.schedule.name + ', Solar: ' + trigger.scheduleitem.suneventtype + '(' + trigger.triggertime + ')');
+        else if (trigger.scheduleitem.timeType == TimeType.Solar)
+            this.homeyApp.log('Trigger added, schedule: ' + trigger.schedule.name + ', Solar: ' + trigger.scheduleitem.sunEventType + '(' + trigger.triggertime + ')');
         //this.homeyApp.log(trigger);
 
         
@@ -202,12 +202,12 @@ export class TriggerHandler {
             this.homeyApp.log('Execute!');
             if (earliesttrigger != null) {
                 // Set tokens!
-                earliesttrigger.scheduleitem.tokensetters.forEach(ts => {
+                earliesttrigger.scheduleitem.tokenSetters.forEach(ts => {
                     //Set token in flowtoken
                     this.flowandtokenhandler.setTokenValue(ts.token,ts.value);
                 })
 
-                this.flowandtokenhandler.triggerFlow(earliesttrigger.scheduleitem.tokensetters.map(ts=>ts.token), earliesttrigger);
+                this.flowandtokenhandler.triggerFlow(earliesttrigger.scheduleitem.tokenSetters.map(ts=>ts.token), earliesttrigger);
 
                 this.removeTrigger(earliesttrigger);
                 this.homeyApp.log('Removed trigger from list: ' + earliesttrigger);

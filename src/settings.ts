@@ -3,7 +3,7 @@
 import { App as HomeyApp } from "homey";
 import { ManagerSettings } from "homey";
 
-import { Schedule, ScheduleItem, Token, TimeType, DaysType, TokenSetter } from "../src/containerclasses";
+import { Schedule, ScheduleItem, Token, TimeType, DaysType, TokenSetter } from "./ContainerClasses";
 
 
 export class Settings {
@@ -66,10 +66,10 @@ export class Settings {
                             
                             if (localtokenitem != null) this.homeyApp.log('TokenItem added: ' + localtokenitem.token.name + ' value: ' + localtokenitem.value); 
 
-                            localsi.tokensetters.push(localtokenitem);
+                            localsi.tokenSetters.push(localtokenitem);
                         });
 
-                        localschedule.scheduleitems.push(localsi);            
+                        localschedule.scheduleItems.push(localsi);            
                     });     
         
                     this.schedules.push(localschedule);

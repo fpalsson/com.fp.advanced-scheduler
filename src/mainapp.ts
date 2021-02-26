@@ -1,9 +1,9 @@
 'use strict';
 
 import { App as HomeyApp } from "homey";
-import { Settings as AppSettings } from "../src/settings";
-import { FlowAndTokenHandler } from "../src/flowandtokenhandler";
-import { TriggerHandler } from "../src/triggerhandler";
+import { Settings as AppSettings } from "./Settings";
+import { FlowAndTokenHandler } from "./FlowAndTokenHandler";
+import { TriggerHandler } from "./TriggerHandler";
 import { ManagerSettings } from "homey";
 import { SunWrapper } from "../src/SunWrapper";
 
