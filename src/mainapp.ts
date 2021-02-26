@@ -5,7 +5,7 @@ import { Settings as AppSettings } from "./Settings";
 import { FlowAndTokenHandler } from "./FlowAndTokenHandler";
 import { TriggerHandler } from "./TriggerHandler";
 import { ManagerSettings } from "homey";
-import { SunWrapper } from "../src/SunWrapper";
+import { SunWrapper } from "./SunWrapper";
 
 export class MainApp {
     private homeyApp:HomeyApp;

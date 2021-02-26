@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { TokenSetter } from '../websettings'
+import { TokenSetter } from '../WebSettings'
 
 export default {
   name: 'AsvTokenSetter',

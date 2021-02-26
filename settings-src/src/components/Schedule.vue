@@ -45,7 +45,7 @@
         <v-expansion-panel>
           <v-expansion-panel-header>Schedule Items</v-expansion-panel-header>
           <v-expansion-panel-content>
-            <asv-schedule-item v-for="(si) in schedule.scheduleitems" :key="si.id" :scheduleitem="si" :settings="settings"/>
+            <asv-schedule-item v-for="(si) in schedule.scheduleItems" :key="si.id" :scheduleItem="si" :settings="settings"/>
             <v-btn class="mt-2" color="green darken-1" text @click="addScheduleItem(schedule.id)"><v-icon dark>mdi-plus-circle-outline</v-icon> Add new schedule item</v-btn>
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -58,7 +58,7 @@
 <script>
 import AsvToken from '@/components/Token';
 import AsvScheduleItem from '@/components/ScheduleItem';
-import { Schedule, ScheduleItem, Token, DaysType, TimeType, TokenItem } from '../websettings'
+import { Schedule, ScheduleItem, Token, DaysType, TimeType, TokenItem } from '../WebSettings'
 
 export default {
   name: 'AsvSchedule',

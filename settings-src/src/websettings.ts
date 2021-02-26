@@ -37,7 +37,7 @@ export class WebSettings {
                 })
             })
 
-            schedule.scheduleitems.forEach(si=>{
+            schedule.scheduleItems.forEach(si=>{
                 let tss = new Array();
                 si.tokenSetters.forEach(ts=>{
                     tss.push({
@@ -47,16 +47,16 @@ export class WebSettings {
                 })
 
                 let dt:string;
-                switch (si.daystype){
+                switch (si.daysType){
                     case DaysType.DaysOfWeek: { dt = 'daysofweek'; break; }
                     case DaysType.DaysOfMonth: { dt = 'daysofmonth'; break; }
                 }
 
                 let tt:string;
                 let setype:string;
-                if (si.timetype == TimeType.TimeOfDay) { tt = 'timeofday'; }
-                else if (si.timetype == TimeType.Solar) { 
-                    tt = 'solar:' + si.suneventtype; 
+                if (si.timeType == TimeType.TimeOfDay) { tt = 'timeofday'; }
+                else if (si.timeType == TimeType.Solar) { 
+                    tt = 'solar:' + si.sunEventType; 
                 }
 
                 jsonsched.scheduleitems.push({
@@ -64,7 +64,7 @@ export class WebSettings {
                     'daystype':dt,
                     'daysarg':si.daysarg,
                     'timetype':tt,
-                    'timearg':si.timearg,
+                    'timearg':si.timeArg,
                     'tokensetters':tss,
                 })
                 
@@ -132,7 +132,7 @@ export class WebSettings {
                         localsi.tokenSetters.push(localTokenSetter);
                     });
 
-                    localschedule.scheduleitems.push(localsi);            
+                    localschedule.scheduleItems.push(localsi);            
                 });     
     
                 this.schedules.push(localschedule);
@@ -176,7 +176,7 @@ export class Schedule {
         this.name=name;
         this.active=active;
         this.tokens = new Array();
-        this.scheduleitems = new Array();
+        this.scheduleItems = new Array();
         //this.deletedialogopen=false;
     }
 
@@ -184,7 +184,7 @@ export class Schedule {
     name:string;
     active:boolean;
     tokens:Token[];
-    scheduleitems:ScheduleItem[];
+    scheduleItems:ScheduleItem[];
     //deletedialogopen:boolean;
 
 }
@@ -225,21 +225,21 @@ export class Day{
 export class ScheduleItem {
     constructor(id:number,
                 daytype:DaysType,
-                daysarg:number,
-                timetype:TimeType,
-                suneventtype:string,
-                timearg:string){
+                daysArg:number,
+                timeType:TimeType,
+                sunEventType:string,
+                timeArg:string){
 
         this.allDays = new Array();
         this.allDays=this.getAllDays();
         this.internalSelectedDays=new Array();
 
         this.id=id;
-        this.daystype=daytype;
-        this.daysarg=daysarg;
-        this.timetype=timetype;
-        this.timearg=timearg;
-        this.suneventtype=suneventtype;
+        this.daysType=daytype;
+        this.daysarg=daysArg;
+        this.timeType=timeType;
+        this.timeArg=timeArg;
+        this.sunEventType=sunEventType;
         this.tokenSetters = new Array();
         //this.deletedialogopen=false;
         //this.editdialogopen=false;
@@ -247,11 +247,11 @@ export class ScheduleItem {
     }
 
     id:number;
-    daystype:DaysType;
-    internaldaysarg:number // 0..127, monday is 1, tuesday is 2, wednesday is 4, thursday is 8 and so on;
-    timetype:TimeType;
-    suneventtype:string;
-    timearg:string;
+    daysType:DaysType;
+    internalDaysArg:number // 0..127, monday is 1, tuesday is 2, wednesday is 4, thursday is 8 and so on;
+    timeType:TimeType;
+    sunEventType:string;
+    timeArg:string;
     tokenSetters:TokenSetter[];
     //deletedialogopen:boolean;
     //editdialogopen:boolean;
@@ -275,12 +275,12 @@ export class ScheduleItem {
     }
 
     get daysarg():number{
-        return this.internaldaysarg;
+        return this.internalDaysArg;
     }
 
     set daysarg(value:number){
         console.log('set daysarg');
-        this.internaldaysarg=value;
+        this.internalDaysArg=value;
         console.log('set daysarg before update');
         this.updateSelectedDays();
         console.log('set daysarg updated');
@@ -384,6 +384,7 @@ export class TimeInfo{
     id:string;
     desc:string;
 //    time:Date;
+// test
 }
   
 

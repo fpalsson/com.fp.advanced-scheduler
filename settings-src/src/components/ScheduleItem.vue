@@ -7,11 +7,11 @@
                 Day
             </v-col-->
             <v-col cols="10">
-                {{ scheduleitem.daysArgShortText }}                                                            
+                {{ scheduleItem.daysArgShortText }}                                                            
             </v-col>
             <v-col cols="2">
                 <!--v-btn fab dark x-small color="green" v-bind="attrs" v-on="on"><v-icon dark>mdi-edit</v-icon></v-btn-->
-                <!--v-dialog v-model="'dialogsi' + scheduleitem.id" --> <!-- max-width="290"-->
+                <!--v-dialog v-model="'dialogsi' + scheduleItem.id" --> <!-- max-width="290"-->
                 <v-dialog v-model="editdialogopen" persistent> <!-- max-width="290"-->
                     <template v-slot:activator="{ on }">
                         <!--v-btn fab dark x-small color="green" v-bind="attrs" v-on="on"><v-icon dark>mdi-pencil</v-icon></v-btn-->
@@ -25,11 +25,11 @@
                             <v-card-text>
                                 <v-container>
                                     <v-row>
-                                            <!--v-select>  v-model="scheduleitem.selectedDays"-->
+                                            <!--v-select>  v-model="scheduleItem.selectedDays"-->
 
                                         <v-select
-                                            v-model="scheduleitem.selectedDays"
-                                            :items="scheduleitem.getAllDays()"
+                                            v-model="scheduleItem.selectedDays"
+                                            :items="scheduleItem.getAllDays()"
                                             item-value="value"
                                             item-text="day"
                                             return-object
@@ -42,7 +42,7 @@
                                     </v-row>
                                     <v-row>
                                         <v-radio-group
-                                            v-model="scheduleitem.timetype"
+                                            v-model="scheduleItem.timeType"
                                             row
                                             mandatory
                                             >
@@ -59,8 +59,8 @@
                                     </v-row>
                                     <v-row>
                                         <v-select
-                                            :disabled="scheduleitem.timetype==1"
-                                            v-model="scheduleitem.suneventtype"
+                                            :disabled="scheduleItem.timeType==1"
+                                            v-model="scheduleItem.sunEventType"
                                             :items="getSunEvents()"
                                             item-value="id"
                                             item-text="desc"
@@ -70,8 +70,8 @@
                                             ></v-select>
                                     </v-row>
                                     <v-row>
-                                        <v-text-field v-if="scheduleitem.timetype==1" label="Trigger time" placeholder="Enter a time" v-model="scheduleitem.timearg" :rules="rules.isTime"></v-text-field>
-                                        <v-text-field v-if="scheduleitem.timetype==2" label="Offset time" placeholder="Enter an offset" v-model="scheduleitem.timearg" :rules="rules.isOffsetMaxOneDay"></v-text-field>
+                                        <v-text-field v-if="scheduleItem.timeType==1" label="Trigger time" placeholder="Enter a time" v-model="scheduleItem.timeArg" :rules="rules.isTime"></v-text-field>
+                                        <v-text-field v-if="scheduleItem.timeType==2" label="Offset time" placeholder="Enter an offset" v-model="scheduleItem.timeArg" :rules="rules.isOffsetMaxOneDay"></v-text-field>
                                         <!--v-time-picker
                                         format="24hr"
                                         use-seconds
@@ -79,7 +79,7 @@
                                     </v-row>
                                     <v-row>
                                         <v-btn  color="green darken-1" text @click="editdialogopen=false" :disabled="!isEditFormValid">Close</v-btn>
-                                        <!--v-btn color="green darken-1" text @click="'dialogsi' + scheduleitem.id + ' = false'">Close</v-btn-->
+                                        <!--v-btn color="green darken-1" text @click="'dialogsi' + scheduleItem.id + ' = false'">Close</v-btn-->
                                     </v-row>
                                 </v-container>
                             </v-card-text>
@@ -92,7 +92,7 @@
         </v-row>
         <v-row>
             <v-col cols="10">
-                {{ scheduleItemTimeString(scheduleitem.timetype,scheduleitem.suneventtype,scheduleitem.timearg) }}
+                {{ scheduleItemTimeString(scheduleItem.timeType,scheduleItem.sunEventType,scheduleItem.timeArg) }}
             </v-col>
             <v-col cols="2">
                 <!--v-btn fab dark x-small color="red"><v-icon dark>mdi-delete-circle</v-icon></v-btn-->
@@ -107,7 +107,7 @@
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="green darken-1" text @click="deletedialogopen = false">No</v-btn>
-                            <v-btn color="red darken-1" text @click="scheduleItemDeleteAndCloseDialog(scheduleitem.id)">Yes, delete</v-btn>
+                            <v-btn color="red darken-1" text @click="scheduleItemDeleteAndCloseDialog(scheduleItem.id)">Yes, delete</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -117,7 +117,7 @@
         <v-container class="pa-0 ma-0">
             <v-sheet elevation="2" class="pa-2">
                 <div>Token Setters</div>
-                <asv-token-setter v-for="(tokenSetter) in scheduleitem.tokenSetters" :key="tokenSetter.token.id" :tokenSetter="tokenSetter" :settings="settings"/>
+                <asv-token-setter v-for="(tokenSetter) in scheduleItem.tokenSetters" :key="tokenSetter.token.id" :tokenSetter="tokenSetter" :settings="settings"/>
 
                 <v-dialog v-model="addTokenSetterOpen" > <!-- max-width="290"-->
                     <template v-slot:activator="{ on, attrs }">
@@ -153,7 +153,7 @@
 </template>
 
 <script>
-import { WebSettings, Schedule, ScheduleItem, TokenSetter } from '../websettings';
+import { WebSettings, Schedule, ScheduleItem, TokenSetter } from '../WebSettings';
 import AsvTokenSetter from '@/components/TokenSetter';
 
 export default {
@@ -163,7 +163,7 @@ export default {
   },
 
   props: {
-    scheduleitem: {
+    scheduleItem: {
       type: ScheduleItem,
       required: true
     },
@@ -201,15 +201,15 @@ export default {
     };
   },
   methods : {
-      scheduleItemDeleteAndCloseDialog : function (scheduleitemid) {
+      scheduleItemDeleteAndCloseDialog : function (scheduleItemid) {
           
           this.settings.schedules.forEach(schedule => {
-              schedule.scheduleitems.forEach(si => {
-                  if (si.id == scheduleitemid) {
-                      var index = schedule.scheduleitems.indexOf(si);
+              schedule.scheduleItems.forEach(si => {
+                  if (si.id == scheduleItemid) {
+                      var index = schedule.scheduleItems.indexOf(si);
                       if (index !== -1) {
-                          schedule.scheduleitems.splice(index, 1);
-                          console.log('Deleted schedule item with id: ' +scheduleitemid)
+                          schedule.scheduleItems.splice(index, 1);
+                          console.log('Deleted schedule item with id: ' +scheduleItemid)
                       }
                       this.deletedialogopen=false;
                   }
@@ -236,8 +236,8 @@ export default {
       addTokenSetterAndCloseDialog : function (tokenid) {
           let s;
           this.settings.schedules.forEach(schedule=>{
-              schedule.scheduleitems.forEach(si=>{
-                  if (si.id == this.scheduleitem.id) s=schedule;
+              schedule.scheduleItems.forEach(si=>{
+                  if (si.id == this.scheduleItem.id) s=schedule;
               })
           })
           s.tokens.forEach(token=> {
@@ -246,7 +246,7 @@ export default {
                   if (token.type === 'string') ti = new TokenSetter(token,'Not set');
                   else if (token.type === 'number') ti = new TokenSetter(token,0);
                   else if (token.type === 'boolean') ti = new TokenSetter(token,false);
-                  this.scheduleitem.tokenSetters.push(ti);
+                  this.scheduleItem.tokenSetters.push(ti);
 
               }
               this.addTokenSetterOpen=false;
@@ -259,8 +259,8 @@ export default {
           let sched;
           let res = new Array();
           this.settings.schedules.forEach(schedule=>{
-              schedule.scheduleitems.forEach(si=>{
-                  if (si.id == this.scheduleitem.id) sched=schedule;
+              schedule.scheduleItems.forEach(si=>{
+                  if (si.id == this.scheduleItem.id) sched=schedule;
               })
           })
           
@@ -269,7 +269,7 @@ export default {
              //console.log('Checking token: ' +token.name + ' with id: ' + token.id);
 
               var tifound = false;
-              this.scheduleitem.tokenSetters.forEach(ti=>{
+              this.scheduleItem.tokenSetters.forEach(ti=>{
                     //console.log('Comparing with tokenSetter with id : ' + ti.token.id);
                     if (token.id == ti.token.id) {
                         console.log('Same');

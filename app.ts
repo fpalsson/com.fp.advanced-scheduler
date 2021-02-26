@@ -2,7 +2,7 @@
 
 //const Homey = require('homey');
 import { App as HomeyApp } from "homey";
-import { MainApp as MainApp } from "./src/mainapp";
+import { MainApp as MainApp } from "./src/MainApp";
 
 var SunCalc = require('suncalc');
 
