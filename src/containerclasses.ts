@@ -54,7 +54,7 @@ export class ScheduleItem {
         this.timetype=timetype;
         this.suneventtype=suneventtype;
         this.timearg=timearg;
-        this.tokenitems = new Array();
+        this.tokensetters = new Array();
     }
  
     id:number;
@@ -63,10 +63,10 @@ export class ScheduleItem {
     timetype:TimeType;
     suneventtype:string;
     timearg:string;
-    tokenitems:TokenItem[];
+    tokensetters:TokenSetter[];
 }
 
-export class TokenItem {
+export class TokenSetter {
     constructor(token:Token, value:any) {
         this.token=token;
         this.value=value;

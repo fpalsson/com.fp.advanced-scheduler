@@ -20,7 +20,8 @@ export class WebSettings {
             }
         }
 
-        settings.schedules.forEach(schedule => {
+        let ss:Schedule[] = settings.schedules; 
+        ss.forEach(schedule => {
             let jsonsched = {
                 'id':schedule.id,
                 'name':schedule.name,
@@ -37,12 +38,12 @@ export class WebSettings {
             })
 
             schedule.scheduleitems.forEach(si=>{
-                let tis = new Array();
-                si.tokenitems.forEach(ti=>{
-                    tis.push({
-                        'id':ti.token.id,
-                        'value':ti.value,
-                    })
+                let tss = new Array();
+                si.tokenSetters.forEach(ts=>{
+                    tss.push({
+                        'id':ts.token.id,
+                        'value':ts.value,
+                    })  
                 })
 
                 let dt:string;
@@ -64,7 +65,7 @@ export class WebSettings {
                     'daysarg':si.daysarg,
                     'timetype':tt,
                     'timearg':si.timearg,
-                    'tokenitems':tis,
+                    'tokensetters':tss,
                 })
                 
             })
@@ -118,17 +119,17 @@ export class WebSettings {
 
                     let localsi = new ScheduleItem(parseInt(si.id), dt, si.daysarg, tt, setype, si.timearg);
                     
-                    si.tokenitems.forEach(ti => {
+                    si.tokensetters.forEach(ti => {
                         let localtoken = localschedule.tokens.find(t=>t.id==ti.id)
-                        let localtokenitem:TokenItem;
-                        if (localtoken.type == 'boolean') { localtokenitem = new TokenItem(localtoken,Boolean(ti.value)); }
-                        else if (localtoken.type == 'string') { localtokenitem = new TokenItem(localtoken,ti.value); }
-                        else if (localtoken.type == 'number') { localtokenitem = new TokenItem(localtoken,Number(ti.value)); }
+                        let localTokenSetter:TokenSetter;
+                        if (localtoken.type == 'boolean') { localTokenSetter = new TokenSetter(localtoken,Boolean(ti.value)); }
+                        else if (localtoken.type == 'string') { localTokenSetter = new TokenSetter(localtoken,ti.value); }
+                        else if (localtoken.type == 'number') { localTokenSetter = new TokenSetter(localtoken,Number(ti.value)); }
                         else { 
-                        //    if (this.homeyApp != null) this.homeyApp.log('Incorrect type for tokenitem');
+                        //    if (this.homeyApp != null) this.homeyApp.log('Incorrect type for tokenSetter');
                             }
 
-                        localsi.tokenitems.push(localtokenitem);
+                        localsi.tokenSetters.push(localTokenSetter);
                     });
 
                     localschedule.scheduleitems.push(localsi);            
@@ -137,11 +138,11 @@ export class WebSettings {
                 this.schedules.push(localschedule);
             });
 
-            //if (this.homeyApp != null) this.homeyApp.log('Settings read');
+            console.log('Settings read');
                 
         } catch (error) {
-            //if (this.homeyApp != null) this.homeyApp.log('Settings NOT read!');
-            //if (this.homeyApp != null) this.homeyApp.log('Error: ' + error);
+            console.log('Settings NOT read!');
+            console.log('Error: ' + error);
             return -1;
         }
         return this.schedules.length;
@@ -239,7 +240,7 @@ export class ScheduleItem {
         this.timetype=timetype;
         this.timearg=timearg;
         this.suneventtype=suneventtype;
-        this.tokenitems = new Array();
+        this.tokenSetters = new Array();
         //this.deletedialogopen=false;
         //this.editdialogopen=false;
         this.updateSelectedDays();
@@ -251,7 +252,7 @@ export class ScheduleItem {
     timetype:TimeType;
     suneventtype:string;
     timearg:string;
-    tokenitems:TokenItem[];
+    tokenSetters:TokenSetter[];
     //deletedialogopen:boolean;
     //editdialogopen:boolean;
     private allDays:Day[];
@@ -361,7 +362,7 @@ export class ScheduleItem {
 
 }
 
-export class TokenItem {
+export class TokenSetter {
     constructor(token:Token, value:any) {
         this.token=token;
         this.value=value;

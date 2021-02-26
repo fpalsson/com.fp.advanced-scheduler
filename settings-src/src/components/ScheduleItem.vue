@@ -116,20 +116,20 @@
         
         <v-container class="pa-0 ma-0">
             <v-sheet elevation="2" class="pa-2">
-                <div>Token Items</div>
-                <asv-token-item v-for="(tokenitem) in scheduleitem.tokenitems" :key="tokenitem.token.id" :tokenitem="tokenitem" :settings="settings"/>
+                <div>Token Setters</div>
+                <asv-token-setter v-for="(tokenSetter) in scheduleitem.tokenSetters" :key="tokenSetter.token.id" :tokenSetter="tokenSetter" :settings="settings"/>
 
-                <v-dialog v-model="addTokenItemOpen" > <!-- max-width="290"-->
+                <v-dialog v-model="addTokenSetterOpen" > <!-- max-width="290"-->
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn color="green darken-1" :disabled="getNonAddedTokenItems().lenght==0" text v-bind="attrs" v-on="on"><v-icon dark>mdi-plus-circle-outline</v-icon> Add new TokenItem</v-btn>
+                        <v-btn color="green darken-1" :disabled="getNonAddedTokenSetters().lenght==0" text v-bind="attrs" v-on="on"><v-icon dark>mdi-plus-circle-outline</v-icon> Add new TokenSetter</v-btn>
                     </template>
                     <v-card>
-                        <v-card-title class="headline">Add TokenItem</v-card-title>
-                        <v-card-text>Select TokenItem to add</v-card-text>
+                        <v-card-title class="headline">Add TokenSetter</v-card-title>
+                        <v-card-text>Select TokenSetter to add</v-card-text>
 
                             <v-select  
-                                v-model="tokenItemToAdd"
-                                :items="getNonAddedTokenItems()"
+                                v-model="tokenSetterToAdd"
+                                :items="getNonAddedTokenSetters()"
                                 item-value="id"
                                 item-text="name"
                                 label="Select"
@@ -139,8 +139,8 @@
 
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="red darken-1" text @click="addTokenItemOpen = false">Cancel</v-btn>
-                            <v-btn color="green darken-1" :disabled="tokenItemToAdd==-1" text @click="addTokenItemAndCloseDialog(tokenItemToAdd)">Add</v-btn>
+                            <v-btn color="red darken-1" text @click="addTokenSetterOpen = false">Cancel</v-btn>
+                            <v-btn color="green darken-1" :disabled="tokenSetterToAdd==-1" text @click="addTokenSetterAndCloseDialog(tokenSetterToAdd)">Add</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -153,13 +153,13 @@
 </template>
 
 <script>
-import { WebSettings, Schedule, ScheduleItem, TokenItem } from '../websettings';
-import AsvTokenItem from '@/components/TokenItem';
+import { WebSettings, Schedule, ScheduleItem, TokenSetter } from '../websettings';
+import AsvTokenSetter from '@/components/TokenSetter';
 
 export default {
   name: 'AsvScheduleItem',
   components: {
-    AsvTokenItem,
+    AsvTokenSetter,
   },
 
   props: {
@@ -177,8 +177,8 @@ export default {
     return {
         deletedialogopen: false,
         editdialogopen: false,
-        addTokenItemOpen: false,
-        tokenItemToAdd: -1,
+        addTokenSetterOpen: false,
+        tokenSetterToAdd: -1,
         isEditFormValid: false,
 
         rules: {
@@ -233,7 +233,7 @@ export default {
           if (tt==2) return 'Solar: ' + se + ', offset: ' + ta;
       },
 
-      addTokenItemAndCloseDialog : function (tokenid) {
+      addTokenSetterAndCloseDialog : function (tokenid) {
           let s;
           this.settings.schedules.forEach(schedule=>{
               schedule.scheduleitems.forEach(si=>{
@@ -243,19 +243,19 @@ export default {
           s.tokens.forEach(token=> {
               if (token.id == tokenid){
                   let ti;
-                  if (token.type === 'string') ti = new TokenItem(token,'Not set');
-                  else if (token.type === 'number') ti = new TokenItem(token,0);
-                  else if (token.type === 'boolean') ti = new TokenItem(token,false);
-                  this.scheduleitem.tokenitems.push(ti);
+                  if (token.type === 'string') ti = new TokenSetter(token,'Not set');
+                  else if (token.type === 'number') ti = new TokenSetter(token,0);
+                  else if (token.type === 'boolean') ti = new TokenSetter(token,false);
+                  this.scheduleitem.tokenSetters.push(ti);
 
               }
-              this.addTokenItemOpen=false;
-              this.tokenItemToAdd=-1;
+              this.addTokenSetterOpen=false;
+              this.tokenSetterToAdd=-1;
           })
           
       },
 
-      getNonAddedTokenItems : function () {
+      getNonAddedTokenSetters : function () {
           let sched;
           let res = new Array();
           this.settings.schedules.forEach(schedule=>{
@@ -269,8 +269,8 @@ export default {
              //console.log('Checking token: ' +token.name + ' with id: ' + token.id);
 
               var tifound = false;
-              this.scheduleitem.tokenitems.forEach(ti=>{
-                    //console.log('Comparing with tokenitem with id : ' + ti.token.id);
+              this.scheduleitem.tokenSetters.forEach(ti=>{
+                    //console.log('Comparing with tokenSetter with id : ' + ti.token.id);
                     if (token.id == ti.token.id) {
                         console.log('Same');
                         tifound = true;

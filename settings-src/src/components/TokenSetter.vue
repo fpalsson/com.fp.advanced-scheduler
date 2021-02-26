@@ -1,20 +1,12 @@
 <template>
     <v-row no-gutters>
         <v-col cols="5" class="mt-4">
-            {{ tokenitem.token.name }}
+            {{ tokenSetter.token.name }}
         </v-col>
         <v-col cols="5">
-            <v-text-field v-if="tokenitem.token.type==='string'" label="Token Item value string" placeholder="Enter a string value" v-model="tokenitem.value"></v-text-field>
-            <v-currency-field v-if="tokenitem.token.type==='number'" label="Token Item value number" placeholder="Enter a numberic value" v-model="tokenitem.value"
-                
-                >    
-            </v-currency-field>
-<!--@change="numKeyMonitor($event)"-->
-            <money-text-field v-if="tokenitem.token.type==='number'" label="Token Item value number" placeholder="Enter a numberic value" v-model="tokenitem.value">    
-            </money-text-field>
-
-
-            <v-switch v-if="tokenitem.token.type==='boolean'" label="Value" v-model="tokenitem.value"></v-switch>
+            <v-text-field v-if="tokenSetter.token.type==='string'" label="Token Setter value" placeholder="Enter a string value" v-model="tokenSetter.value"></v-text-field>
+            <v-currency-field v-if="tokenSetter.token.type==='number'" label="Token Setter value" placeholder="Enter a numeric value" v-model="tokenSetter.value"></v-currency-field>
+            <v-switch v-if="tokenSetter.token.type==='boolean'" label="Value" v-model="tokenSetter.value"></v-switch>
             
         </v-col>
         <v-col cols="2">
@@ -27,9 +19,8 @@
                     <v-card-text>Do you want to delete token item?</v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <!--v-btn color="green darken-1" text @click="tokenCloseDeleteDialog(token.id)">No</v-btn-->
                         <v-btn color="green darken-1" text @click="deletedialogopen=false">No</v-btn>
-                        <v-btn color="red darken-1" text @click="tokenItemDeleteAndCloseDialog(token.id)">Yes, delete</v-btn>
+                        <v-btn color="red darken-1" text @click="tokenSetterDeleteAndCloseDialog(token.id)">Yes, delete</v-btn>
                     </v-card-actions>  
                 </v-card>
             </v-dialog>
@@ -38,29 +29,21 @@
 </template>
 
 <script>
-import { TokenItem } from '../websettings'
-//import { AsvNumericInput } from './NumericInput'
-//import { MoneyTextField } from './MoneyTextField'
-
+import { TokenSetter } from '../websettings'
 
 export default {
-  name: 'AsvTokenItem',
+  name: 'AsvTokenSetter',
   components: {
-  //  MoneyTextField,
   },
   props: {
-    tokenitem: {
-      type: TokenItem,
+    tokenSetter: {
+      type: TokenSetter,
       required: true
     },
     settings: {
       type: Object,
       required: true
     },
-//    components:{
-//        onlyFloat
-//    }
-
   },
   data() {
     return {
@@ -88,19 +71,19 @@ export default {
           //this.$data.name = $event.target.value
       },
 
-    tokenItemDeleteAndCloseDialog : function (sheduleitemid, tokenid) {
+    tokenSetterDeleteAndCloseDialog : function (sheduleitemid, tokenid) {
         //console.log('tokenDeleteAndCloseDialog' + this.seetings);
         //console.log('tokenDeleteAndCloseDialog root' + this.settings.schedules.length);
 
         this.settings.schedules.forEach(schedule => {
             schedule.scheduleitems.forEach(si => {
                 if (si.id == sheduleitemid) {
-                    si.tokenitems.forEach(ti => {
+                    si.tokenSetters.forEach(ti => {
                         if (ti.id == tokenid){
-                            var index = si.tokenitems.indexOf(ti);
+                            var index = si.tokenSetters.indexOf(ti);
                             if (index !== -1) {
-                                si.tokenitems.splice(index, 1);
-                                console.log('Deleted tokenitem with id: ' + ti.id)
+                                si.tokenSetters.splice(index, 1);
+                                console.log('Deleted tokenSetter with id: ' + ti.id)
                                 this.deletedialogopen=false;
                             }
                         }

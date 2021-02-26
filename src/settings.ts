@@ -3,7 +3,7 @@
 import { App as HomeyApp } from "homey";
 import { ManagerSettings } from "homey";
 
-import { Schedule, ScheduleItem, Token, TimeType, DaysType, TokenItem } from "../src/containerclasses";
+import { Schedule, ScheduleItem, Token, TimeType, DaysType, TokenSetter } from "../src/containerclasses";
 
 
 export class Settings {
@@ -56,17 +56,17 @@ export class Settings {
 
                         let localsi = new ScheduleItem(parseInt(si.id), dt, si.daysarg, tt, setype, si.timearg);
                         
-                        si.tokenitems.forEach(ti => {
+                        si.tokensetters.forEach(ti => {
                             let localtoken:Token = localschedule.tokens.find(t=>t.id==ti.id)
-                            let localtokenitem:TokenItem;
-                            if (localtoken.type == 'boolean') { localtokenitem = new TokenItem(localtoken,this.parseBool(ti.value)); }
-                            else if (localtoken.type == 'string') { localtokenitem = new TokenItem(localtoken,ti.value); }
-                            else if (localtoken.type == 'number') { localtokenitem = new TokenItem(localtoken,Number(ti.value)); }
+                            let localtokenitem:TokenSetter;
+                            if (localtoken.type == 'boolean') { localtokenitem = new TokenSetter(localtoken,this.parseBool(ti.value)); }
+                            else if (localtoken.type == 'string') { localtokenitem = new TokenSetter(localtoken,ti.value); }
+                            else if (localtoken.type == 'number') { localtokenitem = new TokenSetter(localtoken,Number(ti.value)); }
                             else { if (this.homeyApp != null) this.homeyApp.log('Incorrect type for tokenitem: ' + ti); }
                             
                             if (localtokenitem != null) this.homeyApp.log('TokenItem added: ' + localtokenitem.token.name + ' value: ' + localtokenitem.value); 
 
-                            localsi.tokenitems.push(localtokenitem);
+                            localsi.tokensetters.push(localtokenitem);
                         });
 
                         localschedule.scheduleitems.push(localsi);            

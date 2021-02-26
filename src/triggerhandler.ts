@@ -202,12 +202,12 @@ export class TriggerHandler {
             this.homeyApp.log('Execute!');
             if (earliesttrigger != null) {
                 // Set tokens!
-                earliesttrigger.scheduleitem.tokenitems.forEach(ti => {
+                earliesttrigger.scheduleitem.tokensetters.forEach(ts => {
                     //Set token in flowtoken
-                    this.flowandtokenhandler.setTokenValue(ti.token,ti.value);
+                    this.flowandtokenhandler.setTokenValue(ts.token,ts.value);
                 })
 
-                this.flowandtokenhandler.triggerFlow(earliesttrigger.scheduleitem.tokenitems.map(ti=>ti.token), earliesttrigger);
+                this.flowandtokenhandler.triggerFlow(earliesttrigger.scheduleitem.tokensetters.map(ts=>ts.token), earliesttrigger);
 
                 this.removeTrigger(earliesttrigger);
                 this.homeyApp.log('Removed trigger from list: ' + earliesttrigger);
