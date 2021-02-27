@@ -62,7 +62,7 @@ export class WebSettings {
                 jsonsched.scheduleitems.push({
                     'id':si.id,
                     'daystype':dt,
-                    'daysarg':si.daysarg,
+                    'daysarg':si.daysArg,
                     'timetype':tt,
                     'timearg':si.timeArg,
                     'tokensetters':tss,
@@ -150,7 +150,8 @@ export class WebSettings {
     }
  
     getSunTimes(){
-        return [ new TimeInfo("dawn","Dawn"),
+        return [ 
+            new TimeInfo("dawn","Dawn" ),
             new TimeInfo("dusk","Dusk" ),
             new TimeInfo("goldenHour","Golden Hour" ),
             new TimeInfo("goldenHourEnd","Golden Hour End" ),
@@ -219,6 +220,7 @@ export class Day{
         this.value=value;
     }
     day:string;
+    translatedDay:string;
     value:number;
 }
 
@@ -236,7 +238,7 @@ export class ScheduleItem {
 
         this.id=id;
         this.daysType=daytype;
-        this.daysarg=daysArg;
+        this.daysArg=daysArg;
         this.timeType=timeType;
         this.timeArg=timeArg;
         this.sunEventType=sunEventType;
@@ -258,6 +260,7 @@ export class ScheduleItem {
     private allDays:Day[];
     private internalSelectedDays:Day[];
 
+    //A bit ugly to do translation here, but...
     getAllDays(){
         if (this.allDays.length > 0) return this.allDays;
 
@@ -274,11 +277,11 @@ export class ScheduleItem {
         return this.allDays;
     }
 
-    get daysarg():number{
+    get daysArg():number{
         return this.internalDaysArg;
     }
 
-    set daysarg(value:number){
+    set daysArg(value:number){
         console.log('set daysarg');
         this.internalDaysArg=value;
         console.log('set daysarg before update');
@@ -294,7 +297,7 @@ export class ScheduleItem {
         for (let i = 0; i < 7; i++)
         {
             let val:number = Math.pow(2,i);
-            let shouldexist:boolean = (val & this.daysarg) > 0;
+            let shouldexist:boolean = (val & this.daysArg) > 0;
             let foundday:Day=null;
             this.internalSelectedDays.forEach(d => {
                 if (d.value==val) foundday = d; 
@@ -326,39 +329,14 @@ export class ScheduleItem {
 
     set selectedDays(value:Day[]){
         console.log('set selectedDays' + value);
-        let daysarg:number=0;
+        let daysArg:number=0;
         value.forEach(day=> {
-            daysarg+=day.value;
+            daysArg+=day.value;
             console.log('day' + day.value)
         })
-        console.log('days' + daysarg)
-        this.daysarg=daysarg;
+        console.log('days' + daysArg)
+        this.daysArg=daysArg;
     }
-
-    //Not so beutiful to have presentation logic here, but...
-    get daysArgShortText():string {
-        let da:number = this.daysarg;
-        console.log('daysArgShortText daysarg: ' + da)
-        if (da == 0) return "Nothing";
-        else if (da == 1+2+4+8+16) return "Weekdays";
-        else if (da == 32+64) return "Weekends";
-        else if (da == 1+2+4+8+16+32+64) return "All week";
-        else{
-            //console.log('daysArgShortText daysarg2: ' + da)
-            var s = '';
-            if ((da & 1) > 0) s+='Mo,';
-            if ((da & 2) > 0) s+='Tu,';
-            if ((da & 4) > 0) s+='We,';
-            if ((da & 8) > 0) s+='Th,';
-            if ((da & 16) > 0) s+='Fr,';
-            if ((da & 32) > 0) s+='Sa,';
-            if ((da & 64) > 0) s+='Su,';
-            //console.log('daysArgShortText daysarg3: ' + s)
-            s = s.substring(0, s.length-1);
-            return s;
-        }
-    }
-
 
 }
 

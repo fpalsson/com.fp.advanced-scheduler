@@ -2,10 +2,11 @@
   <v-app>
     <v-main class="ma-1">
       <v-expansion-panels>
+        <h1 style="text-align:left;">{{ $t('Schedules') }}</h1>
         <asv-schedule v-for="(schedule) in settings.schedules" :key="schedule.id" :schedule="schedule" :settings="settings" />
       </v-expansion-panels>
-      <v-btn class="mt-2" color="green darken-1" text @click="addSchedule()"><v-icon dark>mdi-plus-circle-outline</v-icon> Add new schedule</v-btn>
-      <v-btn class="mt-2" color="green darken-1" text @click="saveSettings()"><v-icon dark>mdi-content-save</v-icon> Save settings</v-btn>
+      <v-btn class="mt-2" color="green darken-1" text @click="addSchedule()"><v-icon dark>mdi-plus-circle-outline</v-icon> {{ $t('Add_new_schedule') }}</v-btn>
+      <v-btn class="mt-2" color="green darken-1" text @click="saveSettings()"><v-icon dark>mdi-content-save</v-icon> {{ $t('Save_settings') }}</v-btn>
 
     </v-main>
   </v-app>
@@ -45,7 +46,7 @@ export default {
               if (schedule.id > maxid) maxid = schedule.id;
           })
 
-          this.settings.schedules.push(new Schedule(maxid+1, 'New Schedule', true))        
+          this.settings.schedules.push(new Schedule(maxid+1, this.$t('New_schedule'), true))        
       },
 
       saveSettings : function () {

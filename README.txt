@@ -114,6 +114,7 @@ The drawback of this is that you need an additional flow for dimabale devices, b
 As you see, you can create VERY complex schedules easily with this app, without the need of complex flows.
 
 
+
 Todo:
 
 Ask someone to do formal checks of code, as this is my first ever TypeScript/Javascript adventure. Review of code from a semantics perspective. 
@@ -124,11 +125,9 @@ Make sure debugging works.
 
 Add error handling in relevant places.
 
-Refactor relevant parts and move some logic from Vue to websettings. Refactor websettings into containerclasses (possible namechange also), now that webpack makes modules with export usable.
+Refactor websettings into containerclasses (possible namechange also), now that webpack makes modules with export usable.
 
 Adding monthly shedule.
-
-Adding solar events, based on suncalc (first version is implemented, testing needed).
 
 Adding conditional ScheduleItems (trigger at sunrise if it is before/after fixed time)
 
@@ -136,6 +135,7 @@ Make sure the HTML GUI for editing settings is user friendly and looking nice. M
 
 Implement a visual representation of a schedule that is clickable to enter edit GUI.
 
+Select correct language at runtime.
 
 
 LOTS AND LOTS OF TESTING.

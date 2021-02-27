@@ -1,14 +1,16 @@
 {
   "id": "change_schedule_state",
   "title": {
-    "en": "Change schedule state (not yet implemented)"
+    "en": "Change schedule state (not yet implemented)",
+    "sv": "Ändra schema status (not yet implemented)"
   },
   "args": [
     {
       "name": "schedule",
       "type": "autocomplete",
       "placeholder": {
-        "en": "Schedule"
+        "en": "Schedule",
+        "sv": "Schema"
       }
     },
     {
@@ -18,13 +20,15 @@
         {
           "id": "active",
           "label": {
-            "en": "Active"
+            "en": "Active",
+            "sv": "Aktiv"
           }
         },
         {
           "id": "inactive",
           "label": {
-            "en": "Inactive"
+            "en": "Inactive",
+            "sv": "Inktiv"
           }
         }    
       ]

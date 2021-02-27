@@ -1,14 +1,16 @@
 {
   "id": "schedule_trigger",
   "title": {
-    "en": "Schedule triggered"
+    "en": "Schedule triggered",
+    "sv": "Schema aktiverat"
   },
   "args": [
     {
       "name": "schedule",
       "type": "autocomplete",
       "placeholder": {
-        "en": "Schedule"
+        "en": "Schedule",
+        "sv": "Schema"
       }
     }
   ]

@@ -12,5 +12,5 @@ module.exports = {
             additionalData: '@import "@/styles/main.scss"'
         }
     }
-  }
+  },
 };

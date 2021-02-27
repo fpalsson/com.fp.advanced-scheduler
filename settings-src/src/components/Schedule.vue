@@ -1,15 +1,15 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header>{{ schedule.name }}, Active:{{ schedule.active }}</v-expansion-panel-header>
+    <v-expansion-panel-header>{{ schedule.name }}, {{ $t('Active') }}: {{ schedule.active }}</v-expansion-panel-header>
     <v-expansion-panel-content>
       <!--v-switch v-model="switch1" :label="`Switch 1: ${switch1.toString()}`" ></v-switch-->
        <v-container class="px-0">
           <v-row no-gutters>
             <v-col cols="6">
-              <v-text-field label="Schedule name" placeholder="Enter a schedule name" hide-details="auto" v-model="schedule.name" :rules="rules.requiredText"></v-text-field>
+              <v-text-field :label="$t('Schedule_name')" :placeholder="$t('Enter_a_schedule_name')" hide-details="auto" v-model="schedule.name" :rules="rules.requiredText"></v-text-field>
           </v-col>
             <v-col cols="4">
-              <v-switch label="Active" v-model="schedule.active"></v-switch>
+              <v-switch :label="$t('Active')" v-model="schedule.active"></v-switch>
             </v-col>
             <v-col cols="2">
               <v-dialog v-model="deletedialogopen" > 
@@ -17,12 +17,12 @@
                   <v-btn fab dark x-small color="red" class="mt-4 text-right" v-bind="attrs" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn>
                 </template>
                 <v-card>
-                  <v-card-title class="headline">Delete Schedule?</v-card-title>
-                  <v-card-text>Do you want to delete schedule?</v-card-text>
+                  <v-card-title class="headline">{{ $t('Delete_schedule_question') }}</v-card-title>
+                  <v-card-text>{{ $t('Do_you_want_to_delete_schedule_question') }}</v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" text @click="deletedialogopen = false">No</v-btn>
-                    <v-btn color="red darken-1" text @click="scheduleDeleteAndCloseDialog(schedule.id)">Yes, delete</v-btn>
+                    <v-btn color="green darken-1" text @click="deletedialogopen = false">{{ $t('No') }}</v-btn>
+                    <v-btn color="red darken-1" text @click="scheduleDeleteAndCloseDialog(schedule.id)">{{ $t('Yes_delete') }}</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -34,19 +34,19 @@
       <v-expansion-panels>
         <v-expansion-panel>
 
-          <v-expansion-panel-header>Tokens</v-expansion-panel-header>
+          <v-expansion-panel-header>{{ $t('Tokens') }}</v-expansion-panel-header>
           <v-expansion-panel-content>
             <asv-token v-for="(token) in schedule.tokens" :key="token.id" :token="token" :settings="settings"/>
-              <v-btn class="mt-2" color="green darken-1" text @click="addToken(schedule.id, 'boolean')"><v-icon dark>mdi-plus-circle-outline</v-icon> Add bool token</v-btn>
-              <v-btn class="mt-2" color="green darken-1" text @click="addToken(schedule.id, 'number')"><v-icon dark>mdi-plus-circle-outline</v-icon> Add number token</v-btn>
-              <v-btn class="mt-2" color="green darken-1" text @click="addToken(schedule.id, 'string')"><v-icon dark>mdi-plus-circle-outline</v-icon> Add string token</v-btn>
+              <v-btn class="mt-2" color="green darken-1" text @click="addToken(schedule.id, 'boolean')"><v-icon dark>mdi-plus-circle-outline</v-icon>{{ $t('Add_bool_token') }}</v-btn>
+              <v-btn class="mt-2" color="green darken-1" text @click="addToken(schedule.id, 'number')"><v-icon dark>mdi-plus-circle-outline</v-icon>{{ $t('Add_number_token') }}</v-btn>
+              <v-btn class="mt-2" color="green darken-1" text @click="addToken(schedule.id, 'string')"><v-icon dark>mdi-plus-circle-outline</v-icon>{{ $t('Add_string_token') }}</v-btn>
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
-          <v-expansion-panel-header>Schedule Items</v-expansion-panel-header>
+          <v-expansion-panel-header>{{ $t('Schedule_items') }}</v-expansion-panel-header>
           <v-expansion-panel-content>
             <asv-schedule-item v-for="(si) in schedule.scheduleItems" :key="si.id" :scheduleItem="si" :settings="settings"/>
-            <v-btn class="mt-2" color="green darken-1" text @click="addScheduleItem(schedule.id)"><v-icon dark>mdi-plus-circle-outline</v-icon> Add new schedule item</v-btn>
+            <v-btn class="mt-2" color="green darken-1" text @click="addScheduleItem(schedule.id)"><v-icon dark>mdi-plus-circle-outline</v-icon> {{ $t('Add_new_schedule_item') }}</v-btn>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -59,6 +59,7 @@
 import AsvToken from '@/components/Token';
 import AsvScheduleItem from '@/components/ScheduleItem';
 import { Schedule, ScheduleItem, Token, DaysType, TimeType, TokenItem } from '@/WebSettings'
+//import { translate, i18n } from '@/plugins/i18n';
 
 export default {
   name: 'AsvSchedule',
@@ -81,12 +82,16 @@ export default {
       deletedialogopen: false,
       rules: {
         requiredText: [
-          value => !!value || 'Required',
+          value => !!value || this.$t('Required'),
         ],
       }
     };
   },
   methods: {
+  //  translate,
+  //  translate2 : function (key){
+  //    return i18n.t(key);
+  //  },
     scheduleDeleteAndCloseDialog : function (scheduleid) {
       this.settings.schedules.forEach(schedule => {
           if (schedule.id == scheduleid) {
@@ -111,7 +116,7 @@ export default {
 
         this.settings.schedules.forEach(schedule => {
             if (schedule.id == scheduleid) {
-                schedule.tokens.push(new Token(maxid+1, 'New token', type))        
+                schedule.tokens.push(new Token(maxid+1, this.$t('New_token'), type))        
             }
         })
       },
@@ -134,7 +139,7 @@ export default {
                 //add all tokens default
                 schedule.tokens.forEach(token=>{
                   let ti;
-                  if (token.type === 'string') ti = new TokenItem(token,'Not set');
+                  if (token.type === 'string') ti = new TokenItem(token, this.$t('Not_set'));
                   else if (token.type === 'number') ti = new TokenItem(token,0);
                   else if (token.type === 'boolean') ti = new TokenItem(token,false);
                   si.tokenitems.push(ti);
@@ -143,10 +148,7 @@ export default {
                 schedule.scheduleitems.push(si)        
             }
         })
-        
     },
-       
   }
-
 };
 </script>

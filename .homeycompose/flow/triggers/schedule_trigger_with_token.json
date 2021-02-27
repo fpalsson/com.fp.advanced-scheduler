@@ -1,21 +1,24 @@
 {
   "id": "schedule_trigger_with_token",
   "title": {
-    "en": "Schedule triggered with token (not yet implemented)"
+    "en": "Schedule triggered with tag value (not yet implemented)",
+    "sv": "Schema aktiverat med tagvärde (inte än implementerad)"
   },
   "args": [
     {
       "name": "schedule",
       "type": "autocomplete",
       "placeholder": {
-        "en": "Schedule"
+        "en": "Schedule",
+        "sv": "Schema"
       }
     },
     {
       "name": "token",
       "type": "autocomplete",
       "placeholder": {
-        "en": "Tag"
+        "en": "Tag",
+        "sv": "Tag"
       }
     }
   ]

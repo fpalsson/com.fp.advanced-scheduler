@@ -1,9 +1,8 @@
 import Vue from 'vue';
-import App from './App.vue';
-import vuetify from './plugins/vuetify';
-//import VueNumericInput from 'vue-numeric-input';
-//import { onlyFloat } from 'vue-input-only-number';
-//import VNumeric from 'vuetify-numeric/vuetify-numeric.umd'
+import App from '@/App.vue';
+import vuetify from '@/plugins/vuetify';
+import i18n from '@/plugins/i18n';
+
 import VCurrencyField from 'v-currency-field'
 import { VTextField } from 'vuetify/lib'  //Globally import VTextField for Treeshaking to work
 
@@ -25,9 +24,11 @@ window.addEventListener('onHomeyReady', function (event) {
     }
   });
 
- 
-
-  new Vue({
+  
+  
+  new Vue( 
+    {
+    i18n,  
     render: h => h(App),
     vuetify,
 //    components: {

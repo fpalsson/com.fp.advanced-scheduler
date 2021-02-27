@@ -1,7 +1,7 @@
 <template>
     <v-row no-gutters>
         <v-col cols="7">
-            <v-text-field label="Token name" placeholder="Enter a token name" v-model="token.name" :rules="requiredText"></v-text-field>
+            <v-text-field :label="$t('Token_name')" :placeholder="$t('Enter_a_token_name')" v-model="token.name" :rules="requiredText"></v-text-field>
         </v-col>
         <v-col cols="3">
             <v-chip class="mt-4" color="primary">{{ token.type }}</v-chip>
@@ -18,13 +18,13 @@
                     <v-btn fab dark x-small color="red" class="mt-4 text-right" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn>
                 </template>
                 <v-card>
-                    <v-card-title class="headline">Delete Token?</v-card-title>
-                    <v-card-text>Do you want to delete token? All tokens in schedule will be removed!</v-card-text>
+                    <v-card-title class="headline">{{ $t('Delete_token_question') }}</v-card-title>
+                    <v-card-text>{{ $t('Do_you_want_to_delete_token_question') }}</v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <!--v-btn color="green darken-1" text @click="tokenCloseDeleteDialog(token.id)">No</v-btn-->
-                        <v-btn color="green darken-1" text @click="deletedialogopen=false">No</v-btn>
-                        <v-btn color="red darken-1" text @click="tokenDeleteAndCloseDialog(token.id)">Yes, delete</v-btn>
+                        <v-btn color="green darken-1" text @click="deletedialogopen=false">{{ $t('No') }}</v-btn>
+                        <v-btn color="red darken-1" text @click="tokenDeleteAndCloseDialog(token.id)">{{ $t('Yes_delete') }}</v-btn>
                     </v-card-actions>  
                 </v-card>
             </v-dialog>
@@ -81,16 +81,12 @@ export default {
                             }
                         })
                     })
-
                 }
                 this.deletedialogopen=false;
             })
         })
-        
-        
     },
   }
-
 };
 </script>
 
