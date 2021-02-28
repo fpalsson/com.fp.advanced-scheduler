@@ -1,6 +1,6 @@
 {
   "id": "com.fp.advanced-scheduler",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
@@ -24,5 +24,28 @@
   "author": {
     "name": "Fredrik Pålsson",
     "email": "fredrik.palsson@home.se"
-  }
+  },
+  "support": "mailto:fredrik.palsson@home.se",
+  "bugs": {
+    "url": "https://github.com/fpalsson/com.fp.advanced-scheduler/issues"
+  },
+  "source": "https://github.com/fpalsson/com.fp.advanced-scheduler",
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "paypal.me/fpalssonswe"
+      }
+    }
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Max van de Laar",
+        "email": "max.vandelaar@me.com"
+      }
+    ],
+    "translators": [
+    ]
+  },
+  "homeyCommunityTopicId": 43767
 }
