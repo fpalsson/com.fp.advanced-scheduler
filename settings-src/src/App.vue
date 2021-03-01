@@ -1,12 +1,47 @@
 <template>
   <v-app>
     <v-main class="ma-1">
-      <v-expansion-panels>
-        <h1 style="text-align:left;">{{ $t('Schedules') }}</h1>
-        <asv-schedule v-for="(schedule) in settings.schedules" :key="schedule.id" :schedule="schedule" :settings="settings" />
-      </v-expansion-panels>
-      <v-btn class="mt-2" color="green darken-1" text @click="addSchedule()"><v-icon dark>mdi-plus-circle-outline</v-icon> {{ $t('Add_new_schedule') }}</v-btn>
-      <v-btn class="mt-2" color="green darken-1" text @click="saveSettings()"><v-icon dark>mdi-content-save</v-icon> {{ $t('Save_settings') }}</v-btn>
+      <v-tabs
+        v-model="tab"
+        background-color="primary"
+        dark
+        next-icon="mdi-arrow-right-bold-box-outline"
+        prev-icon="mdi-arrow-left-bold-box-outline"
+        show-arrows
+      >
+        <v-tabs-slider color="yellow"></v-tabs-slider>
+        <v-tab key="1">{{ $t('Schedules') }}</v-tab>
+        <v-tab key="2">Raw Settings</v-tab>
+      </v-tabs>
+
+      <v-tabs-items v-model="tab">
+        <v-tab-item key="1">
+
+          <v-expansion-panels>
+            <!--h1 style="text-align:left;">{{ $t('Schedules') }}</h1-->
+            <asv-schedule v-for="(schedule) in settings.schedules" :key="schedule.id" :schedule="schedule" :settings="settings" />
+          </v-expansion-panels>
+          <v-btn class="mt-2" color="green darken-1" text @click="addSchedule()"><v-icon dark>mdi-plus-circle-outline</v-icon> {{ $t('Add_new_schedule') }}</v-btn>
+          <v-btn class="mt-2" color="green darken-1" text @click="saveSettings()"><v-icon dark>mdi-content-save</v-icon> {{ $t('Save_settings') }}</v-btn>
+
+
+        </v-tab-item>
+
+        <v-tab-item key="2">
+          <v-textarea
+            solo
+            :label="$t('Raw_settings')"
+            v-model="rawSettings"
+          ></v-textarea>
+          <v-btn class="mt-2" color="green darken-1" text @click="getRawSettings()"><v-icon dark>mdi-download-circle-outline</v-icon> {{ $t('Get_raw_settings') }}</v-btn>
+          <v-btn class="mt-2" color="green darken-1" text @click="saveRawSettings()"><v-icon dark>mdi-content-save</v-icon> {{ $t('Save_raw_settings_reload_needed') }}</v-btn>
+        </v-tab-item>
+
+      </v-tabs-items>
+
+
+
+
 
     </v-main>
   </v-app>
@@ -25,7 +60,9 @@ export default {
     return {
       settings: {
         schedules:{}
-      }
+      },
+      tab: null,
+      rawSettings:''
     };
   },
   mounted() {
@@ -36,7 +73,9 @@ export default {
 
       let ws = new WebSettings();
       ws.readSettings(settings);
-      this.settings.schedules = ws.getSchedules();
+      let schedules = ws.getSchedules();
+      if (schedules == null) schedules = new Array();
+      this.settings.schedules = schedules;
     });
   },
     methods: {
@@ -60,6 +99,23 @@ export default {
               if( err ) return this.Homey.alert( err );
           });
       },
+
+      saveRawSettings : function () {
+          this.Homey.set('settings', this.rawSettings, function( err ){
+              if( err ) return this.Homey.alert( err );
+          });
+      },
+
+      getRawSettings : function () {
+          var ws = new WebSettings();
+          var settings = ws.buildSettings(this.settings)
+          
+          console.log('Settings:');
+          console.log(settings);
+
+          this.rawSettings = settings;
+      },
+
 
   }
 

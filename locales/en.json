@@ -12,6 +12,10 @@
     "Add_new_schedule": "Add new schedule",
     "New_schedule": "New schedule",
     "Save_settings": "Save settings",
+    "Raw_settings": "Raw settings",
+    "Get_raw_settings": "Get raw settings",
+    "Save_raw_settings_reload_needed": "Save raw settings (reload needed)",
+
 
     "//Schedule.vue":"_comment",
     "Active":"Active",

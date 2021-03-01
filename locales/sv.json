@@ -12,6 +12,9 @@
     "Add_new_schedule": "Lägg till nytt schema",
     "New_schedule": "Nytt schema",
     "Save_settings": "Spara inställningar",
+    "Raw_settings": "Råa inställningar",
+    "Get_raw_settings": "Hämta råa inställningar",
+    "Save_raw_settings_reload_needed": "Spara råa inställningar (omladdning krävs)",
 
     "//Schedule.vue":"_comment",
     "Active":"Aktiv",
