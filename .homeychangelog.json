@@ -4,5 +4,8 @@
   },
   "0.1.1": {
     "en": "Corrected a huge amount of bugs that sneaked thru. Sorry for that!"
+  },
+  "0.1.2": {
+    "en": "Startup bug on first ever run corrected. Raw settings implemented."
   }
 }
