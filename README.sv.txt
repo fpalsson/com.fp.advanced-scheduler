@@ -1,0 +1,3 @@
+En avancerad schemläggare för veckovisa och månadsvisa (kommande) händelser med fast eller solstyrd tid (solupgång, solnedgång, gryning, skymning, mitt på dagen osv).
+
+Tanken är att slippa ha massor med komplicerade flows om du har komplicerade regler för när olika saker ska ske (eventuellt med olika regler olika veckodagar). Skapa istället schema i denna app och lägg till triggers (kallas schemahändelser) som sätts till fast tid eller solhändelser. För att styra vad som ska ske används taggar som får de värden som anges vid varje händelse. När schemat är klart skapar du ett flow som triggas av appen. Taggen som sätts av appen kan användas för att bestämam om det ska startas/stoppas, tändas/släckas eller dimmas (eller annat). Se community-sidan för mer info.

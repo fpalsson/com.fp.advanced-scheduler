@@ -5,7 +5,7 @@ import { Settings as AppSettings } from "./Settings";
 import { FlowCardTrigger, FlowCardAction, FlowToken, ManagerFlow } from "homey";
 import { Token, Schedule } from "./ContainerClasses";
 import { Trigger } from "./TriggerHandler";
-import { timeStamp } from "console";
+//import { timeStamp } from "console";
 
 class TokenWrapper{
     constructor(flowToken:FlowToken, token:Token) {

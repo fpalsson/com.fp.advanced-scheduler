@@ -70,13 +70,13 @@ export default {
                         schedule.tokens.splice(index, 1);
                         console.log('Deleted token with id: ' +token.id)
                     }
-                    schedule.scheduleitems.forEach(si => {
-                        si.tokenitems.forEach(ti => {
+                    schedule.scheduleItems.forEach(si => {
+                        si.tokenSetters.forEach(ti => {
                             if (ti.id==tokenid){
-                                index = si.tokenitems.indexOf(ti);
+                                index = si.tokenSetters.indexOf(ti);
                                 if (index !== -1) {
-                                    si.tokenitems.splice(index, 1);
-                                    console.log('Deleted tokenitem with id: ' +ti.id)
+                                    si.tokenSetters.splice(index, 1);
+                                    console.log('Deleted tokensetter with id: ' +ti.id)
                                 }
                             }
                         })

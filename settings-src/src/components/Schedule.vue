@@ -58,8 +58,7 @@
 <script>
 import AsvToken from '@/components/Token';
 import AsvScheduleItem from '@/components/ScheduleItem';
-import { Schedule, ScheduleItem, Token, DaysType, TimeType, TokenItem } from '@/WebSettings'
-//import { translate, i18n } from '@/plugins/i18n';
+import { Schedule, ScheduleItem, Token, DaysType, TimeType, TokenSetter } from '@/WebSettings'
 
 export default {
   name: 'AsvSchedule',
@@ -124,7 +123,7 @@ export default {
       addScheduleItem : function (scheduleid) {
         var maxid = 0;
         this.settings.schedules.forEach(schedule => {
-            schedule.scheduleitems.forEach(si => {
+            schedule.scheduleItems.forEach(si => {
                 if (si.id > maxid) maxid = si.id;
             })
         })
@@ -139,13 +138,13 @@ export default {
                 //add all tokens default
                 schedule.tokens.forEach(token=>{
                   let ti;
-                  if (token.type === 'string') ti = new TokenItem(token, this.$t('Not_set'));
-                  else if (token.type === 'number') ti = new TokenItem(token,0);
-                  else if (token.type === 'boolean') ti = new TokenItem(token,false);
-                  si.tokenitems.push(ti);
+                  if (token.type === 'string') ti = new TokenSetter(token, this.$t('Not_set'));
+                  else if (token.type === 'number') ti = new TokenSetter(token,0);
+                  else if (token.type === 'boolean') ti = new TokenSetter(token,false);
+                  si.tokenSetters.push(ti);
                 })
 
-                schedule.scheduleitems.push(si)        
+                schedule.scheduleItems.push(si)        
             }
         })
     },

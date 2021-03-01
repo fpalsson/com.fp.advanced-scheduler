@@ -20,7 +20,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="green darken-1" text @click="deletedialogopen=false">{{ $t('No') }}</v-btn>
-                        <v-btn color="red darken-1" text @click="tokenSetterDeleteAndCloseDialog(token.id)">{{ $t('Yes_delete') }}</v-btn>
+                        <v-btn color="red darken-1" text @click="tokenSetterDeleteAndCloseDialog(scheduleItem.id, tokenSetter.token.id)">{{ $t('Yes_delete') }}</v-btn>
                     </v-card-actions>  
                 </v-card>
             </v-dialog>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { TokenSetter } from '@/WebSettings'
+import { TokenSetter, ScheduleItem } from '@/WebSettings'
 
 export default {
   name: 'AsvTokenSetter',
@@ -38,6 +38,10 @@ export default {
   props: {
     tokenSetter: {
       type: TokenSetter,
+      required: true
+    },
+    scheduleItem: {
+      type: ScheduleItem,
       required: true
     },
     settings: {
@@ -62,19 +66,19 @@ export default {
         }
     },
 
-    tokenSetterDeleteAndCloseDialog : function (sheduleitemid, tokenid) {
+    tokenSetterDeleteAndCloseDialog : function (scheduleitemid, tokenid) {
         //console.log('tokenDeleteAndCloseDialog' + this.seetings);
         //console.log('tokenDeleteAndCloseDialog root' + this.settings.schedules.length);
 
         this.settings.schedules.forEach(schedule => {
-            schedule.scheduleitems.forEach(si => {
-                if (si.id == sheduleitemid) {
-                    si.tokenSetters.forEach(ti => {
-                        if (ti.id == tokenid){
-                            var index = si.tokenSetters.indexOf(ti);
+            schedule.scheduleItems.forEach(si => {
+                if (scheduleitemid == si.id){
+                    si.tokenSetters.forEach(ts => {
+                        if (ts.token.id == tokenid){
+                            var index = si.tokenSetters.indexOf(ts);
                             if (index !== -1) {
                                 si.tokenSetters.splice(index, 1);
-                                console.log('Deleted tokenSetter with id: ' + ti.id)
+                                console.log('Deleted tokenSetter with id: ' + ts.id)
                                 this.deletedialogopen=false;
                             }
                         }

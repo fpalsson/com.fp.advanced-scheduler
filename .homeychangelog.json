@@ -1,5 +1,8 @@
 {
   "0.1.0": {
     "en": "First submission"
+  },
+  "0.1.1": {
+    "en": "Corrected a huge amount of bugs that sneaked thru. Sorry for that!"
   }
 }

@@ -117,7 +117,7 @@
         <v-container class="pa-0 ma-0">
             <v-sheet elevation="2" class="pa-2">
                 <div>{{ $t('Token_setters') }}</div>
-                <asv-token-setter v-for="(tokenSetter) in scheduleItem.tokenSetters" :key="tokenSetter.token.id" :tokenSetter="tokenSetter" :settings="settings"/>
+                <asv-token-setter v-for="(tokenSetter) in scheduleItem.tokenSetters" :key="tokenSetter.token.id" :tokenSetter="tokenSetter" :scheduleItem="scheduleItem" :settings="settings"/>
 
                 <v-dialog v-model="addTokenSetterOpen" > <!-- max-width="290"-->
                     <template v-slot:activator="{ on, attrs }">
