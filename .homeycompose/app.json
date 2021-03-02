@@ -1,6 +1,6 @@
 {
   "id": "com.fp.advanced-scheduler",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
@@ -9,7 +9,8 @@
   },
   "description": {
     "en": "Easily schedule anything from simple to complex solar or time based events.",
-    "sv": "Schemalägg lätt allt från enkla till komplicerade sol- eller tidsstyrda händelser."
+    "sv": "Schemalägg lätt allt från enkla till komplicerade sol- eller tidsstyrda händelser.",
+    "de": "Planen Sie ganz einfach alles, von einfachen bis hin zu komplexen sonnen- oder zeitbasierten Ereignissen."
   },
   "category": [
     "tools"

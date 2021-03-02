@@ -282,17 +282,17 @@ export class ScheduleItem {
     }
 
     set daysArg(value:number){
-        console.log('set daysarg');
+        //console.log('set daysarg');
         this.internalDaysArg=value;
-        console.log('set daysarg before update');
+        //console.log('set daysarg before update');
         this.updateSelectedDays();
-        console.log('set daysarg updated');
+        //console.log('set daysarg updated');
     }
 
 
     private updateSelectedDays(){
         //This takes care to not add or remove elements that are not needed to be added or removed, to make Vue work as expected!!!
-        console.log('updateSelectedDays current number: ' + this.internalSelectedDays.length);
+        //console.log('updateSelectedDays current number: ' + this.internalSelectedDays.length);
 
         for (let i = 0; i < 7; i++)
         {
@@ -303,21 +303,21 @@ export class ScheduleItem {
                 if (d.value==val) foundday = d; 
             })
 
-            console.log('updateSelectedDays val:' + val + ' shouldexist:'+ shouldexist + ' foundday:' + foundday);
+            //console.log('updateSelectedDays val:' + val + ' shouldexist:'+ shouldexist + ' foundday:' + foundday);
 
             if (shouldexist && foundday == null) {
                 //add
                 this.internalSelectedDays.push(this.allDays[i]);
-                console.log('updateSelectedDays added' + this.allDays[i].day + this.allDays[i].value);
+                //console.log('updateSelectedDays added' + this.allDays[i].day + this.allDays[i].value);
             }
             if (!shouldexist && foundday != null) {
                 //remove
                 this.internalSelectedDays.splice(this.internalSelectedDays.indexOf(foundday),1);
-                console.log('updateSelectedDays removed ' + foundday.day );
+                //console.log('updateSelectedDays removed ' + foundday.day );
             }
         }
 
-        console.log('updateSelectedDays' + this.internalSelectedDays);
+        //console.log('updateSelectedDays' + this.internalSelectedDays);
 
     }
 

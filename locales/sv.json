@@ -18,6 +18,7 @@
 
     "//Schedule.vue":"_comment",
     "Active":"Aktiv",
+    "Inactive":"Inaktiv",
     "Schedule_name":"Schema namn",
     "Enter_a_schedule_name":"Mata in schema namn",
     "Delete_schedule_question":"Ta bort schema?",

@@ -13,7 +13,7 @@ Vue.config.productionTip = false;
 //Listen for the event when Homey is ready
 window.addEventListener('onHomeyReady', function (event) {
   const Homey = event.detail;
-
+  console.log('Getting Homey');
   Vue.mixin({
     data() {
       return {
@@ -24,8 +24,6 @@ window.addEventListener('onHomeyReady', function (event) {
     }
   });
 
-  
-  
   new Vue( 
     {
     i18n,  
@@ -37,6 +35,8 @@ window.addEventListener('onHomeyReady', function (event) {
     mounted() {
       this.Homey.ready();
     }
+
+    
   }).$mount('#app');
   //Vue.use(VNumeric)
   Vue.component('v-text-field', VTextField); //Needed for treeshaking to work with VCurrencyField

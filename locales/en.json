@@ -19,6 +19,7 @@
 
     "//Schedule.vue":"_comment",
     "Active":"Active",
+    "Inactive":"Inactive",
     "Schedule_name":"Schedule name",
     "Enter_a_schedule_name":"Enter a schedule name",
     "Delete_schedule_question":"Delete schedule?",

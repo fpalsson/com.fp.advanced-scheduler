@@ -11,38 +11,30 @@
       >
         <v-tabs-slider color="yellow"></v-tabs-slider>
         <v-tab key="1">{{ $t('Schedules') }}</v-tab>
-        <v-tab key="2">Raw Settings</v-tab>
+        <v-tab key="2">{{ $t('Raw_settings') }}</v-tab>
       </v-tabs>
-
       <v-tabs-items v-model="tab">
         <v-tab-item key="1">
-
           <v-expansion-panels>
             <!--h1 style="text-align:left;">{{ $t('Schedules') }}</h1-->
             <asv-schedule v-for="(schedule) in settings.schedules" :key="schedule.id" :schedule="schedule" :settings="settings" />
           </v-expansion-panels>
           <v-btn class="mt-2" color="green darken-1" text @click="addSchedule()"><v-icon dark>mdi-plus-circle-outline</v-icon> {{ $t('Add_new_schedule') }}</v-btn>
           <v-btn class="mt-2" color="green darken-1" text @click="saveSettings()"><v-icon dark>mdi-content-save</v-icon> {{ $t('Save_settings') }}</v-btn>
-
-
         </v-tab-item>
-
         <v-tab-item key="2">
           <v-textarea
             solo
             :label="$t('Raw_settings')"
             v-model="rawSettings"
           ></v-textarea>
+          <div>Can be used to backup and restore settings (by copying or pasting settings here). <br>
+            Be careful if pasting settings and saving them. Current settings will be erased!</div>
+
           <v-btn class="mt-2" color="green darken-1" text @click="getRawSettings()"><v-icon dark>mdi-download-circle-outline</v-icon> {{ $t('Get_raw_settings') }}</v-btn>
           <v-btn class="mt-2" color="green darken-1" text @click="saveRawSettings()"><v-icon dark>mdi-content-save</v-icon> {{ $t('Save_raw_settings_reload_needed') }}</v-btn>
         </v-tab-item>
-
       </v-tabs-items>
-
-
-
-
-
     </v-main>
   </v-app>
 </template>
@@ -66,17 +58,33 @@ export default {
     };
   },
   mounted() {
-    this.Homey.get('settings', (err, settings) => {
-      if (err) return this.Homey.alert(err);
-
-      //this.settings = JSON.parse(settings).settings;
-
+    this.settings.schedules = new Array();
+    this.Homey.get('settings')
+    .then(settings => {
       let ws = new WebSettings();
       ws.readSettings(settings);
       let schedules = ws.getSchedules();
-      if (schedules == null) schedules = new Array();
       this.settings.schedules = schedules;
-    });
+    })
+    .catch(err => {
+        this.Homey.alert(err);
+    })
+        
+    let language = 'en';
+    this.Homey.getLanguage()
+    .then( lang => {
+      console.log ('lang then: ' + lang);
+      if (lang == 'sv' || 
+          lang == 'de') {
+            language = lang;
+      }
+
+      this.$i18n.locale = language;
+    })
+    .catch(err => {
+        this.Homey.alert(err);
+    })
+
   },
     methods: {
       addSchedule : function () {
@@ -115,10 +123,6 @@ export default {
 
           this.rawSettings = settings;
       },
-
-
   }
-
-
 };
 </script>

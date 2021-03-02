@@ -1,6 +1,7 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header>{{ schedule.name }}, {{ $t('Active') }}: {{ schedule.active }}</v-expansion-panel-header>
+    <v-expansion-panel-header v-if="schedule.active"><b>{{ schedule.name }}, {{ $t('Active') }}</b></v-expansion-panel-header>
+    <v-expansion-panel-header v-else                >{{ schedule.name }}, {{ $t('Inactive') }}</v-expansion-panel-header>
     <v-expansion-panel-content>
       <!--v-switch v-model="switch1" :label="`Switch 1: ${switch1.toString()}`" ></v-switch-->
        <v-container class="px-0">
