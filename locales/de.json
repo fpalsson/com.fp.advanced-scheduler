@@ -12,10 +12,11 @@
     "Add_new_schedule": "Neuen Zeitplan hinzufügen",
     "New_schedule": "Neuer Zeitplan",
     "Save_settings": "Einstellungen speichern",
+    "Help": "Hilfe",
     "Raw_settings": "Raw-Einstellungen",
     "Get_raw_settings": "Raw-Einstellungen abrufen",
     "Save_raw_settings_reload_needed": "Raw-Einstellungen speichern",
-    "Raw_settings_long_description":"Can be used to backup and restore settings (by copying or pasting settings here).<br>Be careful if pasting settings and saving them, current settings will be erased!<br>Reload of settings page needed after saving settings.",
+    "Raw_settings_long_description":"Kann zum Sichern und Wiederherstellen von Einstellungen verwendet werden (durch Kopieren oder Einfügen von Einstellungen).<br>Seien Sie vorsichtig wenn Sie Einstellungen einfügen und speichern, die aktuellen Einstellungen werden gelöscht!<br>    Nach dem Speichern der Einstellungen muss die Seite aktualisiert werden.",
 
 
     "//Schedule.vue":"_comment",
@@ -25,7 +26,7 @@
     "Enter_a_schedule_name":"Einen Zeitplannamen eintragen",
     "Delete_schedule_question":"Zeitplan löschen?",
     "Do_you_want_to_delete_schedule_question":"Möchten Sie den Zeitplan löschen? Alle Zeitplaneinstellungen werden gelöscht. Dies kann nach dem Speichern nicht rückgängig gemacht werden.",
-    "Tokens":"Tags",  
+    "Tokens":"Tag-Definitionen",  
     "Add_bool_token":"Boolesche-Tag hinzufügen",
     "Add_number_token":"Nummer-Tag hinzufügen",
     "Add_string_token":"Text-Tag hinzufügen",

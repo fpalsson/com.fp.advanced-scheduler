@@ -38,7 +38,7 @@ After setting up tag definitions in the schedule, they can be added in the sched
 
 ## Scenarios and examples
 ### Scenario 1
-**Turn lamp or other on/off device on/off at regular times, in this scenario turn on at 19:00 and turn off at 07:00 every day.**
+**Turn lamp or other on/off device on or off at regular times, in this scenario turn on at 19:00 and turn off at 07:00 every day.**
 
 Solution: 
 1. Create a new schedule, call it "Weekly night lights on" for example. 
@@ -53,7 +53,7 @@ Solution:
 _This can all seem excessive, it could be accomplished with two simple flows, but the power of the app will be shown in the comming scenarios._
 
 ### Scenario 2
-**Turn lamp or other on/off device on/off at solar triggered times (with offsets if desired), in this scenario turn on at sunset and turn off at sunrise every day.**
+**Turn lamp or other on/off device on or off at solar triggered times (with offsets if desired), in this scenario turn on at sunset and turn off at sunrise every day.**
 
 Solution: 
 1. Expand the **schedule** created in scenario 1 above. 
@@ -74,7 +74,7 @@ Solution:
 _This could be accomplished with two more flows (for a total of four flows) and times to trigger, so the power of the app is starting to show._
 
 ### Scenario 4
-**Turn lamp or other on/off device on/off at regular times, different times for different days of week.**
+**Turn lamp or other on/off device on or off at regular times, different times for different days of week.**
 
 Solution:
 1. Create a new schedule, call it "Lights on during breakfast" for example. 
@@ -92,7 +92,7 @@ Solution:
 1. Add one or more Then-cards that does what you want when to turn the light on, and one or more Else-cards to turn off.
 
 ### Scenario 5, alternative 1
-**Turn lamp or other on/off device on/off at regular times AND dim dimmable device at the same time, different times for different days of week.**
+**Turn lamp or other on/off device on or off at regular times AND dim dimmable device at the same time, different times for different days of week.**
 
 Solution:
 1. Open schedule created in scenario 4
@@ -104,7 +104,7 @@ Solution:
 _The drawback of this is that you need two action cards for dimming as we have "Then/Else" logic._
 
 ### Scenario 5, alternative 2
-**Turn lamp or other on/off device on/off at regular times AND dim dimmable device at the same time, different times for different days of week.**
+**Turn lamp or other on/off device on or off at regular times AND dim dimmable device at the same time, different times for different days of week.**
 
 Solution:
 1. Open schedule created in scenario 4
