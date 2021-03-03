@@ -14,9 +14,8 @@
     "Save_settings": "Save settings",
     "Raw_settings": "Raw settings",
     "Get_raw_settings": "Get raw settings",
-    "Save_raw_settings_reload_needed": "Save raw settings (reload needed)",
-
-
+    "Save_raw_settings_reload_needed": "Save raw settings",
+    "Raw_settings_long_description":"Can be used to backup and restore settings (by copying or pasting settings here).<br>Be careful if pasting settings and saving them, current settings will be erased!<br>Reload of settings page needed after saving settings.",
     "//Schedule.vue":"_comment",
     "Active":"Active",
     "Inactive":"Inactive",
@@ -36,6 +35,8 @@
     "Edit_schedule_item":"Edit schedule item",
     "Select":"Select",
     "Select_days_of_week":"Select days of week",
+    "Set_type":"Set type",
+    "Set_type_of_event":"Set type of event",
     "Time":"Time",
     "Solar":"Solar",
     "Sun_event":"Sun event",

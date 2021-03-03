@@ -1,11 +1,12 @@
 {
   "id": "com.fp.advanced-scheduler",
-  "version": "0.1.3",
+  "version": "0.1.6",
   "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
     "en": "Advanced Scheduler",
-    "sv": "Advanced Scheduler"
+    "sv": "Advanced Scheduler",
+    "de": "Advanced Scheduler"
   },
   "description": {
     "en": "Easily schedule anything from simple to complex solar or time based events.",
@@ -45,7 +46,12 @@
         "email": "max.vandelaar@me.com"
       }
     ],
-    "translators": []
+    "translators": [
+      {
+        "name": "Dirk Göbel",
+        "email": "unknown"
+      }
+    ]
   },
   "homeyCommunityTopicId": 43767
 }

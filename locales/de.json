@@ -14,7 +14,8 @@
     "Save_settings": "Einstellungen speichern",
     "Raw_settings": "Raw-Einstellungen",
     "Get_raw_settings": "Raw-Einstellungen abrufen",
-    "Save_raw_settings_reload_needed": "Raw-Einstellungen speichern (Aktualisierung erforderlich)",
+    "Save_raw_settings_reload_needed": "Raw-Einstellungen speichern",
+    "Raw_settings_long_description":"Can be used to backup and restore settings (by copying or pasting settings here).<br>Be careful if pasting settings and saving them, current settings will be erased!<br>Reload of settings page needed after saving settings.",
 
 
     "//Schedule.vue":"_comment",
@@ -36,6 +37,8 @@
     "Edit_schedule_item":"Zeitplanelement bearbeiten",
     "Select":"Auswählen",
     "Select_days_of_week":"Wochentage wählen",
+    "Set_type":"Typ auswählen",
+    "Set_type_of_event":"Ereignistyp auswählen",
     "Time":"Zeit",
     "Solar":"Solar",
     "Sun_event":"Sonnenereignis",
