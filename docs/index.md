@@ -1,5 +1,5 @@
 # Advanced Scheduler main help page
-
+ 
 ## The purpose of the app
 
 There are a few main ideas that gave life to this app:
