@@ -22,5 +22,8 @@
   },
   "0.1.7": {
     "en": "Recreated fix for initial startup issue."
+  },
+  "0.1.8": {
+    "en": "Minor fix of transaltion errors, and help page now loads correctly."
   }
 }

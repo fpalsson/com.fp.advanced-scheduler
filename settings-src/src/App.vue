@@ -44,10 +44,10 @@
               Pressing any of these links will leave settings, save changes first!
           </p>
           <p>
-            <a href="https://fpalsson.github.io/com.fp.advanced-scheduler/" target="_blank">Help page</a>
+            <a href="https://fpalsson.github.io/com.fp.advanced-scheduler/">Help page</a>
           </p>
           <p>
-            <a href="https://community.athom.com/t/app-advanced-scheduler/43767" target="_blank">Community page</a>
+            <a href="https://community.athom.com/t/app-advanced-scheduler/43767">Community page</a>
           </p>
           
         </v-tab-item>
