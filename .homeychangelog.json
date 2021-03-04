@@ -19,5 +19,8 @@
   },
   "0.1.6": {
     "en": "Corrected some translations and layout issues."
+  },
+  "0.1.7": {
+    "en": "Recreated fix for initial startup issue."
   }
 }

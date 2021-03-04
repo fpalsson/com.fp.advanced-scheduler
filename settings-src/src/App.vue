@@ -25,12 +25,27 @@
         </v-tab-item>
         <v-tab-item key="help">
           
-          <p>If you need help, there are some links below</p>
 
+          <!--v-btn class="mt-2" color="blue" text @click="helpUrl = 'https://fpalsson.github.io/com.fp.advanced-scheduler/'"><v-icon dark>mdi-help-circle-outline</v-icon> {{ $t('Help') }}</v-btn>
+          <v-container class="ma-0 pa-0">
+            <iframe :src="helpUrl" 
+              style="position: fixed;
+                      border: none;
+                      margin: 0;
+                      padding: 0;
+                      z-index: 999999;
+                      height: 100%;"
+            ></iframe> 
+            <iframe :src="helpUrl" 
+                onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));' 
+                style="height:200px;width:100%;border:none;overflow:hidden;"></iframe>
+          </v-container-->
+          <p>
+              Pressing any of these links will leave settings, save changes first!
+          </p>
           <p>
             <a href="https://fpalsson.github.io/com.fp.advanced-scheduler/" target="_blank">Help page</a>
           </p>
-
           <p>
             <a href="https://community.athom.com/t/app-advanced-scheduler/43767" target="_blank">Community page</a>
           </p>
@@ -70,17 +85,21 @@ export default {
         schedules:{}
       },
       tab: null,
-      rawSettings:''
+      rawSettings:'',
+      helpUrl:''
     };
   },
   mounted() {
-    this.settings.schedules = new Array();
+    
     this.Homey.get('settings')
     .then(settings => {
       let ws = new WebSettings();
       ws.readSettings(settings);
       let schedules = ws.getSchedules();
-      this.settings.schedules = schedules;
+      if (schedules != null)
+        this.settings.schedules = schedules;
+      else
+        this.settings.schedules = new Array();
     })
     .catch(err => {
         this.Homey.alert(err);
