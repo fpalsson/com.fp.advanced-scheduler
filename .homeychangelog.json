@@ -28,5 +28,8 @@
   },
   "0.1.9": {
     "en": "Fixed bug with inactive schedules."
+  },
+  "0.1.10": {
+    "en": "Loads of debug output in start to help finding bug."
   }
-} 
+}

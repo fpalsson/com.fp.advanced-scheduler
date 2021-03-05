@@ -90,34 +90,52 @@ export default {
     };
   },
   mounted() {
+    console.log('Mounted');
     
     this.Homey.get('settings')
     .then(settings => {
       let ws = new WebSettings();
+      console.log('WebSttings created');
       ws.readSettings(settings);
+      console.log('Settings read');
       let schedules = ws.getSchedules();
-      if (schedules != null)
+      console.log('Schedules retrieved');
+      if (schedules != null){
         this.settings.schedules = schedules;
+        console.log('Schedules set');
+      }
       else
+      {
         this.settings.schedules = new Array();
+        console.log('Schedules set empty');
+      }
+      console.log('Schedules done');
+      console.log('Settings: ' + this.settings);
+      console.log('Sch: ' + this.settings.schedules);
+      console.log('Sch count: ' + this.settings.schedules.length);
     })
     .catch(err => {
         this.Homey.alert(err);
+        console.log('Err settings' + err);
     })
         
     let language = 'en';
     this.Homey.getLanguage()
     .then( lang => {
-      console.log ('lang then: ' + lang);
+      console.log ('Lang found: ' + lang);
       if (lang == 'sv' || 
           lang == 'de') {
             language = lang;
       }
 
       this.$i18n.locale = language;
+      console.log('Language set to ' + language);
+
     })
     .catch(err => {
         this.Homey.alert(err);
+        console.log('Err lang' + err);
+
     })
 
   },
