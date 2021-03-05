@@ -48,21 +48,26 @@ export class TriggerHandler {
         //this.sunWrapper.refreshTimes();
 
         this.settings.schedules.forEach(schedule => {
-            schedule.scheduleItems.forEach(scheduleitem => {
-                if (scheduleitem.daysType === DaysType.DaysOfWeek)
-                {
-                    let now = new Date();
-                    let yesterday = new Date(); yesterday.setTime(now.getTime()-24*60*60*1000);
-                    let tomorrow = new Date(); tomorrow.setTime(now.getTime()+24*60*60*1000);
-                    
-                    //this.homeyApp.log('before addScheduleItemToTriggers, date: ' + now);
-                    //this.homeyApp.log('before addScheduleItemToTriggers, yesterday: ' + yesterday);
-                    
-                    this.addScheduleItemToTriggers(mode, yesterday, schedule, scheduleitem);
-                    this.addScheduleItemToTriggers(mode, now, schedule, scheduleitem);
-                    this.addScheduleItemToTriggers(mode, tomorrow, schedule, scheduleitem);
-                }
-            })
+            if (schedule.active){
+                schedule.scheduleItems.forEach(scheduleitem => {
+                    if (scheduleitem.daysType === DaysType.DaysOfWeek)
+                    {
+                        let now = new Date();
+                        let yesterday = new Date(); yesterday.setTime(now.getTime()-24*60*60*1000);
+                        let tomorrow = new Date(); tomorrow.setTime(now.getTime()+24*60*60*1000);
+                        
+                        //this.homeyApp.log('before addScheduleItemToTriggers, date: ' + now);
+                        //this.homeyApp.log('before addScheduleItemToTriggers, yesterday: ' + yesterday);
+                        
+                        this.addScheduleItemToTriggers(mode, yesterday, schedule, scheduleitem);
+                        this.addScheduleItemToTriggers(mode, now, schedule, scheduleitem);
+                        this.addScheduleItemToTriggers(mode, tomorrow, schedule, scheduleitem);
+                    }
+                })
+            }
+            else{
+                this.homeyApp.log('Schedule ' + schedule.name + ' inactive, skipping');
+            }
         })
 
         this.homeyApp.log('Summary all triggers');
