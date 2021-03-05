@@ -25,5 +25,8 @@
   },
   "0.1.8": {
     "en": "Minor fix of transaltion errors, and help page now loads correctly."
+  },
+  "0.1.9": {
+    "en": "Fixed bug with inactive schedules."
   }
 }
