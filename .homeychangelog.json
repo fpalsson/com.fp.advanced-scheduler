@@ -31,5 +31,8 @@
   },
   "0.1.10": {
     "en": "Loads of debug output in start to help finding bug."
+  },
+  "0.1.11": {
+    "en": "Even more debug output in start to help finding bug."
   }
 }

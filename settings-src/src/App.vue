@@ -94,6 +94,7 @@ export default {
     
     this.Homey.get('settings')
     .then(settings => {
+      console.log('Raw settings: ' + settings);
       let ws = new WebSettings();
       console.log('WebSttings created');
       ws.readSettings(settings);
