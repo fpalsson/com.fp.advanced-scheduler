@@ -1,121 +1,122 @@
-# Advanced Scheduler main help page German
- 
-## The purpose of the app German
+# Advanced Scheduler Hilfeseite
 
-There are a few main ideas that gave life to this app: German
-* To easily be able to schedule things that should happen in your Homey system. 
-* To avoid having MANY different flows with different times as triggers just because you want something happen to several times every day.
-* To avoid having even more or unnecessarily complex flows if you want different behaviour on different days of the week.
-* Having a uniform way to setup scheduled events no matter if it is based on fixed time or solar events.
+## Ziel der App
 
-## Overall function of the app
-In the app you setup rules of when different things shall happen. 
+Einige Hauptideen, die diese App ins Leben gerufen haben:
+* Auf einfache Weise Dinge planen zu können, die in Ihrem Homey-System ausgeführt werden sollen.
+* Vermeidung von VIELEN unterschiedlichen Flows mit unterschiedlichen Zeittriggern, nur weil diese mehrmals am Tag ausgeführt werden sollen.
+* Vermeidung von noch mehr oder unnötig komplexen Flows, wenn Sie an verschiedenen Wochentagen ein unterschiedliches Verhalten wünschen.
+* Einheitliche Vorgehensweise beim Planen von Ereignissen, egal ob diese zeit- oder sonnenereignisbasiert sind.
 
-The meaning of "when" in this context is two things. When to trigger flows, and to change values of tags.
+## Funktionen der App
+In der App legen Sie Regeln fest, wann verschiedene Aktionen ausgeführt werden sollen.
 
-The meaning of "different things" in this context is: what should happen in the flows. This is controlled by how the flows are setup AND the values of the tags mentioned in the row above this.  
+Die Bedeutung von "wann" in diesem Zusammenhang betrifft zwei Dinge. Wann werden Abläufe ausgelöst und wann werden Werte von Tags geändert.
 
-## Structure of settings
+Die Bedeutung von "verschiedenen Aktionen" in diesem Zusammenhang ist: Was in den Flows ausgelöst werden soll. Dies wird durch den Aufbau der Flows UND durch die Werte, der in den zuvor genannten Tags gesteuert.
 
-Below is an overview of the structure of a schedule as defined in the app. The app can contain many schedules.
+## Aufbau der Einstellungen
+
+Nachfolgend finden Sie eine Übersicht über den Aufbau eines Zeitplanereignisses, wie er in der App definiert ist. Die App kann viele Zeitplanereignisses enthalten.
 
 
 ```    
-Schedule
+Zeitplan
      |
-     |- Contains tag definitions (zero or more)
-     | 
-     -- Contains schedule events (zero or more)
+     |- Enthält Tag-Definitionen (null oder mehr)
+     |
+     -- Enthält Zeitplanereignisse (null oder mehr)
              |
-             -- Contains tags with values to be set (zero or more from tag definitions above)
+             -- Enthält Tags mit zu setzenden Werten (null oder mehr aus den obigen Tag-Definitionen)
 ```
 
-So a schedule can contain tag definitions (more on that topic soon) and schedule events. Each schedule event represents a time in the schedule. This time can be fixed or based on solar events (sunset, sunrise and so on). A schedule event also has info on what day of the week it is active. That can be everyting from zero days (which doesn't really make sense) to all seven days per week in every combination you want.
+Ein Zeitplan kann also Tag-Definitionen (mehr zu diesem Thema in Kürze) und Zeitplanereignisse enthalten. Jedes Zeitplanereignis stellt eine Zeit im Zeitplan dar. Diese Zeit kann fix sein oder auf Sonnenereignissen basieren (Sonnenuntergang, Sonnenaufgang usw.). Ein Zeitplanereignis informiert darüber, an welchem Wochentag dieser aktiv ist. Man hat die Wahl, von null Tagen (was nicht wirklich Sinn macht) bis hin zu allen sieben Tagen pro Woche, und das in jeder gewünschten Kombination.
 
-The tag definitions in the schedule is simply a way to communicate with the "outside world" and make it possible to control flows. You define tags with a type (boolean, numeric or string) and give them a meaningful name.
+Die im Zeitplan enthaltenen Tag-Definitionen sind ein einfacher Weg mit der "Außenwelt" zu interagieren und die Steuerung von Abläufen zu ermöglichen. Definieren Sie boolesche, numerische oder aus einer Zeichenfolge erstellte Tags und geben ihnen einen sinnvollen Namen.
 
-After setting up tag definitions in the schedule, they can be added in the schedule events. When a schedule event is created all the tags defined in that schedule is automagically added to the schedule event. For every tag in the schedule event you set a value. This value (or these values if multiple tags are used) will be set by the app when the schedule event triggers.
+Nach dem Einrichten der im Zeitplan enthaltenen Tag-Definitionen können diese zu den Zeitplanereignissen hinzugefügt werden. Wenn ein Zeitplanereignis erstellt wird, werden alle in diesem Zeitplan definierten Variablen automatisch zu dem Zeitplanereignis hinzugefügt. Für jedes Tag im Zeitplanereignis legen Sie einen Wert fest. Dieser Wert (oder diese Werte, wenn mehrere Tags verwendet werden) wird von der App gesetzt wenn das Zeitplanereignis ausgelöst wird.
 
-## Scenarios and examples
-### Scenario 1
-**Turn lamp or other on/off device on or off at regular times, in this scenario turn on at 19:00 and turn off at 07:00 every day.**
+## Szenarien und Beispiele
+### Szenario 1
+**Eine Lampe oder ein anderes Gerät zu regelmäßigen Zeiten ein-/ausschalten. In diesem Szenario jeden Tag um 19:00 Uhr ein- und um 07:00 Uhr ausschalten**
 
-Solution: 
-1. Create a new schedule, call it "Weekly night lights on" for example. 
-1. Add a **tag** of type boolean to **tag definitions**, call it "On". 
-1. Add A new **schedule event**. Edit it and set the time to 19:00. Click Close.
-1. Set **tag value** to true. 
-1. Repeat the process for a new **schedule event**, but set the time to 07:00 and the tag value to false.
-1. Create a flow with "when card" Advanced Scheduler -> Schedule triggered. Select "Weekly night lights on" in the card.
-1. Add an if-card of type "Logic is true/yes" (unsure about the English translation). Browse for the tag/tag called "Weekly night on - On".
-1. Add a Then-card that does what you want to turn the light on, and an Else-card to turn off.
+Vorgehensweise:
+1. Fügen Sie einen neuen Zeitplan hinzu, nennen Sie ihn z.B. "Wöchentliches Nachtlicht an".
+1. Fügen Sie unter **Tag-Definitionen** ein neues **Tag** vom Typ Boolesche hinzu und nennen es "An".
+1. Fügen Sie ein neues **Zeitplanelement** hinzu. Bearbeiten Sie dieses und geben 19:00 ein, dann auf Schließen tippen.
+1. Aktivieren Sie den **Tag-Schalter**.
+1. Wiederholen Sie den Vorgang für ein weiteres **Zeitplanelement**, tragen diesmal aber 07:00 ein und belassen den **Tag-Schalter** deaktiviert.
+1. Erstellen Sie einen Flow und beginnen mit der "Wenn..." Karte: Advanced Scheduler -> Zeitplan ausgelöst und wählen Sie den Zeitplan "Wöchentliches Nachtlicht an" aus.
+1. Im Bereich "Und..." fügen sie die Logik-Karte "Logik ist ja/nein" hinzu und wählen das Tag "Wöchentliches Nachtlicht an - An" aus.
+1. Im Bereich "Dann..." fügen Sie das Gerät hinzu welches eingeschaltet werden soll. Fügen Sie das Gerät ein zweites Mal hinzu, diesmal aber das es ausgeschaltet werden soll und ziehen Sie die Karte in die Sonst-Position.
 
-_This can all seem excessive, it could be accomplished with two simple flows, but the power of the app will be shown in the comming scenarios._
+_Das alles mag übertrieben erscheinen, weil dieser Ablauf mit zwei Flows realisiert werden könnte, aber die Leistungsfähigkeit der App wird sich in den kommenden Szenarien noch zeigen._
 
-### Scenario 2
-**Turn lamp or other on/off device on or off at solar triggered times (with offsets if desired), in this scenario turn on at sunset and turn off at sunrise every day.**
+### Szenario 2
+**Eine Lampe oder ein anderes Gerät zu Sonnenereignissen ein-/ausschalten (wenn gewünscht mit einer Offset-Zeit). In diesem Szenario jeden Tag bei Sonnenuntergang ein- und bei Sonnenaufgang ausschalten.**
 
-Solution: 
-1. Expand the **schedule** created in scenario 1 above. 
-1. Click the edit button for both **schedule events**.
-1. Update the time to type **solar** and select **sunset/sunrise** respectively. Add offset if desired.
+Vorgehensweise:
+1. Erweitern Sie den **Zeitplan**, der in Szenario 1 oben erstellt wurde.
+1. Um die **Zeitplanelemete** zu editieren, tippen Sie auf den Editier-Button.
+1. Ändern Sie Zeit in den Typ **Solar** und wählen Sie **Sonnenuntergang** bzw. **Sonnenaufgang**. Wenn gewünscht fügen Sie noch eine Offset-Zeit hinzu.
 
-_This can all seem excessive, it could be accomplished with two flows using the Sun Event app, but the power of the app will be shown in the comming scenarios._
+_Das alles mag übertrieben erscheinen, weil dieser Ablauf mit zwei Flows und der Sonnenereignisse App realisiert werden könnte, aber die Leistungsfähigkeit der App wird sich in den kommenden Szenarien noch zeigen._
 
-### Scenario 3 
-**Turn lamp or other on/off device on or off at solar triggered times (with offsets if desired) and have it turned off during part of the night, in this scenario turn on at sunset and turn off at sunrise every day. Also have turned off between 23:00 and 05:00.**
+### Szenario 3
+**Eine Lampe oder ein anderes Gerät zu Sonnenereignissen ein-/ausschalten (wenn gewünscht mit einer Offset-Zeit) und während einer definierten Zeit in der Nacht ausschalten. In diesem Szenario jeden Tag bei Sonnenuntergang ein- und bei Sonnenaufgang ausschalten. Außerdem zwischen 23:00 und 05:00 Uhr ausschalten.**
 
-Solution: 
-1. Expand the **schedule** created in scenario 1 and 2. 
-1. Add two new **schedule events**. 
-1. Set **trigger time** to 23:00 and 05:00 respectively. 
-1. Set the **tag** On value to false/true respectively.
+Vorgehensweise:
+1. Erweitern Sie den **Zeitplan**, der in Szenario 1 und 2 erstellt wurde.
+1. Fügen Sie zwei neue **Zeitplanelemente** hinzu.
+1. Stellen Sie die **Auslösezeit** auf 23:00 bzw. 05:00 ein.
+1. Aktivieren/deaktivieren Sie den **Tag-Schalter** entsprechend.
 
-_This could be accomplished with two more flows (for a total of four flows) and times to trigger, so the power of the app is starting to show._
+_Dieser Ablauf könnte mit zwei weiteren Zeit-Flows, also insgesamt vier Flows, realisiert werden. Langsam kann man die Leistungsfähigkeit der App erahnen._
 
-### Scenario 4
-**Turn lamp or other on/off device on or off at regular times, different times for different days of week.**
+### Szenario 4
+**Eine Lampe oder ein anderes Gerät zu regelmäßigen Zeiten ein-/ausschalten, allerdings zu unterschiedlichen Zeiten an unterschiedlichen Wochentagen.**
 
-Solution:
-1. Create a new schedule, call it "Lights on during breakfast" for example. 
-1. Define a tag of type boolean, call it "On". 
-1. Add A new schedule event. Edit it and set the time to 06:00. Select weekdays (Mo-Fr) in the selection dropdown. Click Close. 
-1. Set the tag value to true. 
-1. Add A new schedule event. Edit it and set the time to 07:00. Select weekdays (Mo-Fr) in the selection dropdown. Click Close. 
-1. Set the tag value to false. 
-1. Add A new schedule event. Edit it and set the time to 09:00. Select weekends (Sa, Su) in the selection dropdown. Click Close. 
-1. Set the tag value to true. 
-1. Add A new Schedule event. Edit it and set the time to 10:00. Select weekends (Sa, Su) in the selection dropdown. Click Close. 
-1. Set the tag value to false. 
-1. Create a flow with trigger card Advanced Scheduler -> Schedule triggered. Select "Lights on during breakfast" in the card.
-1. Add a If-cards of type "Logic is true/yes" (unsure about the English translation). Browse for the tag called "Lights on during breakfast - On".
-1. Add one or more Then-cards that does what you want when to turn the light on, and one or more Else-cards to turn off.
+Vorgehensweise:
+1. Fügen Sie einen neuen Zeitplan hinzu, nennen Sie ihn z.B. "Licht beim Frühstück an".
+1. Fügen Sie unter **Tag-Definitionen** ein neues **Tag** vom Typ Boolesche hinzu und nennen es "An".
+1. Fügen Sie ein neues **Zeitplanelement** hinzu. Bearbeiten Sie dieses und geben 06:00 ein. Wählen Sie die Wochentage (Mo-Fr) im Dropdown-Menü aus, dann auf Schließen tippen.
+1. Aktivieren Sie den **Tag-Schalter**.
+1. Fügen Sie ein neues **Zeitplanelement** hinzu. Bearbeiten Sie dieses und geben 07:00 ein. Wählen Sie die Wochentage (Mo-Fr) im Dropdown-Menü aus, dann auf Schließen tippen.
+1. Deaktivieren Sie den **Tag-Schalter**.
+1. Fügen Sie ein neues **Zeitplanelement** hinzu. Bearbeiten Sie dieses und geben 09:00 ein. Wählen Sie die Wochenendtage (Sa-So) im Dropdown-Menü aus, dann auf Schließen tippen.
+1. Aktivieren Sie den **Tag-Schalter**.
+1. Fügen Sie ein neues **Zeitplanelement** hinzu. Bearbeiten Sie dieses und geben 10:00 ein. Wählen Sie die Wochenendtage (Sa-So) im Dropdown-Menü aus, dann auf Schließen tippen.
+1. Deaktivieren Sie den **Tag-Schalter**.
+1. Erstellen Sie einen Flow und beginnen mit der "Wenn..." Karte: Advanced Scheduler -> Zeitplan ausgelöst und wählen Sie den Zeitplan "Licht beim Frühstück an" aus.
+1. Im Bereich "Und..." fügen Sie die Logik-Karte "Logik ist ja/nein" hinzu und wählen das Tag "Licht beim Frühstück an - An" aus.
+1. Fügen Sie eine oder mehrere "Dann..." Karten hinzu, die das Licht einschalten und eine oder mehrere Sonst-Karten, die das Licht ausschalten sollen.
 
-### Scenario 5, alternative 1
-**Turn lamp or other on/off device on or off at regular times AND dim dimmable device at the same time, different times for different days of week.**
+### Szenario 5, Alternative 1
+**Eine Lampe oder ein anderes Gerät zu regelmäßigen Zeiten ein-/ausschalten UND ein dimmbares Gerät zu regelmäßigen Zeiten dimmen, aber zu unterschiedlichen Zeiten und Wochentagen.**
 
-Solution:
-1. Open schedule created in scenario 4
-1. Add a new tag definition of type number, call it "Dimval". 
-1. For all schedule events created in scenario 4, add tag "Dimval" and set desired dim values (by now you should know how to do that).
-1. Go back to flow created in scenario 4.
-1. Add one or more Then-card for dimming lights, and one or more Else-card to dimming as well. Use the tag **Lights on during breakfast - DimVal** as an argument in the cards.
+Vorgehensweise:
+1. Öffnen Sie den Zeitplan, den Sie unter Szenario 4 erstellt haben.
+1. Fügen Sie unter **Tag-Definitionen** ein neues **Tag** vom Typ Nummer hinzu und nennen es "DimVal".
+1. Fügen Sie zu allen in Szenario 4 erstellten Zeitplanelementen das Tag "DimVal" hinzu und tragen den gewünschten Dimmwert ein (inzwischen sollten Sie wissen wie man das macht).
+1. Wählen Sie den in Szenario 4 erstellten Flow aus.
+1. Fügen Sie eine oder mehrere "Dann..." Karten sowie eine weitere "Sonst..." Karte für die zu dimmenden Lampen hinzu. Verwenden Sie in den Karten das Tag **Licht beim Frühstück an - DimVal**.
 
-_The drawback of this is that you need two action cards for dimming as we have "Then/Else" logic._
+_Der Nachteil dabei ist, dass Sie zwei Aktionskarten zum Dimmen benötigen, da wir eine "Dann/Sonst"-Logik haben._
 
-### Scenario 5, alternative 2
-**Turn lamp or other on/off device on or off at regular times AND dim dimmable device at the same time, different times for different days of week.**
+### Szenario 5, Alternative 2
+**Eine Lampe oder ein anderes Gerät zu regelmäßigen Zeiten ein-/ausschalten UND ein dimmbares Gerät zu regelmäßigen Zeiten dimmen, aber zu unterschiedlichen Zeiten und Wochentagen.**
 
-Solution:
-1. Open schedule created in scenario 4
-1. Do steps in alternative 1 until it is time for the flow part.
-1. Now create a new flow with trigger card Advanced Scheduler -> Schedule triggered. Select "Lights on during breakfast" in the card.
-1. Call the flow for example "Lights dim during breakfast".
-1. Add one or more Then-cards that dims devices. Select the tag **Lights on during breakfast - DimVal** as an argument to the card. 
-_The drawback of this is that you need an additional flow for dimable devices, but you only need one action card in the flow, as opposed to two needed cards in alternative 1._
+Vorgehensweise:
+1. Öffnen Sie den Zeitplan, den Sie unter Szenario 4 erstellt haben.
+1. Führen Sie die Schritte wie in Alternative 1 aus, bis Sie zu dem Flow-Teil kommen.
+1. Erstellen Sie einen neuen Flow und beginnen mit der "Wenn..." Karte: Advanced Scheduler -> Zeitplan ausgelöst und wählen Sie den Zeitplan "Licht beim Frühstück an" aus.
+1. Nennen Sie den Flow beispielsweise "Licht beim Frühstück dimmen".
+1. Fügen Sie eine oder mehrere "Dann..." Karten für die zu dimmenden Lampen hinzu. Verwenden Sie in der Karten das Tag **Licht beim Frühstück an - DimVal**.
 
-**As you see, you can create VERY complex schedules easily with this app, without the need of complex flows.**
+_Der Nachteil dabei ist, dass Sie einen zusätzlichen Flow für das zu dimmende Gerät benötigen. Aber im Gegensatz zu zwei benötigten Karten in Alternative 1, brauchen Sie hier nur eine Aktionskarte._
+
+**Wie Sie sehen, können Sie mit dieser App SEHR komplexe Zeitpläne erstellen ohne das komplexe Abläufe erforderlich sind.**
 
 ## Details
 
-It is totally possible to have tags defined in a schedule that are not used in the schedule events. The tag values for a specific tag will only be changed if there is a tag added to that schedule event. Perhaps you only want to change a specific tag value in some of the events. In that case simply removed the tags in question with the trashcan button.
+Es ist durchaus möglich Tags in einem Zeitplan zu definieren, die nicht in den Zeitplanereignissen verwendet werden. Die Tag-Werte für ein bestimmtes Tag werden nur geändert, wenn diesem Zeitplanereignis ein Tag hinzugefügt wird. Vielleicht möchten Sie nur in einigen Ereignissen einen bestimmten Tag-Wert ändern. In diesem Fall entfernen Sie einfach die betreffenden Tags mit der Schaltfläche "Papierkorb".
