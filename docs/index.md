@@ -1,5 +1,7 @@
 # Advanced Scheduler main help page
  
+[German version](com.fp.advanced-scheduler/index.de.html)
+ 
 ## The purpose of the app
 
 There are a few main ideas that gave life to this app:
