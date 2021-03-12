@@ -1,8 +1,10 @@
 'use strict';
 
+import { SendHandle } from "child_process";
+
 export class WebSettings {
     
-    public schedules:Schedule[]; //Lets expose it publicly for now, refactor later.
+    public settings:Settings; //Lets expose it publicly for now, refactor later.
 
     constructor() {
         
@@ -10,11 +12,11 @@ export class WebSettings {
   
     
 
-    getSchedules():Schedule[]{
-        return this.schedules;
+    getSettings():Settings{
+        return this.settings;
     }
 
-    buildSettings(settings) {
+    buildSettings(settings:Settings) {
         let localsettings = {settings:{
                 schedules:[]
             }
@@ -93,13 +95,16 @@ export class WebSettings {
                 return -1;
             }
     
-            this.schedules = new Array();
+            this.settings = new Settings();
             
             jsonsettings.settings.schedules.forEach(sched => {
-                let localschedule = new Schedule(parseInt(sched.id),sched.name, Boolean(sched.active));
+                let localschedule = this.settings.addNewScheduleInternal(parseInt(sched.id),sched.name, Boolean(sched.active));
+                console.log('Added schedule: ' + localschedule.id +  ' ' + localschedule.name );
                 sched.tokens.forEach (token => {
-                    let localtoken = new Token(parseInt(token.id), token.name, token.type)   
+                    let localtoken = new Token(localschedule, parseInt(token.id), token.name, token.type)   
+                    console.log('created token: ' + localtoken.id +  ' ' + localtoken.name );
                     localschedule.tokens.push(localtoken);            
+                    console.log('pushed token: ' + localtoken.id +  ' ' + localtoken.name );
                 });    
                 sched.scheduleitems.forEach(si => {
                     let dt:DaysType;
@@ -117,14 +122,14 @@ export class WebSettings {
                         setype = si.timetype.replace('solar:','');
                     }
 
-                    let localsi = new ScheduleItem(parseInt(si.id), dt, si.daysarg, tt, setype, si.timearg);
+                    let localsi = new ScheduleItem(localschedule, parseInt(si.id), dt, si.daysarg, tt, setype, si.timearg);
                     
                     si.tokensetters.forEach(ti => {
                         let localtoken = localschedule.tokens.find(t=>t.id==ti.id)
                         let localTokenSetter:TokenSetter;
-                        if (localtoken.type == 'boolean') { localTokenSetter = new TokenSetter(localtoken,Boolean(ti.value)); }
-                        else if (localtoken.type == 'string') { localTokenSetter = new TokenSetter(localtoken,ti.value); }
-                        else if (localtoken.type == 'number') { localTokenSetter = new TokenSetter(localtoken,Number(ti.value)); }
+                        if (localtoken.type == 'boolean') { localTokenSetter = new TokenSetter(localsi, localtoken,Boolean(ti.value)); }
+                        else if (localtoken.type == 'string') { localTokenSetter = new TokenSetter(localsi, localtoken,ti.value); }
+                        else if (localtoken.type == 'number') { localTokenSetter = new TokenSetter(localsi, localtoken,Number(ti.value)); }
                         else { 
                         //    if (this.homeyApp != null) this.homeyApp.log('Incorrect type for tokenSetter');
                             }
@@ -135,7 +140,7 @@ export class WebSettings {
                     localschedule.scheduleItems.push(localsi);            
                 });     
     
-                this.schedules.push(localschedule);
+                //this.schedules.addNewSchedule(localschedule);
             });
 
             console.log('Settings read');
@@ -145,7 +150,7 @@ export class WebSettings {
             console.log('Error: ' + error);
             return -1;
         }
-        return this.schedules.length;
+        return this.settings.schedules.length;
 
     }
  
@@ -171,37 +176,163 @@ export class WebSettings {
 
 }
 
+
+
+export class Settings {
+    constructor(){
+        this.schedules = new Array<Schedule>();
+    }
+
+    schedules:Array<Schedule>;
+
+    addNewSchedule(name:string, active:boolean):Schedule{
+        var maxid = 0;
+        this.schedules.forEach(schedule => {
+            if (schedule.id > maxid) maxid = schedule.id;
+        })
+        return this.addNewScheduleInternal(maxid + 1, name, active)
+    }
+
+    addNewScheduleInternal(id: number, name:string, active:boolean):Schedule{
+        let newSchedule = new Schedule(this, id, name, active);
+        this.schedules.push(newSchedule);
+        return newSchedule;
+    }
+
+
+    deleteSchedule(id:number):boolean{
+        this.schedules.forEach(schedule => {
+            if (schedule.id == id) {
+                var index = this.schedules.indexOf(schedule);
+                if (index !== -1) {
+                    this.schedules.splice(index, 1);
+                    //console.log('Deleted schedule with id: ' + schedule.id)
+                    return true;
+                }
+            }
+        })
+        return false;
+    }
+
+
+}
+
+
 export class Schedule {
-    constructor(id:number, name:string, active:boolean){
+    constructor(settings:Settings, id:number, name:string, active:boolean){
+        this.settings = settings;
         this.id=id;
         this.name=name;
         this.active=active;
-        this.tokens = new Array();
-        this.scheduleItems = new Array();
-        //this.deletedialogopen=false;
+        this.tokens = new Array<Token>();
+        this.scheduleItems = new Array<ScheduleItem>();
     }
 
+    settings:Settings;
     id:number;
     name:string;
     active:boolean;
     tokens:Token[];
     scheduleItems:ScheduleItem[];
-    //deletedialogopen:boolean;
+
+    delete(){
+        this.settings.deleteSchedule(this.id);
+    }
+
+    addNewToken(name:string, type: "boolean" | "number" | "string"):Token{
+        var maxid = 0;
+        this.tokens.forEach(token => {
+            if (token.id > maxid) maxid = token.id;
+        })
+        return this.addNewTokenInternal(maxid + 1, name, type)
+    }
+
+    addNewTokenInternal(id: number, name:string, type: "boolean" | "number" | "string"):Token{
+        let newToken = new Token(this, id, name, type);
+        this.tokens.push(newToken);
+        return newToken;
+    }
+
+
+    deleteToken(id:number):boolean{
+        this.tokens.forEach(token => {
+            if (token.id == id)
+            var index = this.tokens.indexOf(token);
+            if (index !== -1) {
+                this.tokens.splice(index, 1);
+                return true;
+            }
+        })
+        return false;
+    }
+
+
+    addNewScheduleItem(dayType:DaysType, daysArg:number, timeType:TimeType, sunEventType:string, timeArg:string):ScheduleItem{
+        var maxid = 0;
+        this.scheduleItems.forEach(si => {
+            if (si.id > maxid) maxid = si.id;
+        })
+        return this.addNewScheduleItemInternal(maxid + 1, dayType, daysArg, timeType, sunEventType, timeArg)
+    }
+
+    addNewScheduleItemInternal(id: number, dayType:DaysType,
+                daysArg:number,
+                timeType:TimeType,
+                sunEventType:string,
+                timeArg:string):ScheduleItem{
+        let newSI = new ScheduleItem(this, id, dayType, daysArg, timeType, sunEventType, timeArg);
+
+        this.tokens.forEach(token=>{
+            newSI.addNewTokenSetterByIdNoVal(token.id);
+        })
+
+        this.scheduleItems.push(newSI);
+
+        return newSI;
+    }
+
+
+    deleteScheduleItem(id:number):boolean{
+        this.scheduleItems.forEach(si => {
+            if (si.id == id)
+                var index = this.scheduleItems.indexOf(si);
+            if (index !== -1) {
+                this.scheduleItems.splice(index, 1);
+                return true;
+            }
+        })
+        return false;
+    }
 
 }
 
+
+
+
 export class Token {
-    constructor(id:number, name:string, type: "boolean" | "number" | "string"){
+    constructor(schedule:Schedule, id:number, name:string, type: "boolean" | "number" | "string"){
+        this.schedule = schedule;
         this.id=id;
         this.name=name;
         this.type=type;
-        //this.deletedialogopen=false;
     }
 
+    schedule:Schedule;
     id:number;
     name:string;
     type: "boolean" | "number" | "string" ;
-    //deletedialogopen:boolean;
+
+    delete(){
+        this.schedule.scheduleItems.forEach(si => {
+            si.tokenSetters.forEach(ts => {
+                if (ts.token.id==this.id){
+                    si.deleteTokenSetter(this.id)
+                }
+            })
+        })
+        
+        this.schedule.deleteToken(this.id);
+    }
 }
 
 export enum DaysType {
@@ -224,13 +355,19 @@ export class Day{
     value:number;
 }
 
+
+
+
+
 export class ScheduleItem {
-    constructor(id:number,
+    constructor(schedule:Schedule,
+                id:number,
                 daytype:DaysType,
                 daysArg:number,
                 timeType:TimeType,
                 sunEventType:string,
                 timeArg:string){
+        this.schedule=schedule;
 
         this.allDays = new Array();
         this.allDays=this.getAllDays();
@@ -242,12 +379,11 @@ export class ScheduleItem {
         this.timeType=timeType;
         this.timeArg=timeArg;
         this.sunEventType=sunEventType;
-        this.tokenSetters = new Array();
-        //this.deletedialogopen=false;
-        //this.editdialogopen=false;
+        this.tokenSetters = new Array<TokenSetter>();
         this.updateSelectedDays();
     }
 
+    schedule:Schedule;
     id:number;
     daysType:DaysType;
     internalDaysArg:number // 0..127, monday is 1, tuesday is 2, wednesday is 4, thursday is 8 and so on;
@@ -255,12 +391,14 @@ export class ScheduleItem {
     sunEventType:string;
     timeArg:string;
     tokenSetters:TokenSetter[];
-    //deletedialogopen:boolean;
-    //editdialogopen:boolean;
     private allDays:Day[];
     private internalSelectedDays:Day[];
 
-    //A bit ugly to do translation here, but...
+
+    delete(){
+        this.schedule.deleteScheduleItem(this.id);
+    }
+    
     getAllDays(){
         if (this.allDays.length > 0) return this.allDays;
 
@@ -338,18 +476,65 @@ export class ScheduleItem {
         this.daysArg=daysArg;
     }
 
+    addNewTokenSetter(token:Token, value:any):TokenSetter{
+        return this.addNewTokenSetterInternal(token, value)
+    }
+
+    addNewTokenSetterByIdNoVal(tokenid:number):TokenSetter{
+        this.schedule.tokens.forEach(token => {
+            if (token.id == tokenid){
+                if (token.type === 'string') return this.addNewTokenSetterInternal(token, 'Not set') 
+                else if (token.type === 'number') return this.addNewTokenSetterInternal(token, 0) 
+                else if (token.type === 'boolean') return this.addNewTokenSetterInternal(token, false) 
+            }
+        })
+        return null;
+    }
+
+    addNewTokenSetterByIdWithVal(tokenid:number, value:any):TokenSetter{
+        this.schedule.tokens.forEach(token => {
+            if (token.id == tokenid){
+                return this.addNewTokenSetterInternal(token, value)
+            }
+        })
+        return null;
+    }
+
+    addNewTokenSetterInternal(token:Token, value:any):TokenSetter{
+        let newTS = new TokenSetter(this, token, value);
+        this.tokenSetters.push(newTS);
+        return newTS;
+    }
+
+    deleteTokenSetter(tokenid):boolean{
+        this.tokenSetters.forEach(ts => {
+            if (ts.token.id == tokenid)
+            var index = this.tokenSetters.indexOf(ts);
+            if (index !== -1) {
+                this.tokenSetters.splice(index, 1);
+                return true;
+            }
+        })
+        return false;
+    }
+
 }
 
+
 export class TokenSetter {
-    constructor(token:Token, value:any) {
+    constructor(scheduleItem:ScheduleItem, token:Token, value:any) {
+        this.scheduleItem=scheduleItem;
         this.token=token;
         this.value=value;
-        //this.deletedialogopen=false;
     }
+    scheduleItem:ScheduleItem;
 
     token:Token;
     value:any;
-   // deletedialogopen:boolean;
+
+    delete(){
+        this.scheduleItem.deleteTokenSetter(this.token.id)
+    }
 }
 
 export class TimeInfo{

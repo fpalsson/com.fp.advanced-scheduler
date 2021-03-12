@@ -34,5 +34,31 @@
   },
   "0.1.11": {
     "en": "Even more debug output in start to help finding bug."
+  },
+  "0.1.12": {
+    "en": "Even more debug output at addShedule to find bug."
+  },
+  "0.1.13": {
+    "en": "EVEN MORE debug output at addShedule to find bug."
+  },
+  "0.1.14": {
+    "en": "Hopefully last version with more debug output at addShedule to find bug."
+  },
+  "0.1.15": {
+    "en": "Silly amount of debug output to find bug."
+  },
+  "0.1.16": {
+    "en": "Attempt to fix unusual startup error by initializing empty schedules on creation."
+  },
+  "0.1.17": {
+    "en": "Fix of rare startup error, some minor translation changes, reload of settings after raw save, possibility to reload last saved settings."
+  },
+  "0.1.18": {
+    "en": "Refactored some code to keep it easier to maintain."
+  },
+  "0.1.19": {
+    "en": "Fixed bug when adding token setter."
   }
+  
+  
 }

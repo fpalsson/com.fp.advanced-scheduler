@@ -19,6 +19,8 @@ export class Schedule {
 
 }
 
+
+
 export class Token {
     constructor(id:number, name:string, type: "boolean" | "number" | "string"){
         this.id=id;

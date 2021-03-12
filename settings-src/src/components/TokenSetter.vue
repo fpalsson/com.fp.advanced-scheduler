@@ -20,7 +20,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="green darken-1" text @click="deletedialogopen=false">{{ $t('No') }}</v-btn>
-                        <v-btn color="red darken-1" text @click="tokenSetterDeleteAndCloseDialog(scheduleItem.id, tokenSetter.token.id)">{{ $t('Yes_delete') }}</v-btn>
+                        <v-btn color="red darken-1" text @click="tokenSetterDeleteAndCloseDialog()">{{ $t('Yes_delete') }}</v-btn>
                     </v-card-actions>  
                 </v-card>
             </v-dialog>
@@ -56,36 +56,11 @@ export default {
     
   },
   methods: {
-    numKeyMonitor : function (ev){
-        try {
-            console.log('numKeyMonitor event: ' + ev);
-            if (isNaN(ev)) console.log('Not a number');
-                    //ev.preventDefault();
-        } catch (error) {
-            console.log('numKeyMonitor error: ' + error)
-        }
-    },
-
-    tokenSetterDeleteAndCloseDialog : function (scheduleitemid, tokenid) {
+    tokenSetterDeleteAndCloseDialog : function () {
         //console.log('tokenDeleteAndCloseDialog' + this.seetings);
         //console.log('tokenDeleteAndCloseDialog root' + this.settings.schedules.length);
-
-        this.settings.schedules.forEach(schedule => {
-            schedule.scheduleItems.forEach(si => {
-                if (scheduleitemid == si.id){
-                    si.tokenSetters.forEach(ts => {
-                        if (ts.token.id == tokenid){
-                            var index = si.tokenSetters.indexOf(ts);
-                            if (index !== -1) {
-                                si.tokenSetters.splice(index, 1);
-                                console.log('Deleted tokenSetter with id: ' + ts.id)
-                                this.deletedialogopen=false;
-                            }
-                        }
-                    })
-                }
-            })
-        })
+        this.tokenSetter.delete();
+        this.deletedialogopen=false;
     },
   }
 };

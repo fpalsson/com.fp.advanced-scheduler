@@ -24,7 +24,7 @@
                         <v-spacer></v-spacer>
                         <!--v-btn color="green darken-1" text @click="tokenCloseDeleteDialog(token.id)">No</v-btn-->
                         <v-btn color="green darken-1" text @click="deletedialogopen=false">{{ $t('No') }}</v-btn>
-                        <v-btn color="red darken-1" text @click="tokenDeleteAndCloseDialog(token.id)">{{ $t('Yes_delete') }}</v-btn>
+                        <v-btn color="red darken-1" text @click="tokenDeleteAndCloseDialog()">{{ $t('Yes_delete') }}</v-btn>
                     </v-card-actions>  
                 </v-card>
             </v-dialog>
@@ -58,33 +58,9 @@ export default {
     }
   },
   methods: {
-    tokenDeleteAndCloseDialog : function (tokenid) {
-        //console.log('tokenDeleteAndCloseDialog' + this.seetings);
-        //console.log('tokenDeleteAndCloseDialog root' + this.settings.schedules.length);
-
-        this.settings.schedules.forEach(schedule => {
-            schedule.tokens.forEach(token => {
-                if (token.id == tokenid) {
-                    var index = schedule.tokens.indexOf(token);
-                    if (index !== -1) {
-                        schedule.tokens.splice(index, 1);
-                        console.log('Deleted token with id: ' +token.id)
-                    }
-                    schedule.scheduleItems.forEach(si => {
-                        si.tokenSetters.forEach(ti => {
-                            if (ti.id==tokenid){
-                                index = si.tokenSetters.indexOf(ti);
-                                if (index !== -1) {
-                                    si.tokenSetters.splice(index, 1);
-                                    console.log('Deleted tokensetter with id: ' +ti.id)
-                                }
-                            }
-                        })
-                    })
-                }
-                this.deletedialogopen=false;
-            })
-        })
+    tokenDeleteAndCloseDialog : function () {
+        this.token.delete();
+        this.deletedialogopen=false;
     },
   }
 };

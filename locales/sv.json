@@ -12,10 +12,11 @@
     "Add_new_schedule": "Lägg till nytt schema",
     "New_schedule": "Nytt schema",
     "Save_settings": "Spara inställningar",
+    "Reload_last_saved_settings": "Ladda senaste sparade inställningar",
     "Help": "Hjälp",
     "Raw_settings": "Råa inställningar",
-    "Get_raw_settings": "Hämta råa inställningar",
-    "Save_raw_settings_reload_needed": "Spara råa inställningar",
+    "Get_current_raw_settings": "Hämta aktuella råa inställningar",
+    "Save_raw_settings": "Spara råa inställningar",
     "Raw_settings_long_description":"Kan användas för att ta backup och återställa densamma (genom att kopiera eller klistra in inställningar).<br>Var försiktig när du klistrar in inställningar och sparar, nuvarande inställningar försvinner!<br>Du måste gå ur inställningssidan efter att du sparat och därefter öppna den igen.",
 
     "//Schedule.vue":"_comment",

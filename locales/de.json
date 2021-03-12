@@ -12,10 +12,11 @@
     "Add_new_schedule": "Neuen Zeitplan hinzufügen",
     "New_schedule": "Neuer Zeitplan",
     "Save_settings": "Einstellungen speichern",
+    "Reload_last_saved_settings": "Zuletzt gespeicherten Einstellungen laden",
     "Help": "Hilfe",
     "Raw_settings": "Raw-Einstellungen",
-    "Get_raw_settings": "Raw-Einstellungen abrufen",
-    "Save_raw_settings_reload_needed": "Raw-Einstellungen speichern",
+    "Get_current_raw_settings": "Aktuelle raw-Einstellungen abrufen",
+    "Save_raw_settings": "Raw-Einstellungen speichern",
     "Raw_settings_long_description":"Kann zum Sichern und Wiederherstellen von Einstellungen verwendet werden (durch Kopieren oder Einfügen von Einstellungen).<br>Seien Sie vorsichtig wenn Sie Einstellungen einfügen und speichern, die aktuellen Einstellungen werden gelöscht!<br>    Nach dem Speichern der Einstellungen muss die Seite aktualisiert werden.",
 
 

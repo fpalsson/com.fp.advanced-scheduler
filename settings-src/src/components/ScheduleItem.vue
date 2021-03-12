@@ -78,7 +78,7 @@
                                         ></v-time-picker-->
                                     </v-row>
                                     <v-row>
-                                        <v-btn  color="green darken-1" text @click="editdialogopen=false" :disabled="!isEditFormValid">Close</v-btn>
+                                        <v-btn  color="green darken-1" text @click="editdialogopen=false" :disabled="!isEditFormValid">{{ $t('Close') }}</v-btn>
                                         <!--v-btn color="green darken-1" text @click="'dialogsi' + scheduleItem.id + ' = false'">Close</v-btn-->
                                     </v-row>
                                 </v-container>
@@ -107,7 +107,7 @@
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="green darken-1" text @click="deletedialogopen = false">{{ $t('No') }}</v-btn>
-                            <v-btn color="red darken-1" text @click="scheduleItemDeleteAndCloseDialog(scheduleItem.id)">{{ $t('Yes_delete') }}</v-btn>
+                            <v-btn color="red darken-1" text @click="scheduleItemDeleteAndCloseDialog()">{{ $t('Yes_delete') }}</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -241,20 +241,9 @@ export default {
       },
 
 
-      scheduleItemDeleteAndCloseDialog : function (scheduleItemid) {
-          
-          this.settings.schedules.forEach(schedule => {
-              schedule.scheduleItems.forEach(si => {
-                  if (si.id == scheduleItemid) {
-                      var index = schedule.scheduleItems.indexOf(si);
-                      if (index !== -1) {
-                          schedule.scheduleItems.splice(index, 1);
-                          console.log('Deleted schedule item with id: ' +scheduleItemid)
-                      }
-                      this.deletedialogopen=false;
-                  }
-              })
-          })
+      scheduleItemDeleteAndCloseDialog : function () {
+        this.scheduleItem.delete();  
+        this.deletedialogopen=false;
       },
 
       getSunEvents : function (){
@@ -274,38 +263,16 @@ export default {
       },
 
       addTokenSetterAndCloseDialog : function (tokenid) {
-          let s;
-          this.settings.schedules.forEach(schedule=>{
-              schedule.scheduleItems.forEach(si=>{
-                  if (si.id == this.scheduleItem.id) s=schedule;
-              })
-          })
-          s.tokens.forEach(token=> {
-              if (token.id == tokenid){
-                  let ti;
-                  if (token.type === 'string') ti = new TokenSetter(token,this.$t('Not set'));
-                  else if (token.type === 'number') ti = new TokenSetter(token,0);
-                  else if (token.type === 'boolean') ti = new TokenSetter(token,false);
-                  this.scheduleItem.tokenSetters.push(ti);
-
-              }
-              this.addTokenSetterOpen=false;
-              this.tokenSetterToAdd=-1;
-          })
+        this.scheduleItem.addNewTokenSetterByIdNoVal(tokenid)
           
+        this.addTokenSetterOpen=false;
+        this.tokenSetterToAdd=-1;
       },
 
       getNonAddedTokenSetters : function () {
           let sched;
           let res = new Array();
-          this.settings.schedules.forEach(schedule=>{
-              schedule.scheduleItems.forEach(si=>{
-                  if (si.id == this.scheduleItem.id) sched=schedule;
-              })
-          })
-          
-          //console.log('Found schedule: ' +sched.name);
-          sched.tokens.forEach(token=> {
+          this.scheduleItem.schedule.tokens.forEach(token=> {
              //console.log('Checking token: ' +token.name + ' with id: ' + token.id);
 
               var tifound = false;
