@@ -38,8 +38,8 @@ export class SunWrapper {
 
         return [ new TimeInfo("dawn","Dawn", times.dawn ),
             new TimeInfo("dusk","Dusk", times.dusk ),
-            new TimeInfo("goldenHour","Golden Hour", times.goldenHour ),
-            new TimeInfo("goldenHourEnd","Golden Hour End", times.goldenHourEnd ),
+            new TimeInfo("goldenHour","Evening Golden Hour Start", times.goldenHour ),
+            new TimeInfo("goldenHourEnd","Morning Golden Hour End", times.goldenHourEnd ),
             new TimeInfo("nadir","Nadir", times.nadir ),
             new TimeInfo("nauticalDawn","Nautical Dawn", times.nauticalDawn ),
             new TimeInfo("nauticalDusk","Nautical Dusk", times.nauticalDusk ),

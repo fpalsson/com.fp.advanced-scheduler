@@ -58,6 +58,9 @@
   },
   "0.1.19": {
     "en": "Fixed bug when adding token setter."
+  },
+  "0.1.20": {
+    "en": "Fixed translation problem to remove confusion about the golden hour."
   }
   
   
