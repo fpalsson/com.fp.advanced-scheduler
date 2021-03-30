@@ -61,7 +61,9 @@
   },
   "0.1.20": {
     "en": "Fixed translation problem to remove confusion about the golden hour."
+  },
+  "0.1.21": {
+    "en": "Fixed bug when removing schedule event. Multiple schedule events was likely to be removed."
   }
-  
   
 }

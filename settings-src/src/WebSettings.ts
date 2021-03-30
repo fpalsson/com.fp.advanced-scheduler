@@ -241,8 +241,10 @@ export class Schedule {
 
     addNewToken(name:string, type: "boolean" | "number" | "string"):Token{
         var maxid = 0;
-        this.tokens.forEach(token => {
-            if (token.id > maxid) maxid = token.id;
+        this.settings.schedules.forEach(s=> {
+            s.tokens.forEach(token => {
+                if (token.id > maxid) maxid = token.id;
+            })
         })
         return this.addNewTokenInternal(maxid + 1, name, type)
     }
@@ -256,11 +258,12 @@ export class Schedule {
 
     deleteToken(id:number):boolean{
         this.tokens.forEach(token => {
-            if (token.id == id)
-            var index = this.tokens.indexOf(token);
-            if (index !== -1) {
-                this.tokens.splice(index, 1);
-                return true;
+            if (token.id == id){
+                var index = this.tokens.indexOf(token);
+                if (index !== -1) {
+                    this.tokens.splice(index, 1);
+                    return true;
+                }
             }
         })
         return false;
@@ -269,8 +272,10 @@ export class Schedule {
 
     addNewScheduleItem(dayType:DaysType, daysArg:number, timeType:TimeType, sunEventType:string, timeArg:string):ScheduleItem{
         var maxid = 0;
-        this.scheduleItems.forEach(si => {
-            if (si.id > maxid) maxid = si.id;
+        this.settings.schedules.forEach(s=> {
+            s.scheduleItems.forEach(si => {
+                if (si.id > maxid) maxid = si.id;
+            })
         })
         return this.addNewScheduleItemInternal(maxid + 1, dayType, daysArg, timeType, sunEventType, timeArg)
     }
@@ -294,11 +299,12 @@ export class Schedule {
 
     deleteScheduleItem(id:number):boolean{
         this.scheduleItems.forEach(si => {
-            if (si.id == id)
+            if (si.id == id) {
                 var index = this.scheduleItems.indexOf(si);
-            if (index !== -1) {
-                this.scheduleItems.splice(index, 1);
-                return true;
+                if (index !== -1) {
+                    this.scheduleItems.splice(index, 1);
+                    return true;
+                }
             }
         })
         return false;
@@ -508,11 +514,12 @@ export class ScheduleItem {
 
     deleteTokenSetter(tokenid):boolean{
         this.tokenSetters.forEach(ts => {
-            if (ts.token.id == tokenid)
-            var index = this.tokenSetters.indexOf(ts);
-            if (index !== -1) {
-                this.tokenSetters.splice(index, 1);
-                return true;
+            if (ts.token.id == tokenid) {
+                var index = this.tokenSetters.indexOf(ts);
+                if (index !== -1) {
+                    this.tokenSetters.splice(index, 1);
+                    return true;
+                }
             }
         })
         return false;
