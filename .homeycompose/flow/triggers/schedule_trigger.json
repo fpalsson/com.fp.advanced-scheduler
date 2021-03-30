@@ -3,7 +3,8 @@
   "title": {
     "en": "Schedule triggered",
     "sv": "Schema aktiverat",
-    "de": "Zeitplan ausgelöst"
+    "de": "Zeitplan ausgelöst",
+    "nl": "Schema geactiveerd"
   },
   "args": [
     {
@@ -12,7 +13,8 @@
       "placeholder": {
         "en": "Schedule",
         "sv": "Schema",
-        "de": "Zeitplan"
+        "de": "Zeitplan",
+        "nl": "Schema"
       }
     }
   ]

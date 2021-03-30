@@ -6,12 +6,14 @@
   "name": {
     "en": "Advanced Scheduler",
     "sv": "Advanced Scheduler",
-    "de": "Advanced Scheduler"
+    "de": "Advanced Scheduler",
+    "nl": "Advanced Scheduler"
   },
   "description": {
     "en": "Easily schedule anything from simple to complex solar or time based events.",
     "sv": "Schemalägg lätt allt från enkla till komplicerade sol- eller tidsstyrda händelser.",
-    "de": "Planen Sie ganz einfach alles, von einfachen bis hin zu komplexen sonnen- oder zeitbasierten Ereignissen."
+    "de": "Planen Sie ganz einfach alles, von einfachen bis hin zu komplexen sonnen- oder zeitbasierten Ereignissen.",
+    "nl": "Maak met gemak schema's aan van eenvoudige tot complexe zonne- of tijdgebaseerde gebeurtenissen."
   },
   "category": [
     "tools"
@@ -50,6 +52,10 @@
       {
         "name": "Dirk Göbel",
         "email": "unknown"
+      },
+      {
+        "name": "François Raeven",
+        "email": "f.raeven@gmail.com"
       }
     ]
   },
