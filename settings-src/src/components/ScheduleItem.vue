@@ -232,7 +232,7 @@ export default {
             if ((da & 4) > 0) s+=this.$t('Wednesday_short')+',';
             if ((da & 8) > 0) s+=this.$t('Thursday_short')+',';
             if ((da & 16) > 0) s+=this.$t('Friday_short')+',';
-            if ((da & 32) > 0) s+=this.$t('saturday_short')+',';
+            if ((da & 32) > 0) s+=this.$t('Saturday_short')+',';
             if ((da & 64) > 0) s+=this.$t('Sunday_short')+',';
             //console.log('daysArgShortText daysarg3: ' + s)
             s = s.substring(0, s.length-1);

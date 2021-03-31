@@ -1,6 +1,6 @@
 {
   "id": "com.fp.advanced-scheduler",
-  "version": "0.1.21",
+  "version": "0.1.24",
   "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
@@ -37,7 +37,7 @@
   "contributing": {
     "donate": {
       "paypal": {
-        "username": "paypal.me/fpalssonswe"
+        "username": "fpalssonswe"
       }
     }
   },

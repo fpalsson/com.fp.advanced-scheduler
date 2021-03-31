@@ -126,8 +126,12 @@ export default {
             this.Homey.getLanguage()
             .then( lang => {
             console.log ('Lang found: ' + lang);
-            if (lang == 'sv' || 
-                lang == 'de') {
+            if  (
+                  lang == 'sv' || 
+                  lang == 'de' ||
+                  lang == 'nl' 
+                ) 
+            {
                     language = lang;
             }
             this.$i18n.locale = language;
