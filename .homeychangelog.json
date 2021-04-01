@@ -73,6 +73,9 @@
   },
   "0.1.24": {
     "en": "Now actually selecting Dutch as a language at startup if that is current language."
+  },
+  "0.1.25": {
+    "en": "Multiple translation improvements. Fixed bug with sunevent not beeing properly initialized in schedule event edit dialog. Improved presentation of sunevent in schedule event main ui."
   }
   
 }

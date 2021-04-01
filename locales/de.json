@@ -13,7 +13,12 @@
     "New_schedule": "Neuer Zeitplan",
     "Save_settings": "Einstellungen speichern",
     "Reload_last_saved_settings": "Zuletzt gespeicherten Einstellungen laden",
+ 
     "Help": "Hilfe",
+    "Pressing_any_long":"<p>Pressing any of these links will leave settings, save changes first!</p>",
+    "Help_page_html":"<p><a href=\"https://fpalsson.github.io/com.fp.advanced-scheduler/index.de.html\">Hilfeseite</a></p>",
+    "Community_page_html":"<p><a href=\"https://community.athom.com/t/app-advanced-scheduler/43767\">Community seite</a></p>",
+
     "Raw_settings": "Raw-Einstellungen",
     "Get_current_raw_settings": "Aktuelle raw-Einstellungen abrufen",
     "Save_raw_settings": "Raw-Einstellungen speichern",
@@ -28,9 +33,12 @@
     "Delete_schedule_question":"Zeitplan löschen?",
     "Do_you_want_to_delete_schedule_question":"Möchten Sie den Zeitplan löschen? Alle Zeitplaneinstellungen werden gelöscht. Dies kann nach dem Speichern nicht rückgängig gemacht werden.",
     "Tokens":"Tag-Definitionen",  
-    "Add_bool_token":"Boolesche-Tag hinzufügen",
+    "Add_bool_token":"Ja/nein-Tag hinzufügen",
     "Add_number_token":"Nummer-Tag hinzufügen",
     "Add_string_token":"Text-Tag hinzufügen",
+    "Bool_token_desc":"Ja/nein",
+    "Number_token_desc":"Nummer",
+    "String_token_desc":"Text",
     "Schedule_items":"Zeitplanelemente",
     "Add_new_schedule_item":"Neues Zeitplanelement hinzufügen",  
     "New_token":"Neuer Tag",
@@ -60,6 +68,7 @@
     "Add":"Hinzufügen",
     "Enter_offset_in_format":"Eingabe des Offsets im Format (-)HH:MM oder (-)HH:MM:SS. Negativer Offset bedeutet vor dem Ereignis.",
     "Enter_time_in_format":"Eingabe der Zeit im Format HH:MM oder HH:MM:SS.",
+    "Select_event":"Sonnenereignis wählen.",
     "offset":"Offset",
     "Nothing":"Ohne",
     "Weekdays":"Wochentage",
@@ -93,6 +102,8 @@
     "sunriseEnd":"Sonnenaufgang endet",
     "sunset":"Sonnenuntergang",
     "sunsetStart":"Sonnenuntergang endet",
+    "before": "vorher",
+    "after": "später",
 
 
     "//Token.vue":"_comment",
