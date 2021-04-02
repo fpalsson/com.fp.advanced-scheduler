@@ -41,16 +41,10 @@
                 onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));' 
                 style="height:200px;width:100%;border:none;overflow:hidden;"></iframe>
           </v-container-->
-          <p>
-              Pressing any of these links will leave settings, save changes first!
-          </p>
-          <p>
-            <a href="https://fpalsson.github.io/com.fp.advanced-scheduler/">Help page</a>
-          </p>
-          <p>
-            <a href="https://community.athom.com/t/app-advanced-scheduler/43767">Community page</a>
-          </p>
-          
+            <div v-html="$t('Pressing_any_long')"></div>
+            <div v-html="$t('Help_page_html')"></div>
+            <div v-html="$t('Community_page_html')"></div>
+
         </v-tab-item>
         <v-tab-item key="rawsettings">
           <v-textarea
@@ -126,8 +120,12 @@ export default {
             this.Homey.getLanguage()
             .then( lang => {
             console.log ('Lang found: ' + lang);
-            if (lang == 'sv' || 
-                lang == 'de') {
+            if  (
+                  lang == 'sv' || 
+                  lang == 'de' ||
+                  lang == 'nl' 
+                ) 
+            {
                     language = lang;
             }
             this.$i18n.locale = language;

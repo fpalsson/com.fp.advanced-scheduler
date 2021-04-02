@@ -1,10 +1,10 @@
 <template>
     <v-row no-gutters>
-        <v-col cols="7">
+        <v-col cols="6">
             <v-text-field :label="$t('Token_name')" :placeholder="$t('Enter_a_token_name')" v-model="token.name" :rules="requiredText"></v-text-field>
         </v-col>
-        <v-col cols="3">
-            <v-chip class="mt-4" color="primary">{{ token.type }}</v-chip>
+        <v-col cols="4">
+            <v-chip class="mt-4" color="primary">{{ translateTokenType(token.type) }}</v-chip>
         </v-col>
         <v-col cols="2">
             <!--v-btn fab dark x-small color="red"><v-icon dark>mdi-delete-circle</v-icon></v-btn-->
@@ -61,6 +61,12 @@ export default {
     tokenDeleteAndCloseDialog : function () {
         this.token.delete();
         this.deletedialogopen=false;
+    },
+    translateTokenType : function (type) {
+      if (type=='boolean') return this.$t("Bool_token_desc");
+      if (type=='number') return this.$t("Number_token_desc");
+      if (type=='string') return this.$t("String_token_desc");
+      return 'Unknown ' + type;
     },
   }
 };

@@ -48,18 +48,17 @@
                                             >
                                             <v-radio
                                                 :label="$t('Time')"
-                                                value="1"
+                                                :value="1"
                                                 
                                             ></v-radio>
                                             <v-radio
                                                 :label="$t('Solar')"
-                                                value="2"
+                                                :value="2"
                                             ></v-radio>
                                             </v-radio-group>
                                     </v-row>
                                     <v-row>
-                                        <v-select
-                                            :disabled="scheduleItem.timeType==1"
+                                        <v-select v-if="scheduleItem.timeType==2"
                                             v-model="scheduleItem.sunEventType"
                                             :items="translateSunEvents(getSunEvents())"
                                             item-value="id"
@@ -67,6 +66,7 @@
                                             :label="$t('Sun_event')"
                                             :hint="$t('Choose_sun_event')"
                                             persistent-hint
+                                            :rules="rules.suneventvalid"
                                             ></v-select>
                                     </v-row>
                                     <v-row>
@@ -187,15 +187,20 @@ export default {
                 value => {
                                     
                     const pattern = /^(-?)([01]\d?|2[0-3]):[0-5]\d(:[0-5]\d)?$/;
-                    return pattern.test(value) || this.$t('Enter offset in format')
+                    return pattern.test(value) || this.$t('Enter_offset_in_format')
                 }
             ],
             isTime: [
                 value => {
                     const pattern = /^([01]\d?|2[0-3]):[0-5]\d(:[0-5]\d)?$/
-                    return pattern.test(value) || this.$t('Enter time in format')
+                    return pattern.test(value) || this.$t('Enter_time_in_format')
                 }
-            ]
+            ],
+            suneventvalid: [
+                value => {
+                    return (value.length>0 || this.scheduleItem.timeType==1) || this.$t('Select_event');
+                }
+            ],
 
         },
     };
@@ -232,7 +237,7 @@ export default {
             if ((da & 4) > 0) s+=this.$t('Wednesday_short')+',';
             if ((da & 8) > 0) s+=this.$t('Thursday_short')+',';
             if ((da & 16) > 0) s+=this.$t('Friday_short')+',';
-            if ((da & 32) > 0) s+=this.$t('saturday_short')+',';
+            if ((da & 32) > 0) s+=this.$t('Saturday_short')+',';
             if ((da & 64) > 0) s+=this.$t('Sunday_short')+',';
             //console.log('daysArgShortText daysarg3: ' + s)
             s = s.substring(0, s.length-1);
@@ -259,7 +264,15 @@ export default {
           //console.log('scheduleItemTimeString')
 
           if (tt==1) return this.$t('Time') +': ' + ta;
-          if (tt==2) return this.$t('Solar') + ': ' + this.$t(se) + ', ' + this.$t('offset') + ': ' + ta;
+
+          if (tt==2) {
+           let res = this.$t(se);
+           if (ta=='00:00' || ta =='00:00:00') return res;
+           if (ta.includes('-')) return res + ', ' + ta.replace('-','') + ' ' + this.$t('before');
+           else return res + ', ' + ta + ' ' + this.$t('after');
+           
+          }
+          //if (tt==2) return this.$t('Solar') + ': ' + this.$t(se) + ', ' + this.$t('offset') + ': ' + ta;
       },
 
       addTokenSetterAndCloseDialog : function (tokenid) {
@@ -290,7 +303,7 @@ export default {
               }
           })
           return res;
-      },
+      },      
   }
 };
 </script>

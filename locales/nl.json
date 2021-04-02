@@ -13,7 +13,12 @@
     "New_schedule": "Nieuw schema",
     "Save_settings": "Instellingen opslaan",
     "Reload_last_saved_settings": "Laatst opgeslagen instellingen herladen",
+
     "Help": "Help",
+    "Pressing_any_long":"<p>Pressing any of these links will leave settings, save changes first!</p>",
+    "Help_page_html":"<p><a href=\"https://fpalsson.github.io/com.fp.advanced-scheduler/\">Help page</a></p>",
+    "Community_page_html":"<p><a href=\"https://community.athom.com/t/app-advanced-scheduler/43767\">Community page</a></p>",
+
     "Raw_settings": "Ruwe instellingen",
     "Get_current_raw_settings": "Huidige ruwe instellingen weergeven",
     "Save_raw_settings": "Ruwe instellingen opslaan",
@@ -30,6 +35,9 @@
     "Add_bool_token":"Ja/nee tag toevoegen",
     "Add_number_token":"Nummer tag toevoegen",
     "Add_string_token":"Tekst tag toevoegen",
+    "Bool_token_desc":"Ja/nee",
+    "Number_token_desc":"Nummer",
+    "String_token_desc":"Text",
     "Schedule_items":"Schema gebeurtenissen",
     "Add_new_schedule_item":"Nieuwe schema gebeurtenis toevoegen",
     "New_token":"Nieuwe tag",
@@ -59,6 +67,7 @@
     "Add":"Toevoegen",
     "Enter_offset_in_format":"Vul offset tijd in met het volgende formaat (-)UU:MM of (-)UU:MM:SS. Een negatieve offset betekend vooraf aan de gebeurtenis.",
     "Enter_time_in_format":"Vul tijdstip in met het volgende formaat UU:MM or UU:MM:SS.",
+    "Select_event":"Kies het type gebeurtenis.",
     "offset":"offset",
     "Nothing":"Niets geselecteerd",
     "Weekdays":"Werkdagen",
@@ -92,6 +101,8 @@
     "sunriseEnd":"Zonsopgang einde",
     "sunset":"Zonsondergang einde",
     "sunsetStart":"Zonsondergang begin",
+    "before": "ervoor",
+    "after": "later",
 
 
     "//Token.vue":"_comment",
