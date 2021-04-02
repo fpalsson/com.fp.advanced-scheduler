@@ -20,7 +20,7 @@
     "Community_page_html":"<p><a href=\"https://community.athom.com/t/app-advanced-scheduler/43767\">Community seite</a></p>",
 
     "Raw_settings": "Raw-Einstellungen",
-    "Get_current_raw_settings": "Aktuelle raw-Einstellungen abrufen",
+    "Get_current_raw_settings": "Aktuelle Raw-Einstellungen abrufen",
     "Save_raw_settings": "Raw-Einstellungen speichern",
     "Raw_settings_long_description":"Kann zum Sichern und Wiederherstellen von Einstellungen verwendet werden (durch Kopieren oder Einfügen von Einstellungen).<br>Seien Sie vorsichtig wenn Sie Einstellungen einfügen und speichern, die aktuellen Einstellungen werden gelöscht!<br>    Nach dem Speichern der Einstellungen muss die Seite aktualisiert werden.",
 
@@ -33,10 +33,10 @@
     "Delete_schedule_question":"Zeitplan löschen?",
     "Do_you_want_to_delete_schedule_question":"Möchten Sie den Zeitplan löschen? Alle Zeitplaneinstellungen werden gelöscht. Dies kann nach dem Speichern nicht rückgängig gemacht werden.",
     "Tokens":"Tag-Definitionen",  
-    "Add_bool_token":"Ja/nein-Tag hinzufügen",
+    "Add_bool_token":"Ja/Nein-Tag hinzufügen",
     "Add_number_token":"Nummer-Tag hinzufügen",
     "Add_string_token":"Text-Tag hinzufügen",
-    "Bool_token_desc":"Ja/nein",
+    "Bool_token_desc":"Ja/Nein",
     "Number_token_desc":"Nummer",
     "String_token_desc":"Text",
     "Schedule_items":"Zeitplanelemente",
@@ -102,8 +102,8 @@
     "sunriseEnd":"Sonnenaufgang endet",
     "sunset":"Sonnenuntergang",
     "sunsetStart":"Sonnenuntergang endet",
-    "before": "vorher",
-    "after": "später",
+    "before": "davor",
+    "after": "danach",
 
 
     "//Token.vue":"_comment",
