@@ -76,6 +76,9 @@
   },
   "0.1.25": {
     "en": "Multiple translation improvements. Fixed bug with sunevent not beeing properly initialized in schedule event edit dialog. Improved presentation of sunevent in schedule event main ui."
+  },
+  "0.1.26": {
+    "en": "Translations for Dutch and German improved from last merges. Bug with negative offset transfering to time corrected. Now timeArg property on ScheduleItem is split into timeArg and solarOffset. Golden Hour confusion demystified in translation files and consuming code."
   }
   
 }
