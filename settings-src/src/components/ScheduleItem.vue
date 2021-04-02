@@ -71,7 +71,7 @@
                                     </v-row>
                                     <v-row>
                                         <v-text-field v-if="scheduleItem.timeType==1" :label="$t('Trigger_time')" :placeholder="$t('Enter_a_time')" v-model="scheduleItem.timeArg" :rules="rules.isTime"></v-text-field>
-                                        <v-text-field v-if="scheduleItem.timeType==2" :label="$t('Offset_time')" :placeholder="$t('Enter_an_offset')" v-model="scheduleItem.timeArg" :rules="rules.isOffsetMaxOneDay"></v-text-field>
+                                        <v-text-field v-if="scheduleItem.timeType==2" :label="$t('Offset_time')" :placeholder="$t('Enter_an_offset')" v-model="scheduleItem.solarOffset" :rules="rules.isOffsetMaxOneDay"></v-text-field>
                                         <!--v-time-picker
                                         format="24hr"
                                         use-seconds
@@ -92,7 +92,7 @@
         </v-row>
         <v-row>
             <v-col cols="10">
-                {{ scheduleItemTimeString(scheduleItem.timeType,scheduleItem.sunEventType,scheduleItem.timeArg) }}
+                {{ scheduleItemTimeString(scheduleItem.timeType,scheduleItem.sunEventType,scheduleItem.timeArg,scheduleItem.solarOffset) }}
             </v-col>
             <v-col cols="2">
                 <!--v-btn fab dark x-small color="red"><v-icon dark>mdi-delete-circle</v-icon></v-btn-->
@@ -260,16 +260,16 @@ export default {
           return suntimes;
       },
 
-      scheduleItemTimeString : function (tt,se,ta) {
+      scheduleItemTimeString : function (tt,se,ta,so) {
           //console.log('scheduleItemTimeString')
 
           if (tt==1) return this.$t('Time') +': ' + ta;
 
           if (tt==2) {
            let res = this.$t(se);
-           if (ta=='00:00' || ta =='00:00:00') return res;
-           if (ta.includes('-')) return res + ', ' + ta.replace('-','') + ' ' + this.$t('before');
-           else return res + ', ' + ta + ' ' + this.$t('after');
+           if (so=='00:00' || so =='00:00:00') return res;
+           if (so.includes('-')) return res + ', ' + so.replace('-','') + ' ' + this.$t('before');
+           else return res + ', ' + so + ' ' + this.$t('after');
            
           }
           //if (tt==2) return this.$t('Solar') + ': ' + this.$t(se) + ', ' + this.$t('offset') + ': ' + ta;
@@ -304,7 +304,7 @@ export default {
           })
           return res;
       },      
-  }
+    },
 };
 </script>
 

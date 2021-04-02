@@ -1,6 +1,7 @@
 'use strict';
 
 import { SendHandle } from "child_process";
+import { threadId } from "worker_threads";
 
 export class WebSettings {
     
@@ -56,9 +57,14 @@ export class WebSettings {
 
                 let tt:string;
                 let setype:string;
-                if (si.timeType == TimeType.TimeOfDay) { tt = 'timeofday'; }
+                let timeArg:string;
+                if (si.timeType == TimeType.TimeOfDay) { 
+                    tt = 'timeofday';
+                    timeArg = si.timeArg; 
+                }
                 else if (si.timeType == TimeType.Solar) { 
                     tt = 'solar:' + si.sunEventType; 
+                    timeArg = si.solarOffset;
                 }
 
                 jsonsched.scheduleitems.push({
@@ -66,7 +72,7 @@ export class WebSettings {
                     'daystype':dt,
                     'daysarg':si.daysArg,
                     'timetype':tt,
-                    'timearg':si.timeArg,
+                    'timearg':timeArg,
                     'tokensetters':tss,
                 })
                 
@@ -158,8 +164,8 @@ export class WebSettings {
         return [ 
             new TimeInfo("dawn","Dawn" ),
             new TimeInfo("dusk","Dusk" ),
-            new TimeInfo("goldenHour","Golden Hour" ),
-            new TimeInfo("goldenHourEnd","Golden Hour End" ),
+            new TimeInfo("goldenHourEveningStart","Evening Golden Hour Start" ),
+            new TimeInfo("goldenHourMorningEnd","Morning Golden Hour End" ),
             new TimeInfo("nadir","Nadir" ),
             new TimeInfo("nauticalDawn","Nautical Dawn" ),
             new TimeInfo("nauticalDusk","Nautical Dusk" ),
@@ -383,7 +389,8 @@ export class ScheduleItem {
         this.daysType=daytype;
         this.daysArg=daysArg;
         this.timeType=timeType;
-        this.timeArg=timeArg;
+        if (timeType == TimeType.TimeOfDay) { this.timeArg=timeArg; this.solarOffset='00:00' }
+        else { this.solarOffset = timeArg ; this.timeArg = '00:00'; }
         this.sunEventType=sunEventType;
         this.tokenSetters = new Array<TokenSetter>();
         this.updateSelectedDays();
@@ -396,6 +403,7 @@ export class ScheduleItem {
     timeType:TimeType;
     sunEventType:string;
     timeArg:string;
+    solarOffset:string;
     tokenSetters:TokenSetter[];
     private allDays:Day[];
     private internalSelectedDays:Day[];
@@ -489,7 +497,7 @@ export class ScheduleItem {
     addNewTokenSetterByIdNoVal(tokenid:number):TokenSetter{
         this.schedule.tokens.forEach(token => {
             if (token.id == tokenid){
-                if (token.type === 'string') return this.addNewTokenSetterInternal(token, 'Not set') 
+                if (token.type === 'string') return this.addNewTokenSetterInternal(token, '') 
                 else if (token.type === 'number') return this.addNewTokenSetterInternal(token, 0) 
                 else if (token.type === 'boolean') return this.addNewTokenSetterInternal(token, false) 
             }
