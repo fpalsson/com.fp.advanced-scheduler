@@ -15,14 +15,14 @@
     "Reload_last_saved_settings": "Laatst opgeslagen instellingen herladen",
 
     "Help": "Help",
-    "Pressing_any_long":"<p>Pressing any of these links will leave settings, save changes first!</p>",
-    "Help_page_html":"<p><a href=\"https://fpalsson.github.io/com.fp.advanced-scheduler/\">Help page</a></p>",
-    "Community_page_html":"<p><a href=\"https://community.athom.com/t/app-advanced-scheduler/43767\">Community page</a></p>",
+    "Pressing_any_long":"<p>Als u op één van de onderstaande links drukt dan verlaat u zonder op te slaan de instellingen. Let op: sla dus eerst uw instellingen op!</p>",
+    "Help_page_html":"<p><a href=\"https://fpalsson.github.io/com.fp.advanced-scheduler/\">Help pagina</a></p>",
+    "Community_page_html":"<p><a href=\"https://community.athom.com/t/app-advanced-scheduler/43767\">Community pagina</a></p>",
 
     "Raw_settings": "Ruwe instellingen",
     "Get_current_raw_settings": "Huidige ruwe instellingen weergeven",
     "Save_raw_settings": "Ruwe instellingen opslaan",
-    "Raw_settings_long_description":"Kan worden gebruikt om een back-up te maken van instellingen en deze te herstellen (door ruwe instellingen hier te kopiëren of te plakken).<br>Let op: als u instellingen plakt en daarna opslaat, dan worden de huidige instellingen overschreven!<br>Na het opslaan van ruwe instellingen moet u op de instellingen-pagina de laatst opgeslagen instellingen herladen.",
+    "Raw_settings_long_description":"Kan worden gebruikt om een back-up te maken van instellingen en om deze te herstellen (door ruwe instellingen hier te kopiëren of te plakken).<br>Let op: als u instellingen plakt en daarna opslaat, dan worden de huidige instellingen overschreven!<br>Na het opslaan van ruwe instellingen moet u op de instellingen-pagina de laatst opgeslagen instellingen herladen.",
 
     "//Schedule.vue":"_comment",
     "Active":"Actief",
@@ -37,7 +37,7 @@
     "Add_string_token":"Tekst tag toevoegen",
     "Bool_token_desc":"Ja/nee",
     "Number_token_desc":"Nummer",
-    "String_token_desc":"Text",
+    "String_token_desc":"Tekst",
     "Schedule_items":"Schema gebeurtenissen",
     "Add_new_schedule_item":"Nieuwe schema gebeurtenis toevoegen",
     "New_token":"Nieuwe tag",
@@ -101,7 +101,7 @@
     "sunriseEnd":"Zonsopgang einde",
     "sunset":"Zonsondergang einde",
     "sunsetStart":"Zonsondergang begin",
-    "before": "ervoor",
+    "before": "vooraf",
     "after": "later",
 
 
