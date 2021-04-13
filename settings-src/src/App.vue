@@ -18,7 +18,7 @@
         <v-tab-item key="schedules">
           <v-expansion-panels>
             <!--h1 style="text-align:left;">{{ $t('Schedules') }}</h1-->
-            <asv-schedule v-for="(schedule) in settings.schedules" :key="schedule.id" :schedule="schedule" :settings="settings" />
+            <asv-schedule v-for="(schedule) in assettings.schedules" :key="schedule.id" :schedule="schedule" :settings="assettings" />
           </v-expansion-panels>
           <v-btn class="mt-2" color="green darken-1" text @click="addSchedule()"><v-icon dark>mdi-plus-circle-outline</v-icon> {{ $t('Add_new_schedule') }}</v-btn>
           <v-btn class="mt-2" color="green darken-1" text @click="saveSettings()"><v-icon dark>mdi-content-save</v-icon> {{ $t('Save_settings') }}</v-btn>
@@ -63,7 +63,8 @@
 </template>
 
 <script>
-import { WebSettings, Schedules, Settings } from '@/WebSettings';
+import { ASSettings } from './CommonContainerClasses';
+import { SettingsPersistance } from './SettingsPersistance';
 import AsvSchedule from '@/components/Schedule';
 export default {
   name: 'App',
@@ -72,7 +73,7 @@ export default {
   },
   data() {
     return {
-      settings: new Settings(),
+      assettings: new ASSettings(),
       tab: null,
       rawSettings:'',
       helpUrl:''
@@ -89,25 +90,25 @@ export default {
             this.Homey.get('settings')
             .then(settingstext => {
             console.log('Raw settings: ' + settingstext);
-            let ws = new WebSettings();
+            let sp = new SettingsPersistance();
             console.log('WebSttings created');
-            ws.readSettings(settingstext);
+            sp.readSettings(settingstext);
             console.log('Settings read');
-            let settings = ws.getSettings();
+            let assettings = sp.getSettings();
             console.log('Settings retrieved');
-            if (settings != null){
-                this.settings = settings;
+            if (assettings != null){
+                this.assettings = assettings;
                 console.log('Settings set');
             }
             else
             {
-                this.settings = new Settings();
+                this.assettings = new ASSettings();
                 console.log('Settings set empty');
             }
             console.log('Schedules done');
-            console.log('Settings: ' + this.settings);
-            console.log('Sch: ' + this.settings.schedules);
-            console.log('Sch count: ' + this.settings.schedules.length);
+            console.log('Settings: ' + this.assettings);
+            console.log('Sch: ' + this.assettings.schedules);
+            console.log('Sch count: ' + this.assettings.schedules.length);
             })
             .catch(err => {
                 this.Homey.alert(err);
@@ -139,18 +140,18 @@ export default {
         },
 
         addSchedule : function () {
-            this.settings.addNewSchedule(this.$t('New_schedule'),true);
+            this.assettings.addNewSchedule(this.$t('New_schedule'),true);
             
         },
 
         saveSettings : function () {
-            var ws = new WebSettings();
-            var settings = ws.buildSettings(this.settings)
+            var sp = new SettingsPersistance();
+            var settingstxt = sp.buildSettings(this.assettings)
             
             console.log('Settings:');
-            console.log(settings);
+            console.log(settingstxt);
             
-            this.Homey.set('settings', settings, function( err ){
+            this.Homey.set('settings', settingstxt, function( err ){
                 if( err ) return this.Homey.alert( err );
                 
             }.bind(this));
@@ -164,8 +165,8 @@ export default {
         },
 
         getRawSettings : function () {
-            var ws = new WebSettings();
-            var settings = ws.buildSettings(this.settings)
+            var sp = new SettingsPersistance();
+            var settings = sp.buildSettings(this.assettings)
             
             console.log('Settings:');
             console.log(settings);

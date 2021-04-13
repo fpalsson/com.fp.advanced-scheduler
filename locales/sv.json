@@ -104,6 +104,18 @@
     "before": "innan",
     "after": "efter",
 
+    "//New litterals 0.2.0":"_comment",
+    "Use_random_settings": "Använd slumpmässig tid",
+    "Random_time_before_or_after_trigger" : "Slumpmässig tid innan eller efter aktivering",
+    "Use_conditional_before" : "Använd villkor innan",
+    "Only_trigger_if_before" : "Aktivera endast om innan",
+    "Use_conditional_after" : "Använd villkor efter",
+    "Only_trigger_if_after" : "Aktivera endast om efter",
+    "Random_time_between" : "Slumpmässig tid mellan",
+    "and" : "och",
+    "but_only_if_before" : "men bara om innan",
+    "but_only_if_after" : "men bara om efter",
+    "and_after" : "och efter",
 
     "//Token.vue":"_comment",
     "Token_name":"Tagnamn",

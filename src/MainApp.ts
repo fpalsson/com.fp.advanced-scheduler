@@ -1,7 +1,12 @@
 'use strict';
 
 import { App as HomeyApp } from "homey";
-import { Settings as AppSettings } from "./Settings";
+
+// this is copied from settings-src/src by build task. Not elegant, but...
+import { ASSettings } from './CommonContainerClasses';
+// this is copied from settings-src/src by build task. Not elegant, but...
+import { SettingsPersistance } from './SettingsPersistance';
+
 import { FlowAndTokenHandler } from "./FlowAndTokenHandler";
 import { TriggerHandler } from "./TriggerHandler";
 import { ManagerSettings } from "homey";
@@ -9,7 +14,7 @@ import { SunWrapper } from "./SunWrapper";
 
 export class MainApp {
     private homeyApp:HomeyApp;
-    private settings:AppSettings;
+    private asSettings:ASSettings;
     private flowAndTokenHandler:FlowAndTokenHandler;
     private triggerHandler:TriggerHandler;
     private sunWrapper:SunWrapper;
@@ -22,17 +27,20 @@ export class MainApp {
 
         this.homeyApp.log('Advanced Scheduler MainApp is initializing...');
 
-        this.settings = new AppSettings(this.homeyApp);
-        this.settings.readSettings();
+        let settingsTxt = ManagerSettings.get('settings');
+        let sp = new SettingsPersistance();
+        sp.readSettings(settingsTxt);
+        this.asSettings = sp.getSettings();
+
        
         this.sunWrapper = new SunWrapper(this.homeyApp);
         this.sunWrapper.init();
 
-        this.flowAndTokenHandler = new FlowAndTokenHandler(this.homeyApp,this.settings);
+        this.flowAndTokenHandler = new FlowAndTokenHandler(this.homeyApp, this.asSettings);
         this.flowAndTokenHandler.setupFlows();
         this.flowAndTokenHandler.setupTokens();
 
-        this.triggerHandler = new TriggerHandler(this.homeyApp, this.settings, this.flowAndTokenHandler, this.sunWrapper);
+        this.triggerHandler = new TriggerHandler(this.homeyApp, this.asSettings, this.flowAndTokenHandler, this.sunWrapper);
         this.triggerHandler.setupTriggers('startup');
         this.triggerHandler.startTimer();
 
@@ -51,10 +59,15 @@ export class MainApp {
 
         this.triggerHandler.stopTimer();
 
-        this.settings.readSettings();
+        let settingsTxt = ManagerSettings.get('settings');
+        let sp = new SettingsPersistance();
+        sp.readSettings(settingsTxt);
+        this.asSettings = sp.getSettings();
        
+        this.flowAndTokenHandler.setSettings(this.asSettings);
         this.flowAndTokenHandler.setupTokens();
 
+        this.triggerHandler.setSettings(this.asSettings);
         this.triggerHandler.setupTriggers('startup');
         this.triggerHandler.startTimer();
 

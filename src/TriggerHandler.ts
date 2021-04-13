@@ -2,23 +2,26 @@
 
 import { executionAsyncResource } from "async_hooks";
 import { App as HomeyApp, ManagerFlow } from "homey";
-import { Settings as AppSettings } from "./Settings";
-import { Schedule, ScheduleItem, Token, DaysType, TimeType } from "./ContainerClasses";
 import { FlowAndTokenHandler } from "./FlowAndTokenHandler";
-import { SunWrapper, TimeInfo } from "./SunWrapper";
+import { SunWrapper, SunEventInfo } from "./SunWrapper";
 import  * as moment  from 'moment';
+
+// this is copied from settings-src/src by build task. Not elegant, but...
+import { ASSettings, Schedule, ScheduleItem, Token, DaysType, TimeType, TimeInfo } from "./CommonContainerClasses";
+
+import { isMainThread } from "worker_threads";
 //import { FlowCardTrigger, FlowCardAction, FlowToken } from "homey";
 
 export class Trigger{
-    constructor(triggertime: Date, schedule:Schedule, scheduleitem:ScheduleItem) {
-        this.triggertime=triggertime;
+    constructor(triggerTime: Date, schedule:Schedule, scheduleItem:ScheduleItem) {
+        this.triggerTime=triggerTime;
         this.schedule=schedule;
-        this.scheduleitem=scheduleitem;
+        this.scheduleItem=scheduleItem;
 //        this.tokens=tokens; 
     }
-    triggertime:Date;
+    triggerTime:Date;
     schedule:Schedule;
-    scheduleitem:ScheduleItem;
+    scheduleItem:ScheduleItem;
   //  tokens:Token[];
 }
 
@@ -26,18 +29,23 @@ export class Trigger{
 export class TriggerHandler {
     private selfie:TriggerHandler;
     private homeyApp:HomeyApp;
-    private settings:AppSettings;
+    private settings:ASSettings;
     private flowandtokenhandler:FlowAndTokenHandler;
     private sunWrapper:SunWrapper;
     private triggers:Trigger[];
     private runningtimer:NodeJS.Timeout;
 
-    constructor(homeyApp:HomeyApp, settings:AppSettings, flowandtokenhandler:FlowAndTokenHandler, sunWrapper:SunWrapper) {
+    constructor(homeyApp:HomeyApp, settings:ASSettings, flowandtokenhandler:FlowAndTokenHandler, sunWrapper:SunWrapper) {
         this.selfie=this;
         this.homeyApp=homeyApp;
         this.settings=settings;
         this.flowandtokenhandler=flowandtokenhandler;
         this.sunWrapper=sunWrapper;
+    }
+
+    setSettings(settings:ASSettings)
+    {
+        this.settings = settings;
     }
 
     setupTriggers(mode:'startup'|'midnight'){
@@ -72,7 +80,7 @@ export class TriggerHandler {
 
         this.homeyApp.log('Summary all triggers');
         this.triggers.forEach(trigger => {
-            this.homeyApp.log('Schedule: ' + trigger.schedule.name + ', time: ' + trigger.triggertime + '(' + trigger.scheduleitem.sunEventType + ')');
+            this.homeyApp.log('Schedule: ' + trigger.schedule.name + ', time: ' + trigger.triggerTime + '(' + trigger.scheduleItem.mainTrigger.sunEvent + ')');
         })
 
 
@@ -81,33 +89,82 @@ export class TriggerHandler {
 
     private 
 
+    private getTriggerTime(si:ScheduleItem, date:Date):Date {
+        if (!si.randomTrigger.used) return this.getTimeInfoTime(si.mainTrigger, date);
+        else {
+            let mtTime:Date = this.getTimeInfoTime(si.mainTrigger, date);
+            let rtTime:Date = this.getTimeInfoTime(si.randomTrigger, date);
+            let msdiff = rtTime.getTime() - mtTime.getTime();
+            let offset = Math.random() * msdiff;
+            let resDate = new Date(mtTime.getTime() + offset);
+
+            this.homeyApp.log('Random Time mt: ' + mtTime + ' rt: ' + rtTime + ' diff: ' + msdiff + ' offset: ' + offset + ' resdate: ' + resDate);
+
+            return resDate;
+        }
+
+    }
+
+    private getTimeInfoTime(ti:TimeInfo, date:Date):Date {
+        let dateAtMidnightCallingDate = new Date(date.getFullYear(),date.getMonth(), date.getDate());
+        if (ti.timeType == TimeType.TimeOfDay) return new Date(dateAtMidnightCallingDate.getTime() + this.parseTime(ti.time)); 
+        else if (ti.timeType == TimeType.Solar) {
+            let sei:SunEventInfo = this.sunWrapper.getTime(date, ti.sunEvent);
+
+            let seTime = sei.time;
+            let offset = this.parseOffset(ti.solarOffset);
+            seTime.setTime(seTime.getTime() + offset);
+
+            return seTime;
+        }
+
+    }
+
     private addScheduleItemToTriggers(mode:'startup'|'midnight', date:Date, s:Schedule, si:ScheduleItem){
         //this.homeyApp.log('addScheduleItemToTriggers, date: ' + date);
 
         let now = new Date();
-        let triggertime:Date;
+        let triggerTime:Date;
         let dateAtMidnightToday = new Date(now.getFullYear(),now.getMonth(), now.getDate());
         let dateAtMidnightCallingDate = new Date(date.getFullYear(),date.getMonth(), date.getDate());
 
         //this.homeyApp.log('addScheduleItemToTriggers, midnight: ' + dateAtMidnightToday);
 
-        if (si.timeType == TimeType.TimeOfDay ){
-            triggertime = new Date(dateAtMidnightCallingDate.getTime() + this.parseTime(si.timeArg));
+        triggerTime = this.getTriggerTime(si, dateAtMidnightCallingDate);
+        
+        if (si.onlyTriggerIfBefore.used){
+            let onlyTriggerIfBeforeTime = this.getTimeInfoTime(si.onlyTriggerIfBefore, dateAtMidnightCallingDate)
+            if (triggerTime >= onlyTriggerIfBeforeTime) {
+                this.homeyApp.log('Not added as trigger is after before-condition: ' + triggerTime + ' >= ' + onlyTriggerIfBeforeTime) ;
+                return; //
+            }
         }
-        else if (si.timeType === TimeType.Solar){
-            let ti:TimeInfo = this.sunWrapper.getTime(date, si.sunEventType);
+
+        if (si.onlyTriggerIfAfter.used){
+            let onlyTriggerIfAfterTime = this.getTimeInfoTime(si.onlyTriggerIfAfter, dateAtMidnightCallingDate)
+            if (triggerTime <= onlyTriggerIfAfterTime) {
+                this.homeyApp.log('Not added as trigger is before after-condition: ' + triggerTime + ' <= ' + onlyTriggerIfAfterTime) ;
+                return; //
+            }
+        }
+
+/*        if (si.mainTrigger.timeType == TimeType.TimeOfDay ){
+            triggerTime = new Date(dateAtMidnightCallingDate.getTime() + this.parseTime(si.mainTrigger.time));
+        }
+        else if (si.mainTrigger.timeType === TimeType.Solar){
+            let ti:SunEventInfo = this.sunWrapper.getTime(date, si.mainTrigger.sunEvent);
             if (ti==null)
             {
-                this.homeyApp.log('Solar error' + si.sunEventType);
+                this.homeyApp.log('Solar error' + si.mainTrigger.sunEvent);
             }
-            triggertime = ti.time;
-            if (triggertime==null) {
-                this.homeyApp.log('Solar event: ' + si.timeArg + ' not known!');
+            triggerTime = ti.time;
+            if (triggerTime==null) {
+                this.homeyApp.log('Solar event: ' + si.mainTrigger.time + ' not known!');
                 return;    
             }
-            let offset = this.parseOffset(si.timeArg);
+            let offset = this.parseOffset(si.mainTrigger.time);
             this.homeyApp.log('Solar offset: ' + offset);
-            triggertime.setTime(triggertime.getTime() + offset);
+            triggerTime.setTime(triggerTime.getTime() + offset);
 
 //            this.homeyApp.log('Added solar event: ' + si.suneventtype + ' with time: ' + triggertime.toTimeString() + ' (offset: ' + offset.toTimeString() + ')');
         }
@@ -115,38 +172,40 @@ export class TriggerHandler {
             this.homeyApp.log('Unknown trigger type!');
             return;
         }    
-
+*/
         if (!this.dayHitTest(si.daysType,si.daysArg,date)){
-            this.homeyApp.log('Dayhit failed ' + s.name + ', time: ' + triggertime) ;
+            this.homeyApp.log('Dayhit failed ' + s.name + ', time: ' + triggerTime) ;
             return;
         }
 
         let dateNextMidnight = new Date(dateAtMidnightToday.getTime() + 24*60*60*1000);
         
 
-        this.homeyApp.log('Trigger compare: ' + triggertime + ' : ' + dateAtMidnightToday + ' : ' + dateNextMidnight) ;
+        this.homeyApp.log('Trigger compare: ' + triggerTime + ' : ' + dateAtMidnightToday + ' : ' + dateNextMidnight) ;
 
-        if (triggertime<dateAtMidnightToday) {
-            this.homeyApp.log('Not added (before midnight): ' + s.name + ', time: ' + triggertime) ;
+        if (triggerTime<dateAtMidnightToday) {
+            this.homeyApp.log('Not added (before midnight): ' + s.name + ', time: ' + triggerTime) ;
             return; //time has already passed, a little crude but it will likely work :-)
         }
-        else if (triggertime>dateNextMidnight) {
-            this.homeyApp.log('Not added (next day): ' + s.name + ', time: ' + triggertime) ;
+        else if (triggerTime>=dateNextMidnight) {
+            this.homeyApp.log('Not added (next day): ' + s.name + ', time: ' + triggerTime) ;
             return; //time will be added next round, a little crude but it will likely work :-)
 
-        } else if (mode == 'startup' && triggertime < now) {
-            this.homeyApp.log('Not added (before now): ' + s.name + ', time: ' + triggertime) ;
+        } else if (mode == 'startup' && triggerTime < now) {
+            this.homeyApp.log('Not added (before now): ' + s.name + ', time: ' + triggerTime) ;
             return; //time has already passed, a little crude but it will likely work :-)
         }
         
 
-        let trigger = new Trigger(triggertime,s,si);
+
+
+        let trigger = new Trigger(triggerTime,s,si);
 
         this.triggers.push(trigger);
-        if (trigger.scheduleitem.timeType == TimeType.TimeOfDay)
-            this.homeyApp.log('Trigger added, schedule: ' + trigger.schedule.name + ', Time: ' + trigger.triggertime);
-        else if (trigger.scheduleitem.timeType == TimeType.Solar)
-            this.homeyApp.log('Trigger added, schedule: ' + trigger.schedule.name + ', Solar: ' + trigger.scheduleitem.sunEventType + '(' + trigger.triggertime + ')');
+        if (trigger.scheduleItem.mainTrigger.timeType == TimeType.TimeOfDay)
+            this.homeyApp.log('Trigger added, schedule: ' + trigger.schedule.name + ', Time: ' + trigger.triggerTime);
+        else if (trigger.scheduleItem.mainTrigger.timeType == TimeType.Solar)
+            this.homeyApp.log('Trigger added, schedule: ' + trigger.schedule.name + ', Solar: ' + trigger.scheduleItem.mainTrigger.sunEvent + '(' + trigger.triggerTime + ')');
         //this.homeyApp.log(trigger);
 
         
@@ -201,25 +260,27 @@ export class TriggerHandler {
     private timerCallback(arg: 'execute'|'next'|'idle'|'midnight') {
 
         let earliesttrigger:Trigger;
-        if (this.triggers.length>0) earliesttrigger = this.triggers.sort((a, b) => (a.triggertime > b.triggertime) ? 1 : -1)[0];
+        if (this.triggers.length>0) earliesttrigger = this.triggers.sort((a, b) => (a.triggerTime > b.triggerTime) ? 1 : -1)[0];
 
         if (arg === 'execute') {
-            this.homeyApp.log('Execute!');
+            //this.homeyApp.log('Execute!');
             if (earliesttrigger != null) {
                 // Set tokens!
-                earliesttrigger.scheduleitem.tokenSetters.forEach(ts => {
+                earliesttrigger.scheduleItem.tokenSetters.forEach(ts => {
                     //Set token in flowtoken
                     this.flowandtokenhandler.setTokenValue(ts.token,ts.value);
                 })
 
-                this.flowandtokenhandler.triggerFlow(earliesttrigger.scheduleitem.tokenSetters.map(ts=>ts.token), earliesttrigger);
+                this.flowandtokenhandler.triggerFlow(earliesttrigger.scheduleItem.tokenSetters.map(ts=>ts.token), earliesttrigger);
 
                 this.removeTrigger(earliesttrigger);
-                this.homeyApp.log('Removed trigger from list: ' + earliesttrigger);
+                //this.homeyApp.log('Removed trigger from list: ' + earliesttrigger);
                 
                 this.runningtimer = setTimeout(function() { this.timerCallback('next'); }.bind(this), 100);
-
-            }  
+                
+                //this.homeyApp.log('Execution done');
+                
+            }     
         } 
         else if (arg === 'next') {
             //this.homeyApp.log('Next');
@@ -227,7 +288,7 @@ export class TriggerHandler {
             if (earliesttrigger != null) {
                 let now = new Date();
                 
-                let delta = earliesttrigger.triggertime.getTime()-now.getTime();
+                let delta = earliesttrigger.triggerTime.getTime()-now.getTime();
                 if (delta < 100) delta = 100;
                 if (delta > 60000) {
                     delta = 60000;

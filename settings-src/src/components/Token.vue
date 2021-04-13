@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import Token from '@/WebSettings'
+import { Token } from '@/CommonContainerClasses'
 
 export default {
   name: 'AsvToken',

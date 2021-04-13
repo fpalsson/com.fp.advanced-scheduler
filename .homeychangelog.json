@@ -79,6 +79,12 @@
   },
   "0.1.26": {
     "en": "Translations for Dutch and German improved from last merges. Bug with negative offset transfering to time corrected. Now timeArg property on ScheduleItem is split into timeArg and solarOffset. Golden Hour confusion demystified in translation files and consuming code."
+  },
+  "0.1.27": {
+    "en": "Having schedule events at midnight could lead to events the day after not beeing triggered. Bug corrected."
+  },
+  "0.2.0": {
+    "en": "Implementing random time and conditional triggers. Rewrite of major parts of code. Using more components for many things, refactoring. New settings-structure."
   }
   
 }

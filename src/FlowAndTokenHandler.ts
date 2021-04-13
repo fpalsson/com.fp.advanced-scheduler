@@ -1,11 +1,12 @@
 'use strict';
 
 import { App as HomeyApp } from "homey";
-import { Settings as AppSettings } from "./Settings";
+//import { Settings as AppSettings } from "./Settings";
 import { FlowCardTrigger, FlowCardAction, FlowToken, ManagerFlow } from "homey";
-import { Token, Schedule } from "./ContainerClasses";
 import { Trigger } from "./TriggerHandler";
-//import { timeStamp } from "console";
+
+// this is copied from settings-src/src by build task. Not elegant, but...
+import { ASSettings, Token, Schedule } from "./CommonContainerClasses";
 
 class TokenWrapper{
     constructor(flowToken:FlowToken, token:Token) {
@@ -18,12 +19,17 @@ class TokenWrapper{
 
 export class FlowAndTokenHandler {
     private homeyApp:HomeyApp;
-    private settings:AppSettings;
+    private settings:ASSettings;
     private tokenWrappers:TokenWrapper[];
     
-    constructor(homeyApp:HomeyApp, settings:AppSettings) {
+    constructor(homeyApp:HomeyApp, settings:ASSettings) {
         this.homeyApp=homeyApp;
         this.settings=settings;
+    }
+
+    setSettings(settings:ASSettings)
+    {
+        this.settings = settings;
     }
 
     setupFlows() {
@@ -45,14 +51,19 @@ export class FlowAndTokenHandler {
                 return Promise.resolve( results );
             }); 
         
-            myTrigger.registerRunListener(async ( args, state:Trigger ) => {
-                let shallTrigger = true;
+            myTrigger.registerRunListener(async ( args, state:MiniSchedule ) => {
+                try {
+                    //this.homeyApp.log('Trigger Run');
+                    let shallTrigger = true;
               
-                //this.homeyApp.log('Trigger Run');
-                let s = <Schedule>args.schedule;
-                shallTrigger = s.id===state.schedule.id;
-                this.homeyApp.log('Will trigger: ' + shallTrigger + ', schedule: ' + s.name);
-                return Promise.resolve( shallTrigger );
+                    let s = <Schedule>args.schedule;
+                    shallTrigger = s.id===state.id;
+                    if (shallTrigger) this.homeyApp.log('Will trigger: ' + shallTrigger + ', schedule: ' + s.name);
+                    return Promise.resolve( shallTrigger );
+                        
+                } catch (error) {
+                    return Promise.reject(error);                    
+                }
           
             })
         
@@ -152,10 +163,40 @@ export class FlowAndTokenHandler {
     }
 
     triggerFlow(tokens:Token[],trigger:Trigger){
-            //Trigger flow!
-            let fct:FlowCardTrigger = <FlowCardTrigger>ManagerFlow.getCard('trigger','schedule_trigger');
-            fct.trigger(tokens, trigger);
-            this.homeyApp.log('Triggered schedule item: ' + trigger);
+        //this.homeyApp.log('Trigger Flow started');
+        let fct:FlowCardTrigger = <FlowCardTrigger>ManagerFlow.getCard('trigger','schedule_trigger');
+        
+        let ms = new MiniSchedule(trigger.schedule.id, trigger.schedule.name);
+        let mts:MiniToken[] = new Array();
+        tokens.forEach(t => {
+            let mt = new MiniToken(t.id, t.name, t.type);
+            mts.push(mt);
+        });
+        
+        fct.trigger(mts, ms);
+        //this.homeyApp.log('Triggered schedule item: ' + trigger);
     }
 }
 
+export class MiniSchedule {
+    constructor(id:number, name:string) {
+        this.id=id;
+        this.name=name;
+    }
+
+    id:number;
+    name:string;
+}
+
+
+export class MiniToken {
+    constructor(id:number, name:string, type: "boolean" | "number" | "string"){
+        this.id=id;
+        this.name=name;
+        this.type=type;
+    }
+
+    id:number;
+    name:string;
+    type: "boolean" | "number" | "string" ;
+}

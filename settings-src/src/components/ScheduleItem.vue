@@ -3,21 +3,15 @@
     <v-container class="pa-0 ma-0">
         <v-sheet elevation="2" class="pa-2">
         <v-row>
-            <!--v-col cols="2">
-                Day
-            </v-col-->
             <v-col cols="10">
                 {{ daysArgShortText(scheduleItem.daysArg) }}                                                            
             </v-col>
             <v-col cols="2">
-                <!--v-btn fab dark x-small color="green" v-bind="attrs" v-on="on"><v-icon dark>mdi-edit</v-icon></v-btn-->
-                <!--v-dialog v-model="'dialogsi' + scheduleItem.id" --> <!-- max-width="290"-->
                 <v-dialog v-model="editdialogopen" persistent> <!-- max-width="290"-->
                     <template v-slot:activator="{ on }">
-                        <!--v-btn fab dark x-small color="green" v-bind="attrs" v-on="on"><v-icon dark>mdi-pencil</v-icon></v-btn-->
                         <v-btn fab dark x-small color="green" v-on="on"><v-icon dark>mdi-pencil</v-icon></v-btn>
                     </template>
-                    <v-form v-model="isEditFormValid">
+                    <v-form> <!--v-model="isEditFormValid"-->
                         <v-card>
                             <v-card-title>
                                 <span class="headline">{{$t('Edit_schedule_item')}}</span>
@@ -25,78 +19,97 @@
                             <v-card-text>
                                 <v-container>
                                     <v-row>
-                                            <!--v-select>  v-model="scheduleItem.selectedDays"-->
+                                      <v-chip-group
+                                            multiple
+                                            column
+                                            active-class="primary--text"
+                                            v-model="scheduleItem.selectedDays"
+                                            >
+                                            <v-chip :value="1">{{ $t('Monday_short') }}</v-chip>
+                                            <v-chip :value="2">{{ $t('Tuesday_short') }}</v-chip>
+                                            <v-chip :value="3">{{ $t('Wednesday_short') }}</v-chip>
+                                            <v-chip :value="4">{{ $t('Thursday_short') }}</v-chip>
+                                            <v-chip :value="5">{{ $t('Friday_short') }}</v-chip>
+                                            <v-chip :value="6">{{ $t('Saturday_short') }}</v-chip>
+                                            <v-chip :value="7">{{ $t('Sunday_short') }}</v-chip>
+                                        </v-chip-group>
 
-                                        <v-select
+                                        <!--v-select
                                             v-model="scheduleItem.selectedDays"
                                             :items="translateDays(scheduleItem.getAllDays())"
                                             item-value="value"
-                                            item-text="translatedDay"
+                                            item-text="translatedShortDay"
                                             return-object
                                             multiple
-                                            chips
                                             :label="$t('Select')"
                                             :hint="$t('Select_days_of_week')"
                                             persistent-hint
-                                        ></v-select>
+                                        ></v-select-->
                                     </v-row>
+                                    <asv-time-sun-event v-model="scheduleItem.mainTrigger"
+                                                    :validInput.sync="mainTriggerValid"
+                                                    >
+                                    </asv-time-sun-event>
+                                    
                                     <v-row>
-                                        <v-radio-group
-                                            v-model="scheduleItem.timeType"
-                                            row
-                                            mandatory
-                                            >
-                                            <v-radio
-                                                :label="$t('Time')"
-                                                :value="1"
-                                                
-                                            ></v-radio>
-                                            <v-radio
-                                                :label="$t('Solar')"
-                                                :value="2"
-                                            ></v-radio>
-                                            </v-radio-group>
+                                        <v-checkbox class="mb-2" v-model="scheduleItem.randomTrigger.used" :label="$t('Use_random_settings')" hide-details="true" dense></v-checkbox>
                                     </v-row>
+                                    <v-container v-if="scheduleItem.randomTrigger.used" >
+                                        <v-row class="pl-5">
+                                            <label>{{ $t('Random_time_before_or_after_trigger') }}</label>
+                                        </v-row>
+                                        <v-row>
+                                            <asv-time-sun-event v-model="scheduleItem.randomTrigger"
+                                                            :validInput.sync="randomTriggerValid"
+                                                            >
+                                            </asv-time-sun-event>
+                                        </v-row>
+                                    </v-container>
+                                    
                                     <v-row>
-                                        <v-select v-if="scheduleItem.timeType==2"
-                                            v-model="scheduleItem.sunEventType"
-                                            :items="translateSunEvents(getSunEvents())"
-                                            item-value="id"
-                                            item-text="desc"
-                                            :label="$t('Sun_event')"
-                                            :hint="$t('Choose_sun_event')"
-                                            persistent-hint
-                                            :rules="rules.suneventvalid"
-                                            ></v-select>
+                                        <v-checkbox class="mb-2" v-model="scheduleItem.onlyTriggerIfBefore.used" :label="$t('Use_conditional_before')" hide-details="true" dense></v-checkbox>
                                     </v-row>
+                                    <v-container v-if="scheduleItem.onlyTriggerIfBefore.used" >
+                                        <v-row class="pl-5">
+                                            <label>{{ $t('Only_trigger_if_before') }}</label>
+                                        </v-row>
+                                        <v-row>
+                                            <asv-time-sun-event v-model="scheduleItem.onlyTriggerIfBefore"
+                                                                    :validInput.sync="onlyTriggerIfBeforeTriggerValid"
+                                                            >
+                                            </asv-time-sun-event>
+                                        </v-row>
+                                    </v-container>
+                                    
                                     <v-row>
-                                        <v-text-field v-if="scheduleItem.timeType==1" :label="$t('Trigger_time')" :placeholder="$t('Enter_a_time')" v-model="scheduleItem.timeArg" :rules="rules.isTime"></v-text-field>
-                                        <v-text-field v-if="scheduleItem.timeType==2" :label="$t('Offset_time')" :placeholder="$t('Enter_an_offset')" v-model="scheduleItem.solarOffset" :rules="rules.isOffsetMaxOneDay"></v-text-field>
-                                        <!--v-time-picker
-                                        format="24hr"
-                                        use-seconds
-                                        ></v-time-picker-->
+                                        <v-checkbox class="mb-2" v-model="scheduleItem.onlyTriggerIfAfter.used" :label="$t('Use_conditional_after')" hide-details="true" dense></v-checkbox>
                                     </v-row>
+                                    <v-container v-if="scheduleItem.onlyTriggerIfAfter.used" >
+                                        <v-row class="pl-5">
+                                            <label>{{ $t('Only_trigger_if_after') }}</label>
+                                        </v-row>
+                                        <v-row>
+                                            <asv-time-sun-event v-model="scheduleItem.onlyTriggerIfAfter"
+                                                            :validInput.sync="onlyTriggerIfAfterTriggerValid"
+                                                            >
+                                            </asv-time-sun-event>
+                                        </v-row>
+                                    </v-container>
                                     <v-row>
-                                        <v-btn  color="green darken-1" text @click="editdialogopen=false" :disabled="!isEditFormValid">{{ $t('Close') }}</v-btn>
-                                        <!--v-btn color="green darken-1" text @click="'dialogsi' + scheduleItem.id + ' = false'">Close</v-btn-->
+                                        <v-btn  color="green darken-1" text @click="editdialogopen=false" :disabled="!allInputValid">{{ $t('Close') }}</v-btn>
                                     </v-row>
                                 </v-container>
                             </v-card-text>
                         </v-card>
                     </v-form>>
                 </v-dialog>
-                
-
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="10">
-                {{ scheduleItemTimeString(scheduleItem.timeType,scheduleItem.sunEventType,scheduleItem.timeArg,scheduleItem.solarOffset) }}
+                {{ scheduleItemTimeString() }} 
             </v-col>
             <v-col cols="2">
-                <!--v-btn fab dark x-small color="red"><v-icon dark>mdi-delete-circle</v-icon></v-btn-->
-
                 <v-dialog v-model="deletedialogopen" > <!-- max-width="290"-->
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn fab dark x-small color="red" v-bind="attrs" v-on="on"><v-icon dark>mdi-delete-circle</v-icon></v-btn>
@@ -153,13 +166,16 @@
 </template>
 
 <script>
-import { WebSettings, Schedule, ScheduleItem, TokenSetter } from '@/WebSettings';
+import { ScheduleItem } from '@/CommonContainerClasses';
 import AsvTokenSetter from '@/components/TokenSetter';
+import AsvTimeSunEvent from '@/components/TimeSunEvent';
+
 
 export default {
   name: 'AsvScheduleItem',
   components: {
     AsvTokenSetter,
+    AsvTimeSunEvent,
   },
 
   props: {
@@ -180,6 +196,12 @@ export default {
         addTokenSetterOpen: false,
         tokenSetterToAdd: -1,
         isEditFormValid: false,
+        mainTriggerValid: false,
+        randomTriggerValid: false,
+        onlyTriggerIfBeforeTriggerValid: false,
+        onlyTriggerIfAfterTriggerValid: false,
+        showRandomSettings:false,
+        showConditionalSettings:false,
 
         rules: {
 
@@ -206,25 +228,18 @@ export default {
     };
   },
   methods : {
-      translateSunEvents: function (sunEvents) {
-          sunEvents.forEach(se => {
-              se.desc = this.$t(se.id);
-          })
-          return sunEvents;
-      },
+    translateDays: function (days) {
+        days.forEach(day => {
+            day.translatedDay = this.$t(day.day);
+            day.translatedShortDay= this.$t(day.shortDay);
+        })
+        return days;
+    },
 
 
-      translateDays: function (days) {
-          days.forEach(day => {
-              day.translatedDay = this.$t(day.day);
-          })
-          return days;
-      },
-
-
-      daysArgShortText: function (daysArg) {
+    daysArgShortText: function (daysArg) {
         let da = daysArg;
-        console.log('daysArgShortText daysarg: ' + da)
+        //console.log('daysArgShortText daysarg: ' + da)
         if (da == 0) return this.$t('Nothing');
         else if (da == 1+2+4+8+16) return this.$t('Weekdays');
         else if (da == 32+64) return this.$t('Weekends');
@@ -243,39 +258,49 @@ export default {
             s = s.substring(0, s.length-1);
             return s;
         }
-      },
+    },
 
 
-      scheduleItemDeleteAndCloseDialog : function () {
+    scheduleItemDeleteAndCloseDialog : function () {
         this.scheduleItem.delete();  
         this.deletedialogopen=false;
-      },
+    },
 
-      getSunEvents : function (){
-          let ws = new WebSettings();
-          let suntimes = ws.getSunTimes();
-          
-          //console.log('suntimes');
-          //console.log(suntimes);
-          return suntimes;
-      },
+    scheduleItemTimeString : function () {
+        let mt = this.scheduleItem.mainTrigger;
+        let rt = this.scheduleItem.randomTrigger;
+        let ob = this.scheduleItem.onlyTriggerIfBefore;
+        let oa = this.scheduleItem.onlyTriggerIfAfter;
 
-      scheduleItemTimeString : function (tt,se,ta,so) {
-          //console.log('scheduleItemTimeString')
+        let mtString = this.timeInfoTimeString(mt);
+        let rtString = this.timeInfoTimeString(rt);
+        let obString = this.timeInfoTimeString(ob);
+        let oaString = this.timeInfoTimeString(oa);
 
-          if (tt==1) return this.$t('Time') +': ' + ta;
+        let res = '';
+        if (!rt.used) res += mtString;
+        else res += this.$t('Random_time_between') + ' ' + mtString + ' ' + this.$t('and') + ' ' + rtString;
 
-          if (tt==2) {
-           let res = this.$t(se);
-           if (so=='00:00' || so =='00:00:00') return res;
-           if (so.includes('-')) return res + ', ' + so.replace('-','') + ' ' + this.$t('before');
-           else return res + ', ' + so + ' ' + this.$t('after');
-           
-          }
-          //if (tt==2) return this.$t('Solar') + ': ' + this.$t(se) + ', ' + this.$t('offset') + ': ' + ta;
-      },
+        if (ob.used && !oa.used) res += ' ' + this.$t('but_only_if_before') + ' (' + obString + ')';
+        else if (oa.used && !ob.used) res += ' ' + this.$t('but_only_if_after') + ' (' + oaString + ')';
+        else if (ob.used && oa.used) res += ' ' + this.$t('but_only_if_before') + ' (' + obString + ') ' + this.$t('and_after') + ' (' + oaString + ')';
 
-      addTokenSetterAndCloseDialog : function (tokenid) {
+        return res;
+    },
+
+    timeInfoTimeString(ti) {
+        if (ti.timeType==1) return ti.time;
+
+        if (ti.timeType==2) {
+            let res = this.$t(ti.sunEvent);
+            if (ti.solarOffset=='00:00' || ti.solarOffset =='00:00:00') return res;
+            if (ti.solarOffset.includes('-')) return ti.solarOffset.replace('-','') + ' ' + this.$t('before') + ' ' + res;
+            else return ti.solarOffset + ' ' + this.$t('after') + ' ' + res;
+        }
+    },
+
+
+    addTokenSetterAndCloseDialog : function (tokenid) {
         this.scheduleItem.addNewTokenSetterByIdNoVal(tokenid)
           
         this.addTokenSetterOpen=false;
@@ -305,6 +330,21 @@ export default {
           return res;
       },      
     },
+    computed:{
+        allInputValid : function () {
+            return this.mainTriggerValid &&
+            (!this.scheduleItem.randomTrigger.used || (this.scheduleItem.randomTrigger.used && this.randomTriggerValid)) && 
+            (!this.scheduleItem.onlyTriggerIfBefore.used || (this.scheduleItem.onlyTriggerIfBefore.used && this.onlyTriggerIfBeforeTriggerValid)) &&
+            (!this.scheduleItem.onlyTriggerIfAfter.used || (this.scheduleItem.onlyTriggerIfAfter.used && this.onlyTriggerIfAfterTriggerValid)) 
+        
+        },
+/*        watch: {
+            selectedDays: function (val) {
+                console.log('watch' + val);
+            },
+      
+        }
+  */  }
 };
 </script>
 

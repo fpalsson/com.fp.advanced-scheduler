@@ -1,6 +1,5 @@
 'use strict';
 
-//const Homey = require('homey');
 import { App as HomeyApp } from "homey";
 import { MainApp as MainApp } from "./src/MainApp";
 

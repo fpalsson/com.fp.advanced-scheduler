@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { TokenSetter, ScheduleItem } from '@/WebSettings'
+import { TokenSetter, ScheduleItem } from '@/CommonContainerClasses'
 
 export default {
   name: 'AsvTokenSetter',

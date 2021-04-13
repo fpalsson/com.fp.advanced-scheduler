@@ -105,6 +105,18 @@
     "before": "davor",
     "after": "danach",
 
+    "//New litterals":"_comment",
+    "Use_random_settings": "Zufällige Einstellungen verwenden",
+    "Random_time_before_or_after_trigger" : "Zufällige Zeit vor oder nach dem Auslöser",
+    "Use_conditional_before" : "Use conditional before",
+    "Only_trigger_if_before" : "Nur auslösen, wenn vor",
+    "Use_conditional_after" : "Use conditional after",
+    "Only_trigger_if_after" : "Nur auslösen, wenn nach",
+    "Random_time_between" : "Zufallszeit zwischen",
+    "and" : "und",
+    "but_only_if_before" : "aber nur, wenn vor",
+    "but_only_if_after" : "aber nur, wenn nach",
+    "and_after" : "und nach",
 
     "//Token.vue":"_comment",
     "Token_name":"Tag-Name",

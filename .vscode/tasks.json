@@ -1,6 +1,34 @@
 {
 	"version": "2.0.0",
 	"tasks": [
+	
+		{
+			"label": "Build and run",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"Build All",
+				"Homey run"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "Homey run",
+			"options": {
+				"cwd": "${workspaceFolder}/"
+			},
+			"type": "shell",
+			"command": "homey app run"
+		},
+		{
+			"label": "Build All",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"Copy from settings",
+				"tsc: build - tsconfig.json",
+				"npm run build"
+			],
+			"problemMatcher": []
+		},
 		{
 			"type": "typescript",
 			"tsconfig": "tsconfig.json",
@@ -12,6 +40,31 @@
 				"isDefault": true
 			},
 			"label": "tsc: build - tsconfig.json"
+		},
+		{
+			"label": "Copy from settings",
+			"type": "shell",
+			"windows": {
+				"command": ".\\scripts\\copy.cmd"
+			}
+		},
+		{
+			"label": "npm run build",
+			"options": {
+				"cwd": "${workspaceFolder}/settings-src"
+			},
+			"type": "shell",
+			"command": "npm run build"
+		},
+		{
+			"type": "typescript",
+			"tsconfig": "tsconfig.json",
+			"option": "watch",
+			"problemMatcher": [
+				"$tsc-watch"
+			],
+			"group": "build",
+			"label": "tsc: watch - tsconfig.json"
 		}
 	]
 }
