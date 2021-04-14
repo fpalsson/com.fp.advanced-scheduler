@@ -53,3 +53,8 @@ src/SettingsPersistance.ts
 example settings.json
 ExampleSettings.v1.json
 app.js.map
+examplesettings.json
+examplesettings.v1.kass.json
+failingsettings.v1.json
+examplesettings.json
+Mysettings.v2.json

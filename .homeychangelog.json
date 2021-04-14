@@ -85,6 +85,9 @@
   },
   "0.2.0": {
     "en": "Implementing random time and conditional triggers. Rewrite of major parts of code. Using more components for many things, refactoring. New settings-structure."
+  },
+  "0.2.1": {
+    "en": "Corrected bug making it impossible to read version 1 settings for Schedule Events."
   }
   
 }

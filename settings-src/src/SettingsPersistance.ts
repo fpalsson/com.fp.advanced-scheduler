@@ -250,7 +250,7 @@ export class SettingsPersistance {
                     localschedule.tokens.push(localtoken);            
                     console.log('pushed token: ' + localtoken.id +  ' ' + localtoken.name );
                 });    
-                sched.scheduleItems.forEach(si => {
+                sched.scheduleitems.forEach(si => {
                     let dt:DaysType;
                     switch (si.daysType){
                         case 'daysofweek': { dt = DaysType.DaysOfWeek; break; }
