@@ -297,7 +297,7 @@ export class ScheduleItem {
     set daysArg(value:number){
         let arr:number[] = new Array();
         for (let i = 1; i<=7; i++) {
-            if ((Math.pow(2,i-1) && value) != 0)
+            if ((Math.pow(2,i-1) & value) != 0)
                 arr.push(i);
         }
         this.internalSelectedDays = arr;

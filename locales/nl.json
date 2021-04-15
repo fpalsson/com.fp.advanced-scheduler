@@ -117,6 +117,14 @@
     "but_only_if_after" : "maar alleen indien later dan",
     "and_after" : "en later dan",
 
+    "Show_advanced_settings" : "Show advanced settings",
+    "Use_first_or_last_of" : "Use first or last of",
+    "Trigger_first_of_this_and_main" : "Trigger first of this and main",
+    "Trigger_last_of_this_and_main" : "Trigger last of this and main",
+    "First_of" : "First of",
+    "Last_of" : "Last of",
+
+
     "//Token.vue":"_comment",
     "Token_name":"Tag naam",
     "Enter_a_token_name":"Vul een tag naaam in",

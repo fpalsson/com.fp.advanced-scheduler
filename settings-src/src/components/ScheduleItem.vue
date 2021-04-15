@@ -70,7 +70,7 @@
                                         </v-container>
                                         
                                         <v-row>
-                                            <v-checkbox class="mb-2" v-model="triggerFirstLastUsed" :label="$t('Use_first_or_last')" hide-details="true" dense></v-checkbox>
+                                            <v-checkbox class="mb-2" v-model="triggerFirstLastUsed" :label="$t('Use_first_or_last_of')" hide-details="true" dense></v-checkbox>
                                         </v-row>
                                         
                                         <v-container v-if="triggerFirstLastUsed">
@@ -79,11 +79,11 @@
                                                 <v-radio-group v-model="triggerFirstLastVariant" row mandatory hide-details="true"
                                                     >
                                                     <v-radio
-                                                        :label="$t('First')"
+                                                        :label="$t('First_of')"
                                                         :value="1"
                                                     ></v-radio>
                                                     <v-radio
-                                                        :label="$t('Last')"
+                                                        :label="$t('Last_of')"
                                                         :value="2"
                                                     ></v-radio>
                                                 </v-radio-group>
@@ -333,8 +333,8 @@ export default {
         let oaString = this.timeInfoTimeString(oa);
 
         let res = '';
-        if (fo.used) res += 'First of ' + foString + ' and ';
-        if (lo.used) res += 'Last of ' + loString + ' and ';
+        if (fo.used) res += this.$t('First_of') + ' ' + foString + ' ' + this.$t('and') + ' ';
+        if (lo.used) res += this.$t('Last_of') + ' ' + loString + ' ' + this.$t('and') + ' ';
         if (!rt.used) res += mtString;
         else res += this.$t('Random_time_between') + ' ' + mtString + ' ' + this.$t('and') + ' ' + rtString;
 

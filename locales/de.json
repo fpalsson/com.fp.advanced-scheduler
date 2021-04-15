@@ -118,6 +118,14 @@
     "but_only_if_after" : "aber nur, wenn nach",
     "and_after" : "und nach",
 
+    "Show_advanced_settings" : "Show advanced settings",
+    "Use_first_or_last_of" : "Use first or last of",
+    "Trigger_first_of_this_and_main" : "Trigger first of this and main",
+    "Trigger_last_of_this_and_main" : "Trigger last of this and main",
+    "First_of" : "First of",
+    "Last_of" : "Last of",
+
+
     "//Token.vue":"_comment",
     "Token_name":"Tag-Name",
     "Enter_a_token_name":"Tag-Namen eintragen",

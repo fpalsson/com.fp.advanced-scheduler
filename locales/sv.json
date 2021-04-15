@@ -117,6 +117,14 @@
     "but_only_if_after" : "men bara om efter",
     "and_after" : "och efter",
 
+    "Show_advanced_settings" : "Visa avancerade inställningar",
+    "Use_first_or_last_of" : "Använd först/sist av",
+    "Trigger_first_of_this_and_main" : "Trigga första av denna och huvudtiden",
+    "Trigger_last_of_this_and_main" : "Trigga sista av denna och huvudtiden",
+    "First_of" : "Första av",
+    "Last_of" : "Sista av",
+
+
     "//Token.vue":"_comment",
     "Token_name":"Tagnamn",
     "Enter_a_token_name":"Mata in tagnamn",

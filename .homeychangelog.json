@@ -90,7 +90,10 @@
     "en": "Corrected bug making it impossible to read version 1 settings for Schedule Events."
   },
   "0.2.2": {
-    "en": "Corrected serialization bug, and reading settings version 1 bug."
+    "en": "Corrected serialization bug, and reading settings version 1 bug. Implemented triggering first or last of two times."
+  },
+  "0.2.3": {
+    "en": "Corrected bug reading weekdays settings wrong."
   }
   
 }
