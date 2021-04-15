@@ -150,11 +150,15 @@ export class SettingsPersistance {
                 if (si.randomTrigger.used) { 
                     sio['randomTrigger'] = this.timeInfoToJson(si.randomTrigger);
                 }
-
+                if (si.triggerFirstOf.used) { 
+                    sio['triggerFirstOf'] = this.timeInfoToJson(si.triggerFirstOf);
+                }
+                if (si.triggerLastOf.used) { 
+                    sio['triggerLastOf'] = this.timeInfoToJson(si.triggerLastOf);
+                }
                 if (si.onlyTriggerIfBefore.used) {
                     sio['onlyTriggerIfBefore'] = this.timeInfoToJson(si.onlyTriggerIfBefore);
                 }
-
                 if (si.onlyTriggerIfAfter.used) {
                     sio['onlyTriggerIfAfter'] = this.timeInfoToJson(si.onlyTriggerIfAfter);
 
@@ -252,9 +256,10 @@ export class SettingsPersistance {
                 });    
                 sched.scheduleitems.forEach(si => {
                     let dt:DaysType;
-                    switch (si.daysType){
+                    switch (si.daystype){
                         case 'daysofweek': { dt = DaysType.DaysOfWeek; break; }
                         case 'daysofmonth': { dt = DaysType.DaysOfMonth; break; }
+
                     }
 
 
@@ -340,10 +345,12 @@ export class SettingsPersistance {
 
                     let mt = this.parseJsonTimeInfo(si.mainTrigger); 
                     let rt = this.parseJsonTimeInfo(si.randomTrigger);
+                    let fo = this.parseJsonTimeInfo(si.triggerFirstOf);
+                    let lo = this.parseJsonTimeInfo(si.triggerLastOf);
                     let ob = this.parseJsonTimeInfo(si.onlyTriggerIfBefore);
                     let oa = this.parseJsonTimeInfo(si.onlyTriggerIfAfter);
 
-                    let localsi = new ScheduleItem(localschedule, parseInt(si.id), dt, si.daysArg, mt, rt, ob, oa);
+                    let localsi = new ScheduleItem(localschedule, parseInt(si.id), dt, si.daysArg, mt, rt, fo, lo, ob, oa);
 
                     si.tokenSetters.forEach(ti => {
                         let localtoken = localschedule.tokens.find(t=>t.id==ti.id)

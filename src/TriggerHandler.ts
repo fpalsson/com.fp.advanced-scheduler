@@ -90,7 +90,8 @@ export class TriggerHandler {
     private 
 
     private getTriggerTime(si:ScheduleItem, date:Date):Date {
-        if (!si.randomTrigger.used) return this.getTimeInfoTime(si.mainTrigger, date);
+        let resTime:Date;
+        if (!si.randomTrigger.used) resTime = this.getTimeInfoTime(si.mainTrigger, date);
         else {
             let mtTime:Date = this.getTimeInfoTime(si.mainTrigger, date);
             let rtTime:Date = this.getTimeInfoTime(si.randomTrigger, date);
@@ -100,9 +101,18 @@ export class TriggerHandler {
 
             this.homeyApp.log('Random Time mt: ' + mtTime + ' rt: ' + rtTime + ' diff: ' + msdiff + ' offset: ' + offset + ' resdate: ' + resDate);
 
-            return resDate;
+            resTime = resDate;
         }
+        if (si.triggerFirstOf.used) {
+            let firstTime:Date = this.getTimeInfoTime(si.triggerFirstOf, date);
+            resTime = new Date(Math.min(firstTime.getTime(),resTime.getTime()));
+        } 
+        if (si.triggerLastOf.used) {
+            let lastTime:Date = this.getTimeInfoTime(si.triggerLastOf, date);
+            resTime = new Date(Math.max(lastTime.getTime(),resTime.getTime()));
+        } 
 
+        return resTime;
     }
 
     private getTimeInfoTime(ti:TimeInfo, date:Date):Date {
@@ -148,31 +158,6 @@ export class TriggerHandler {
             }
         }
 
-/*        if (si.mainTrigger.timeType == TimeType.TimeOfDay ){
-            triggerTime = new Date(dateAtMidnightCallingDate.getTime() + this.parseTime(si.mainTrigger.time));
-        }
-        else if (si.mainTrigger.timeType === TimeType.Solar){
-            let ti:SunEventInfo = this.sunWrapper.getTime(date, si.mainTrigger.sunEvent);
-            if (ti==null)
-            {
-                this.homeyApp.log('Solar error' + si.mainTrigger.sunEvent);
-            }
-            triggerTime = ti.time;
-            if (triggerTime==null) {
-                this.homeyApp.log('Solar event: ' + si.mainTrigger.time + ' not known!');
-                return;    
-            }
-            let offset = this.parseOffset(si.mainTrigger.time);
-            this.homeyApp.log('Solar offset: ' + offset);
-            triggerTime.setTime(triggerTime.getTime() + offset);
-
-//            this.homeyApp.log('Added solar event: ' + si.suneventtype + ' with time: ' + triggertime.toTimeString() + ' (offset: ' + offset.toTimeString() + ')');
-        }
-        else {
-            this.homeyApp.log('Unknown trigger type!');
-            return;
-        }    
-*/
         if (!this.dayHitTest(si.daysType,si.daysArg,date)){
             this.homeyApp.log('Dayhit failed ' + s.name + ', time: ' + triggerTime) ;
             return;

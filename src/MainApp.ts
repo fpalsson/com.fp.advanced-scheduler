@@ -36,7 +36,7 @@ export class MainApp {
         this.sunWrapper = new SunWrapper(this.homeyApp);
         this.sunWrapper.init();
 
-        this.flowAndTokenHandler = new FlowAndTokenHandler(this.homeyApp, this.asSettings);
+        this.flowAndTokenHandler = new FlowAndTokenHandler(this.homeyApp, this.asSettings.schedules);
         this.flowAndTokenHandler.setupFlows();
         this.flowAndTokenHandler.setupTokens();
 
@@ -64,10 +64,10 @@ export class MainApp {
         sp.readSettings(settingsTxt);
         this.asSettings = sp.getSettings();
        
-        this.flowAndTokenHandler.setSettings(this.asSettings);
+        this.flowAndTokenHandler.setSchedules(this.asSettings.schedules);
         this.flowAndTokenHandler.setupTokens();
 
-        this.triggerHandler.setSettings(this.asSettings);
+        this.triggerHandler = new TriggerHandler(this.homeyApp, this.asSettings, this.flowAndTokenHandler, this.sunWrapper);
         this.triggerHandler.setupTriggers('startup');
         this.triggerHandler.startTimer();
 

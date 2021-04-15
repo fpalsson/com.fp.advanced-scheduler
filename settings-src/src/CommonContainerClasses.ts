@@ -222,6 +222,8 @@ export class ScheduleItem {
                 
                 mainTrigger:TimeInfo,
                 randomTrigger:TimeInfo=null,
+                triggerFirstOf:TimeInfo=null,
+                triggerLastOf:TimeInfo=null,
                 onlyTriggerIfBefore:TimeInfo=null,
                 onlyTriggerIfAfter:TimeInfo=null,
     ) {
@@ -234,10 +236,14 @@ export class ScheduleItem {
         
         this.mainTrigger=mainTrigger;
         if (randomTrigger==null) { randomTrigger = new TimeInfo(TimeType.TimeOfDay,"00:00","","00:00"); randomTrigger.used=false;}
+        if (triggerFirstOf==null) { triggerFirstOf = new TimeInfo(TimeType.TimeOfDay,"00:00","","00:00"); triggerFirstOf.used=false;}
+        if (triggerLastOf==null) { triggerLastOf = new TimeInfo(TimeType.TimeOfDay,"00:00","","00:00"); triggerLastOf.used=false;}
         if (onlyTriggerIfBefore==null) { onlyTriggerIfBefore = new TimeInfo(TimeType.TimeOfDay,"00:00","","00:00"); onlyTriggerIfBefore.used=false;}
         if (onlyTriggerIfAfter==null) { onlyTriggerIfAfter = new TimeInfo(TimeType.TimeOfDay,"00:00","","00:00"); onlyTriggerIfAfter.used=false;}
 
         this.randomTrigger=randomTrigger;
+        this.triggerFirstOf=triggerFirstOf;
+        this.triggerLastOf=triggerLastOf
         this.onlyTriggerIfBefore=onlyTriggerIfBefore;
         this.onlyTriggerIfAfter=onlyTriggerIfAfter;
 
@@ -250,6 +256,8 @@ export class ScheduleItem {
   
     mainTrigger:TimeInfo;
     randomTrigger:TimeInfo;
+    triggerFirstOf:TimeInfo;
+    triggerLastOf:TimeInfo;
     onlyTriggerIfBefore:TimeInfo;
     onlyTriggerIfAfter:TimeInfo;
 

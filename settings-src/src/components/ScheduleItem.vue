@@ -51,49 +51,94 @@
                                                     >
                                     </asv-time-sun-event>
                                     
-                                    <v-row>
-                                        <v-checkbox class="mb-2" v-model="scheduleItem.randomTrigger.used" :label="$t('Use_random_settings')" hide-details="true" dense></v-checkbox>
-                                    </v-row>
-                                    <v-container v-if="scheduleItem.randomTrigger.used" >
-                                        <v-row class="pl-5">
-                                            <label>{{ $t('Random_time_before_or_after_trigger') }}</label>
-                                        </v-row>
+                                    <v-checkbox class="mb-2" v-model="showAdvancedSettings" :label="$t('Show_advanced_settings')" hide-details="true" dense></v-checkbox>
+                                    <v-container v-if="showAdvancedSettings">
+
                                         <v-row>
-                                            <asv-time-sun-event v-model="scheduleItem.randomTrigger"
-                                                            :validInput.sync="randomTriggerValid"
-                                                            >
-                                            </asv-time-sun-event>
+                                            <v-checkbox class="mb-2" v-model="scheduleItem.randomTrigger.used" :label="$t('Use_random_settings')" hide-details="true" dense></v-checkbox>
                                         </v-row>
-                                    </v-container>
-                                    
-                                    <v-row>
-                                        <v-checkbox class="mb-2" v-model="scheduleItem.onlyTriggerIfBefore.used" :label="$t('Use_conditional_before')" hide-details="true" dense></v-checkbox>
-                                    </v-row>
-                                    <v-container v-if="scheduleItem.onlyTriggerIfBefore.used" >
-                                        <v-row class="pl-5">
-                                            <label>{{ $t('Only_trigger_if_before') }}</label>
-                                        </v-row>
+                                        <v-container v-if="scheduleItem.randomTrigger.used" >
+                                            <v-row class="pl-5">
+                                                <label>{{ $t('Random_time_before_or_after_trigger') }}</label>
+                                            </v-row>
+                                            <v-row>
+                                                <asv-time-sun-event v-model="scheduleItem.randomTrigger"
+                                                                :validInput.sync="randomTriggerValid"
+                                                                >
+                                                </asv-time-sun-event>
+                                            </v-row>
+                                        </v-container>
+                                        
                                         <v-row>
-                                            <asv-time-sun-event v-model="scheduleItem.onlyTriggerIfBefore"
-                                                                    :validInput.sync="onlyTriggerIfBeforeTriggerValid"
-                                                            >
-                                            </asv-time-sun-event>
+                                            <v-checkbox class="mb-2" v-model="triggerFirstLastUsed" :label="$t('Use_first_or_last')" hide-details="true" dense></v-checkbox>
                                         </v-row>
-                                    </v-container>
-                                    
-                                    <v-row>
-                                        <v-checkbox class="mb-2" v-model="scheduleItem.onlyTriggerIfAfter.used" :label="$t('Use_conditional_after')" hide-details="true" dense></v-checkbox>
-                                    </v-row>
-                                    <v-container v-if="scheduleItem.onlyTriggerIfAfter.used" >
-                                        <v-row class="pl-5">
-                                            <label>{{ $t('Only_trigger_if_after') }}</label>
-                                        </v-row>
+                                        
+                                        <v-container v-if="triggerFirstLastUsed">
+                                            <v-row class="pl-5">     
+                                            
+                                                <v-radio-group v-model="triggerFirstLastVariant" row mandatory hide-details="true"
+                                                    >
+                                                    <v-radio
+                                                        :label="$t('First')"
+                                                        :value="1"
+                                                    ></v-radio>
+                                                    <v-radio
+                                                        :label="$t('Last')"
+                                                        :value="2"
+                                                    ></v-radio>
+                                                </v-radio-group>
+                                            </v-row>
+                                            <v-row v-if="scheduleItem.triggerFirstOf.used" class="pl-5"> 
+                                                <label>{{ $t('Trigger_first_of_this_and_main') }}</label>
+                                            </v-row>
+                                            <v-row v-if="scheduleItem.triggerFirstOf.used">
+                                                <asv-time-sun-event v-model="scheduleItem.triggerFirstOf"
+                                                                :validInput.sync="triggerFirstOfValid"
+                                                                >
+                                                </asv-time-sun-event>
+                                            </v-row>
+
+                                            <v-row v-if="scheduleItem.triggerLastOf.used" class="pl-5">
+                                                <label>{{ $t('Trigger_last_of_this_and_main') }}</label>
+                                            </v-row>
+                                            <v-row v-if="scheduleItem.triggerLastOf.used"> 
+                                                <asv-time-sun-event v-model="scheduleItem.triggerLastOf"
+                                                                :validInput.sync="triggerLastOfValid"
+                                                                >
+                                                </asv-time-sun-event>
+                                            </v-row>
+                                        </v-container>
                                         <v-row>
-                                            <asv-time-sun-event v-model="scheduleItem.onlyTriggerIfAfter"
-                                                            :validInput.sync="onlyTriggerIfAfterTriggerValid"
-                                                            >
-                                            </asv-time-sun-event>
+                                            <v-checkbox class="mb-2" v-model="scheduleItem.onlyTriggerIfBefore.used" :label="$t('Use_conditional_before')" hide-details="true" dense></v-checkbox>
                                         </v-row>
+                                        <v-container v-if="scheduleItem.onlyTriggerIfBefore.used" >
+                                            <v-row class="pl-5">
+                                                <label>{{ $t('Only_trigger_if_before') }}</label>
+                                            </v-row>
+                                            <v-row>
+                                                <asv-time-sun-event v-model="scheduleItem.onlyTriggerIfBefore"
+                                                                        :validInput.sync="onlyTriggerIfBeforeTriggerValid"
+                                                                >
+                                                </asv-time-sun-event>
+                                            </v-row>
+                                        </v-container>
+                                        
+                                        <v-row>
+                                            <v-checkbox class="mb-2" v-model="scheduleItem.onlyTriggerIfAfter.used" :label="$t('Use_conditional_after')" hide-details="true" dense></v-checkbox>
+                                        </v-row>
+                                        <v-container v-if="scheduleItem.onlyTriggerIfAfter.used" >
+                                            <v-row class="pl-5">
+                                                <label>{{ $t('Only_trigger_if_after') }}</label>
+                                            </v-row>
+                                            <v-row>
+                                                <asv-time-sun-event v-model="scheduleItem.onlyTriggerIfAfter"
+                                                                :validInput.sync="onlyTriggerIfAfterTriggerValid"
+                                                                >
+                                                </asv-time-sun-event>
+                                            </v-row>
+                                        </v-container>
+
+
                                     </v-container>
                                     <v-row>
                                         <v-btn  color="green darken-1" text @click="editdialogopen=false" :disabled="!allInputValid">{{ $t('Close') }}</v-btn>
@@ -198,10 +243,17 @@ export default {
         isEditFormValid: false,
         mainTriggerValid: false,
         randomTriggerValid: false,
+        
+        triggerFirstOfValid: false,
+        triggerLastOfValid: false,
+
         onlyTriggerIfBeforeTriggerValid: false,
         onlyTriggerIfAfterTriggerValid: false,
-        showRandomSettings:false,
-        showConditionalSettings:false,
+
+        showAdvancedSettings: this.scheduleItem.randomTrigger.used || this.scheduleItem.triggerFirstOf.used || this.scheduleItem.triggerLastOf.used ||
+                               this.scheduleItem.onlyTriggerIfBefore.used || this.scheduleItem.onlyTriggerIfAfter.used,
+        triggerFirstLastUsed:false,
+        triggerFirstLastVariant:1,
 
         rules: {
 
@@ -228,15 +280,14 @@ export default {
     };
   },
   methods : {
-    translateDays: function (days) {
+  /*  translateDays: function (days) {
         days.forEach(day => {
             day.translatedDay = this.$t(day.day);
             day.translatedShortDay= this.$t(day.shortDay);
         })
         return days;
     },
-
-
+*/
     daysArgShortText: function (daysArg) {
         let da = daysArg;
         //console.log('daysArgShortText daysarg: ' + da)
@@ -269,15 +320,21 @@ export default {
     scheduleItemTimeString : function () {
         let mt = this.scheduleItem.mainTrigger;
         let rt = this.scheduleItem.randomTrigger;
+        let fo = this.scheduleItem.triggerFirstOf;
+        let lo = this.scheduleItem.triggerLastOf;
         let ob = this.scheduleItem.onlyTriggerIfBefore;
         let oa = this.scheduleItem.onlyTriggerIfAfter;
 
         let mtString = this.timeInfoTimeString(mt);
         let rtString = this.timeInfoTimeString(rt);
+        let foString = this.timeInfoTimeString(fo);
+        let loString = this.timeInfoTimeString(lo);
         let obString = this.timeInfoTimeString(ob);
         let oaString = this.timeInfoTimeString(oa);
 
         let res = '';
+        if (fo.used) res += 'First of ' + foString + ' and ';
+        if (lo.used) res += 'Last of ' + loString + ' and ';
         if (!rt.used) res += mtString;
         else res += this.$t('Random_time_between') + ' ' + mtString + ' ' + this.$t('and') + ' ' + rtString;
 
@@ -329,22 +386,43 @@ export default {
           })
           return res;
       },      
+
+        handleFirstLast : function () {
+            if (this.triggerFirstLastUsed) {
+                this.scheduleItem.triggerFirstOf.used = this.triggerFirstLastVariant==1;
+                this.scheduleItem.triggerLastOf.used = this.triggerFirstLastVariant==2;
+            }
+            else {
+                this.scheduleItem.triggerFirstOf.used = false;
+                this.scheduleItem.triggerLastOf.used = false;
+            }
+        },      
+
     },
     computed:{
         allInputValid : function () {
             return this.mainTriggerValid &&
             (!this.scheduleItem.randomTrigger.used || (this.scheduleItem.randomTrigger.used && this.randomTriggerValid)) && 
+            (!this.scheduleItem.triggerFirstOf.used || (this.scheduleItem.triggerFirstOf.used && this.triggerFirstOfValid)) &&
+            (!this.scheduleItem.triggerLastOf.used || (this.scheduleItem.triggerLastOf.used && this.triggerLastOfValid)) &&
             (!this.scheduleItem.onlyTriggerIfBefore.used || (this.scheduleItem.onlyTriggerIfBefore.used && this.onlyTriggerIfBeforeTriggerValid)) &&
             (!this.scheduleItem.onlyTriggerIfAfter.used || (this.scheduleItem.onlyTriggerIfAfter.used && this.onlyTriggerIfAfterTriggerValid)) 
         
         },
-/*        watch: {
-            selectedDays: function (val) {
-                console.log('watch' + val);
+        
+    },
+    watch: {
+            triggerFirstLastVariant: function (val) {
+                //console.log('watch var' + val);
+                this.handleFirstLast();
+            },
+
+            triggerFirstLastUsed : function (val) {
+                //console.log('watch used' + val);
+                this.handleFirstLast();
             },
       
         }
-  */  }
 };
 </script>
 

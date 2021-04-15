@@ -9,27 +9,30 @@ import { Trigger } from "./TriggerHandler";
 import { ASSettings, Token, Schedule } from "./CommonContainerClasses";
 
 class TokenWrapper{
-    constructor(flowToken:FlowToken, token:Token) {
+    constructor(flowToken:FlowToken, token:MiniToken) {
         this.flowToken=flowToken;
         this.token=token;
     }
     flowToken:FlowToken;
-    token:Token;
+    token:MiniToken;
 }
 
 export class FlowAndTokenHandler {
     private homeyApp:HomeyApp;
-    private settings:ASSettings;
+    private schedules:MiniSchedule[];
     private tokenWrappers:TokenWrapper[];
     
-    constructor(homeyApp:HomeyApp, settings:ASSettings) {
+    constructor(homeyApp:HomeyApp, schedules:Schedule[]) {
         this.homeyApp=homeyApp;
-        this.settings=settings;
+        this.setSchedules(schedules);
     }
 
-    setSettings(settings:ASSettings)
+    setSchedules(schedules:Schedule[])
     {
-        this.settings = settings;
+        this.schedules=new Array();
+        schedules.forEach(schedule => {
+            this.schedules.push(new MiniSchedule(schedule))
+        });
     }
 
     setupFlows() {
@@ -42,8 +45,8 @@ export class FlowAndTokenHandler {
             myTrigger.register();
             let myTriggerMyArg = myTrigger.getArgument('schedule');
             myTriggerMyArg.registerAutocompleteListener( ( query, args ) => {
-               
-                let results = this.settings.schedules;
+
+                let results = this.schedules;
 //                this.homeyApp.log(results);
                 results = results.filter( result => {
                     return result.name.toLowerCase().indexOf( query.toLowerCase() ) > -1;
@@ -54,11 +57,14 @@ export class FlowAndTokenHandler {
             myTrigger.registerRunListener(async ( args, state:MiniSchedule ) => {
                 try {
                     //this.homeyApp.log('Trigger Run');
-                    let shallTrigger = true;
+                    let shallTrigger:Boolean;
               
                     let s = <Schedule>args.schedule;
                     shallTrigger = s.id===state.id;
-                    if (shallTrigger) this.homeyApp.log('Will trigger: ' + shallTrigger + ', schedule: ' + s.name);
+                    if (shallTrigger) {
+                        this.homeyApp.log('Will trigger: ' + shallTrigger + ', schedule: ' + state.name);
+                        if (s.name!=state.name) this.homeyApp.log('Warning! Schedule name in flow differs from that in settings. This could mean settings has been replaced. Make sure this is correct. Schedule name from flow: ' + s.name);
+                    }
                     return Promise.resolve( shallTrigger );
                         
                 } catch (error) {
@@ -73,11 +79,11 @@ export class FlowAndTokenHandler {
             myAction.register();
             let myActionMyArg = myAction.getArgument('schedule');
             myActionMyArg.registerAutocompleteListener( ( query, args ) => {
-              let results = this.settings.schedules.map(x=>x.name);
-              results = results.filter( result => {
-              return result.toLowerCase().indexOf( query.toLowerCase() ) > -1;
-              });
-              return Promise.resolve( results );
+                let results = this.schedules.map(x=>x.name);
+                results = results.filter( result => {
+                    return result.toLowerCase().indexOf( query.toLowerCase() ) > -1;
+                });
+                return Promise.resolve( results );
             }); 
                 
         } catch (error) {
@@ -110,7 +116,7 @@ export class FlowAndTokenHandler {
                 this.homeyApp.log('All tokens unregged')
 
                 this.tokenWrappers = new Array();
-                this.settings.schedules.forEach(schedule => {
+                this.schedules.forEach(schedule => {
                     schedule.tokens.forEach(token => {
     
                         let myToken = new FlowToken('schedule' + schedule.id + '-token' + token.id, {
@@ -166,10 +172,10 @@ export class FlowAndTokenHandler {
         //this.homeyApp.log('Trigger Flow started');
         let fct:FlowCardTrigger = <FlowCardTrigger>ManagerFlow.getCard('trigger','schedule_trigger');
         
-        let ms = new MiniSchedule(trigger.schedule.id, trigger.schedule.name);
+        let ms = new MiniSchedule(trigger.schedule);
         let mts:MiniToken[] = new Array();
         tokens.forEach(t => {
-            let mt = new MiniToken(t.id, t.name, t.type);
+            let mt = new MiniToken(t);
             mts.push(mt);
         });
         
@@ -179,21 +185,26 @@ export class FlowAndTokenHandler {
 }
 
 export class MiniSchedule {
-    constructor(id:number, name:string) {
-        this.id=id;
-        this.name=name;
+    constructor(schedule:Schedule) {
+        this.id=schedule.id;
+        this.name=schedule.name;
+        this.tokens = new Array();
+        schedule.tokens.forEach(token => {
+            this.tokens.push(new MiniToken(token));
+        }); 
     }
 
     id:number;
     name:string;
+    tokens:MiniToken[];
 }
 
 
 export class MiniToken {
-    constructor(id:number, name:string, type: "boolean" | "number" | "string"){
-        this.id=id;
-        this.name=name;
-        this.type=type;
+    constructor(token:Token){
+        this.id=token.id;
+        this.name=token.name;
+        this.type=token.type;
     }
 
     id:number;
