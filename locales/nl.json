@@ -43,7 +43,7 @@
     "New_token":"Nieuwe tag",
 
     "//ScheduleItem.vue":"_comment",
-    "Edit_schedule_item":"Schema gebeurtenis toevoegen",
+    "Edit_schedule_item":"Schema gebeurtenis wijzigen",
     "Select":"Selecteer",
     "Select_days_of_week":"Selecteer dagen van de week",
     "Set_type":"Stel het type in",
@@ -54,8 +54,8 @@
     "Choose_sun_event":"Kies een zonnestand",
     "Trigger_time":"Trigger tijdstip",
     "Enter_a_time":"Vul een tijdstip in",
-    "Offset_time":"Offset tijd (tijdsverschuiving)",
-    "Enter_an_offset":"Vul een offset tijd in (tijdsverschuiving)",
+    "Offset_time":"Offset tijd (eerder of later laten plaatsvinden)",
+    "Enter_an_offset":"Vul een offset tijd in",
     "Close":"Sluiten",
     "Delete_schedule_item_question":"Schema gebeurtenis verwijderen?",
     "Do_you_want_to_delete_the_schedule_item_question":"Wilt u de schema gebeurtenis verwijderen?",
@@ -106,7 +106,7 @@
 
     "//New litterals":"_comment",
     "Use_random_settings": "Willekeurige tijd toepassen",
-    "Random_time_before_or_after_trigger" : "Willekeurige tijd voor of na een trigger",
+    "Random_time_before_or_after_trigger" : "Willekeurige tijd vanaf of tot deze trigger",
     "Use_conditional_before" : "Gebeurtenis beperken met een 'eerder dan' conditie",
     "Only_trigger_if_before" : "Trigger alleen indien eerder dan",
     "Use_conditional_after" : "Gebeurtenis beperken met een 'later dan' conditie",
@@ -117,12 +117,12 @@
     "but_only_if_after" : "maar alleen indien later dan",
     "and_after" : "en later dan",
 
-    "Show_advanced_settings" : "Show advanced settings",
-    "Use_first_or_last_of" : "Use first or last of",
-    "Trigger_first_of_this_and_main" : "Trigger first of this and main",
-    "Trigger_last_of_this_and_main" : "Trigger last of this and main",
-    "First_of" : "First of",
-    "Last_of" : "Last of",
+    "Show_advanced_settings" : "Toon geavanceerde instellingen",
+    "Use_first_or_last_of" : "Trigger bij eerdere of latere gebeurtenis",
+    "Trigger_first_of_this_and_main" : "Trigger deze gebeurtenis indien eerder dan 'hoofd' gebeurtenis",
+    "Trigger_last_of_this_and_main" : "Trigger deze gebeurtenis indien later dan 'hoofd' gebeurtenis",
+    "First_of" : "Eerdere gebeurtenis van",
+    "Last_of" : "Latere gebeurtenis van",
 
 
     "//Token.vue":"_comment",
