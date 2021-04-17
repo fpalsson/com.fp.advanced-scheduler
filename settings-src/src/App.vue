@@ -41,10 +41,14 @@
                 onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));' 
                 style="height:200px;width:100%;border:none;overflow:hidden;"></iframe>
           </v-container-->
-            <div v-html="$t('Pressing_any_long')"></div>
-            <div v-html="$t('Help_page_html')"></div>
-            <div v-html="$t('Community_page_html')"></div>
-
+          <v-container>
+              <v-row>
+                  <v-btn class="mt-2" color="green darken-1" text @click="openURL('Help')"> {{ $t('Help_page') }}</v-btn>            
+              </v-row>
+              <v-row>
+                  <v-btn class="mt-2" color="green darken-1" text @click="openURL('Community')"> {{ $t('Community_page') }}</v-btn>            
+              </v-row>
+          </v-container>
         </v-tab-item>
         <v-tab-item key="rawsettings">
           <v-textarea
@@ -172,6 +176,23 @@ export default {
             console.log(settings);
             this.rawSettings = settings;
         },
-  }
+
+        openURL : function(urlType) {
+            try {
+                let url = "";
+                if (urlType=='Help') {
+                    url = this.$t('Help_page_url');
+                }
+                if (urlType=='Community') {
+                    url = this.$t('Community_page_url');
+                }
+                
+                this.Homey.openURL(url);     
+            } catch (error) {
+                this.Homey.alert(this.$t("Couldn't_open_page"));              
+            }
+         
+        }
+   }
 };
 </script>

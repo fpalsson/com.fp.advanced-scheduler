@@ -15,9 +15,12 @@
     "Reload_last_saved_settings": "Zuletzt gespeicherten Einstellungen laden",
  
     "Help": "Hilfe",
-    "Pressing_any_long":"<p>Durch Drücken einer dieser Links wird das Einstellungsmenü geschlossen. Bitte speicher Sie Änderungen vorher ab!</p>",
-    "Help_page_html":"<p><a href=\"https://fpalsson.github.io/com.fp.advanced-scheduler/index.de.html\">Hilfeseite</a></p>",
-    "Community_page_html":"<p><a href=\"https://community.athom.com/t/app-advanced-scheduler/43767\">Community seite</a></p>",
+    "Help_page":"Hilfeseite",
+    "Help_page_url":"https://fpalsson.github.io/com.fp.advanced-scheduler/index.de.html",
+    "Community_page":"Community seite",
+    "Community_page_url":"https://community.athom.com/t/app-advanced-scheduler/43767",
+    "Couldn't_open_page":"Webseite konnte nicht geöffnet werden",
+
 
     "Raw_settings": "Raw-Einstellungen",
     "Get_current_raw_settings": "Aktuelle Raw-Einstellungen aufrufen",

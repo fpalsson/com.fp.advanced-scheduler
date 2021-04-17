@@ -15,9 +15,12 @@
     "Reload_last_saved_settings": "Ladda senaste sparade inställningar",
 
     "Help": "Hjälp",
-    "Pressing_any_long":"<p>Om du klicka på dessa länkar lämnar du inställningssidan, spara inställningarna först!</p>",
-    "Help_page_html":"<p><a href=\"https://fpalsson.github.io/com.fp.advanced-scheduler/\">Hjälpsida</a></p>",
-    "Community_page_html":"<p><a href=\"https://community.athom.com/t/app-advanced-scheduler/43767\">Community-sida</a></p>",
+    "Help_page":"Hjälpsida",
+    "Help_page_url":"https://fpalsson.github.io/com.fp.advanced-scheduler/",
+    "Community_page":"Communitysida",
+    "Community_page_url":"https://community.athom.com/t/app-advanced-scheduler/43767",
+    "Couldn't_open_page":"Kunde inte öppna websida",
+
 
     "Raw_settings": "Råa inställningar",
     "Get_current_raw_settings": "Hämta aktuella råa inställningar",

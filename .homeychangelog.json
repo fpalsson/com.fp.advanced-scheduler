@@ -94,6 +94,9 @@
   },
   "0.2.3": {
     "en": "Corrected bug reading weekdays settings wrong."
+  },
+  "0.2.5": {
+    "en": "Added Dutch translations. Improved help page. Adjusted some translations. English, Swedish and Dutch readme updated."
   }
-  
+
 }

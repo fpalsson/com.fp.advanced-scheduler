@@ -15,9 +15,12 @@
     "Reload_last_saved_settings": "Laatst opgeslagen instellingen herladen",
 
     "Help": "Help",
-    "Pressing_any_long":"<p>Als u op één van de onderstaande links drukt dan verlaat u zonder op te slaan de instellingen. Let op: sla dus eerst uw instellingen op!</p>",
-    "Help_page_html":"<p><a href=\"https://fpalsson.github.io/com.fp.advanced-scheduler/\">Help pagina</a></p>",
-    "Community_page_html":"<p><a href=\"https://community.athom.com/t/app-advanced-scheduler/43767\">Community pagina</a></p>",
+    "Help_page":"Help pagina",
+    "Help_page_url":"https://fpalsson.github.io/com.fp.advanced-scheduler/",
+    "Community_page":"Community pagina",
+    "Community_page_url":"https://community.athom.com/t/app-advanced-scheduler/43767",
+    "Couldn't_open_page":"Kan webpagina niet openen",
+
 
     "Raw_settings": "Ruwe instellingen",
     "Get_current_raw_settings": "Huidige ruwe instellingen weergeven",
