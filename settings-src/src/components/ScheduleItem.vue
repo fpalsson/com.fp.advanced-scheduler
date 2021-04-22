@@ -73,41 +73,42 @@
                                             <v-checkbox class="mb-2" v-model="triggerFirstLastUsed" :label="$t('Use_first_or_last_of')" hide-details="true" dense></v-checkbox>
                                         </v-row>
                                         
-                                        <v-container v-if="triggerFirstLastUsed">
-                                            <v-row class="pl-5">     
-                                            
-                                                <v-radio-group v-model="triggerFirstLastVariant" row mandatory hide-details="true"
-                                                    >
-                                                    <v-radio
-                                                        :label="$t('First_of')"
-                                                        :value="1"
-                                                    ></v-radio>
-                                                    <v-radio
-                                                        :label="$t('Last_of')"
-                                                        :value="2"
-                                                    ></v-radio>
-                                                </v-radio-group>
-                                            </v-row>
-                                            <v-row v-if="scheduleItem.triggerFirstOf.used" class="pl-5"> 
-                                                <label>{{ $t('Trigger_first_of_this_and_main') }}</label>
-                                            </v-row>
-                                            <v-row v-if="scheduleItem.triggerFirstOf.used">
-                                                <asv-time-sun-event v-model="scheduleItem.triggerFirstOf"
-                                                                :validInput.sync="triggerFirstOfValid"
-                                                                >
-                                                </asv-time-sun-event>
-                                            </v-row>
+                                        <v-row>     
+                                            <v-container v-if="triggerFirstLastUsed">
+                                                <v-row>
+                                                    <v-radio-group v-model="triggerFirstLastVariant" row mandatory hide-details="true"
+                                                        >
+                                                        <v-radio
+                                                            :label="$t('First_of')"
+                                                            :value="1"
+                                                        ></v-radio>
+                                                        <v-radio
+                                                            :label="$t('Last_of')"
+                                                            :value="2"
+                                                        ></v-radio>
+                                                    </v-radio-group>
+                                                </v-row>
+                                                <v-row v-if="scheduleItem.triggerFirstOf.used"> 
+                                                    <label>{{ $t('Trigger_first_of_this_and_main') }}</label>
+                                                </v-row>
+                                                <v-row v-if="scheduleItem.triggerFirstOf.used" class="pl-3">
+                                                    <asv-time-sun-event v-model="scheduleItem.triggerFirstOf"
+                                                                    :validInput.sync="triggerFirstOfValid"
+                                                                    >
+                                                    </asv-time-sun-event>
+                                                </v-row>
 
-                                            <v-row v-if="scheduleItem.triggerLastOf.used" class="pl-5">
-                                                <label>{{ $t('Trigger_last_of_this_and_main') }}</label>
-                                            </v-row>
-                                            <v-row v-if="scheduleItem.triggerLastOf.used"> 
-                                                <asv-time-sun-event v-model="scheduleItem.triggerLastOf"
-                                                                :validInput.sync="triggerLastOfValid"
-                                                                >
-                                                </asv-time-sun-event>
-                                            </v-row>
-                                        </v-container>
+                                                <v-row v-if="scheduleItem.triggerLastOf.used">
+                                                    <label>{{ $t('Trigger_last_of_this_and_main') }}</label>
+                                                </v-row>
+                                                <v-row v-if="scheduleItem.triggerLastOf.used" class="pl-3"> 
+                                                    <asv-time-sun-event v-model="scheduleItem.triggerLastOf"
+                                                                    :validInput.sync="triggerLastOfValid"
+                                                                    >
+                                                    </asv-time-sun-event>
+                                                </v-row>
+                                            </v-container>
+                                        </v-row>
                                         <v-row>
                                             <v-checkbox class="mb-2" v-model="scheduleItem.onlyTriggerIfBefore.used" :label="$t('Use_conditional_before')" hide-details="true" dense></v-checkbox>
                                         </v-row>
@@ -252,8 +253,8 @@ export default {
 
         showAdvancedSettings: this.scheduleItem.randomTrigger.used || this.scheduleItem.triggerFirstOf.used || this.scheduleItem.triggerLastOf.used ||
                                this.scheduleItem.onlyTriggerIfBefore.used || this.scheduleItem.onlyTriggerIfAfter.used,
-        triggerFirstLastUsed:false,
-        triggerFirstLastVariant:1,
+        triggerFirstLastUsed: this.scheduleItem.triggerFirstOf.used || this.scheduleItem.triggerLastOf.used,
+        triggerFirstLastVariant: (this.scheduleItem.triggerLastOf.used?2:1),
 
         rules: {
 

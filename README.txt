@@ -7,4 +7,4 @@ Advanced features include:
 * First of/last of triggering (trigger the first or last of two trigger times). Example: Trigger first of sunrise and 07:00.
 * All the features above can be mixed and combined as desired.
 
-The idea is not having to setup LOTS of flows if you have complex rules of when to do things based on a weekly schedule (with possibly diffrent times at different days of week). Simply setup schedules and add triggers (called schedule items) based on time or solar events. Then setup what should happen at every trigger (by setting tag values), and use flows to execute your actions. See app community page for more info.
+The idea is not having to setup LOTS of flows if you have complex rules of when to do things based on a weekly schedule (with possibly diffrent times at different days of week). Simply setup schedules and add triggers (called schedule events) based on time or solar events. Then setup what should happen at every trigger (by setting tag values), and use flows to execute your actions. See app community page for more info.

@@ -97,6 +97,9 @@
   },
   "0.2.5": {
     "en": "Added Dutch translations. Improved help page. Adjusted some translations. English, Swedish and Dutch readme updated."
+  },
+  "0.2.6": {
+    "en": "German readme updated. Corrected bug in UI when using trigger first/last of. Minor layout improvements."
   }
 
 }
