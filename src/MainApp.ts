@@ -1,6 +1,6 @@
 'use strict';
 
-import { App as HomeyApp } from "homey";
+import { App as HomeyApp, ManagerGeolocation } from "homey";
 
 // this is copied from settings-src/src by build task. Not elegant, but...
 import { ASSettings } from './CommonContainerClasses';
@@ -32,9 +32,10 @@ export class MainApp {
         sp.readSettings(settingsTxt);
         this.asSettings = sp.getSettings();
 
-       
-        this.sunWrapper = new SunWrapper(this.homeyApp);
-        this.sunWrapper.init();
+        this.saveGeolocation();
+
+        this.sunWrapper = new SunWrapper();
+        this.sunWrapper.init(this.homeyApp, ManagerGeolocation.getLatitude(), ManagerGeolocation.getLongitude());
 
         this.flowAndTokenHandler = new FlowAndTokenHandler(this.homeyApp, this.asSettings.schedules);
         this.flowAndTokenHandler.setupFlows();
@@ -63,7 +64,7 @@ export class MainApp {
         let sp = new SettingsPersistance();
         sp.readSettings(settingsTxt);
         this.asSettings = sp.getSettings();
-       
+        
         this.flowAndTokenHandler.setSchedules(this.asSettings.schedules);
         this.flowAndTokenHandler.setupTokens();
 
@@ -83,6 +84,18 @@ export class MainApp {
                 this.reinit();
             }
         });
+
+        //this.homeyApp.
+
         this.homeyApp.log('Watching settings.');
+    }
+
+    private saveGeolocation() {
+        let geo = {
+            "latitude":ManagerGeolocation.getLatitude(), 
+            "longitude":ManagerGeolocation.getLongitude()
+        }
+        
+        ManagerSettings.set('geolocation', JSON.stringify(geo))
     }
 }

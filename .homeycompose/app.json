@@ -1,6 +1,6 @@
 {
   "id": "com.fp.advanced-scheduler",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
@@ -21,6 +21,14 @@
   "permissions": [
     "homey:manager:geolocation"
   ],
+
+  "api": {
+    "getScheduleState": {
+        "method": "get",
+        "path": "/getScheduleState/"
+    }
+  },
+
   "images": {
     "large": "/assets/images/large.png",
     "small": "/assets/images/small.png"

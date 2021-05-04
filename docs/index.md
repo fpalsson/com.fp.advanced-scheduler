@@ -38,6 +38,26 @@ The tag definitions in the schedule is simply a way to communicate with the "out
 
 After setting up tag definitions in the schedule, they can be added in the schedule events. When a schedule event is created all the tags defined in that schedule is automagically added to the schedule event. For every tag in the schedule event you set a value. This value (or these values if multiple tags are used) will be set by the app when the schedule event triggers.
 
+## Details on schedule events
+
+A schedule can trigger based on a fixed time or solar events. Apart from this it is possible to make additions and exceptions to the triggers. 
+
+### Random trigger time
+
+If you specify a random time, the app will set a triggering time between the main trigger and the random time. The random time can be a fixed time or a solar event.
+
+### First or last 
+
+When using a solar event the triggering time varies depending on the time of year. If you for example want to turn on a lamp at sunset, but not later than 21:00 then you setup the schedule event to trigger at the first of sunset and 21:00. The same can be used but triggering the last of two times.
+
+### Only trigger if before and/or after
+
+When using a solar event the triggering time varies depending on the time of year. If you for example want to turn on a lamp at sunset, but not if later than 21:00 then you setup the schedule event to trigger at sunset but only if before 21:00. 
+
+### Combination of triggers and conditions
+
+The possibilities described above can be combined as desired. Please note that some combinations will result in the schedule event never triggering. Consider for example triggering at sunrise but not before 21:00. This will not happen in many places of the world :-)
+
 ## Scenarios and examples
 ### Scenario 1
 **Turn lamp or other on/off device on or off at regular times, in this scenario turn on at 19:00 and turn off at 07:00 every day.**
@@ -121,3 +141,7 @@ _The drawback of this is that you need an additional flow for dimable devices, b
 ## Details
 
 It is totally possible to have tags defined in a schedule that are not used in the schedule events. The tag values for a specific tag will only be changed if there is a tag added to that schedule event. Perhaps you only want to change a specific tag value in some of the events. In that case simply removed the tags in question with the trashcan button.
+
+## Solar events described with a picture
+
+![](./SunEvents.png)

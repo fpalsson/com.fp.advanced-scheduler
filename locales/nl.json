@@ -14,6 +14,13 @@
     "Save_settings": "Instellingen opslaan",
     "Reload_last_saved_settings": "Laatst opgeslagen instellingen herladen",
 
+    "Sun_event_times":"Sun event times",
+    "List_of_solar_events_long":"List of solar events with corresponding times %date% at your location",
+    "Slide_to_select_a_date":"Slide to select a date",
+    "Event":"Event",
+    "Time_day":"Time",
+    "Will_not_occur":"Will not occur",
+
     "Help": "Help",
     "Help_page":"Help pagina",
     "Help_page_url":"https://fpalsson.github.io/com.fp.advanced-scheduler/",
@@ -104,6 +111,14 @@
     "sunriseEnd":"Zonsopgang einde",
     "sunset":"Zonsondergang einde",
     "sunsetStart":"Zonsondergang begin",
+    "goldenHourMorningStart":"Ochtend gouden uur begin",
+    "goldenHourEveningEnd":"Avond gouden uur einde",
+    "blueHourMorningEnd":"Ochtend blauwe uur einde",
+    "blueHourEveningStart":"Avond blauwe uur begin",
+    "blueHourMorningStart":"Ochtend blauwe uur begin",
+    "blueHourEveningEnd":"Avond blauwe uur einde",
+    "astronomicalDawn":"Astronomische ochtendschemering",
+    "astronomicalDusk":"Astronomische avondschemering",
     "before": "vooraf aan",
     "after": "later dan",
 

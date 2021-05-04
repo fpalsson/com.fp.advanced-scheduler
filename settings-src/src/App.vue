@@ -11,6 +11,7 @@
       >
         <v-tabs-slider color="yellow"></v-tabs-slider>
         <v-tab key="schedules">{{ $t('Schedules') }}</v-tab>
+        <v-tab key="suneventtimes">{{ $t('Sun_event_times') }}</v-tab>
         <v-tab key="help">{{ $t('Help') }}</v-tab>
         <v-tab key="rawsettings">{{ $t('Raw_settings') }}</v-tab>
       </v-tabs>
@@ -24,25 +25,13 @@
           <v-btn class="mt-2" color="green darken-1" text @click="saveSettings()"><v-icon dark>mdi-content-save</v-icon> {{ $t('Save_settings') }}</v-btn>
           <v-btn class="mt-2" color="green darken-1" text @click="getSettings()"><v-icon dark>mdi-download-circle-outline</v-icon> {{ $t('Reload_last_saved_settings') }}</v-btn>
         </v-tab-item>
-        <v-tab-item key="help">
-          
+        <v-tab-item key="suneventimes">
+          <asv-sun-event-times></asv-sun-event-times>
+        </v-tab-item>
 
-          <!--v-btn class="mt-2" color="blue" text @click="helpUrl = 'https://fpalsson.github.io/com.fp.advanced-scheduler/'"><v-icon dark>mdi-help-circle-outline</v-icon> {{ $t('Help') }}</v-btn>
-          <v-container class="ma-0 pa-0">
-            <iframe :src="helpUrl" 
-              style="position: fixed;
-                      border: none;
-                      margin: 0;
-                      padding: 0;
-                      z-index: 999999;
-                      height: 100%;"
-            ></iframe> 
-            <iframe :src="helpUrl" 
-                onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));' 
-                style="height:200px;width:100%;border:none;overflow:hidden;"></iframe>
-          </v-container-->
+        <v-tab-item key="help">
           <v-container>
-              <v-row>
+            <v-row>
                   <v-btn class="mt-2" color="green darken-1" text @click="openURL('Help')"> {{ $t('Help_page') }}</v-btn>            
               </v-row>
               <v-row>
@@ -67,26 +56,32 @@
 </template>
 
 <script>
-import { ASSettings } from './CommonContainerClasses';
-import { SettingsPersistance } from './SettingsPersistance';
+import { ASSettings } from '../../src/CommonContainerClasses';
+import { SettingsPersistance } from '../../src/SettingsPersistance';
+import { SunWrapper } from '../../src/SunWrapper';
+//const { ManagerGeolocation } = require('homey');
+
 import AsvSchedule from '@/components/Schedule';
+import AsvSunEventTimes from '@/components/SunEventTimes';
 export default {
   name: 'App',
   components: {
-    AsvSchedule
+    AsvSchedule,
+    AsvSunEventTimes
   },
   data() {
     return {
       assettings: new ASSettings(),
       tab: null,
       rawSettings:'',
-      helpUrl:''
+      sunWrapper: null,
     };
   },
   mounted() {
     console.log('Mounted');
     this.getSettings();
-    this.getLanguage();    
+    this.getLanguage();
+    this.getSunWrapper();    
         
   },
     methods: {
@@ -95,11 +90,13 @@ export default {
             .then(settingstext => {
             console.log('Raw settings: ' + settingstext);
             let sp = new SettingsPersistance();
-            console.log('WebSttings created');
+            
             sp.readSettings(settingstext);
             console.log('Settings read');
+            
             let assettings = sp.getSettings();
             console.log('Settings retrieved');
+            
             if (assettings != null){
                 this.assettings = assettings;
                 console.log('Settings set');
@@ -109,10 +106,7 @@ export default {
                 this.assettings = new ASSettings();
                 console.log('Settings set empty');
             }
-            console.log('Schedules done');
-            console.log('Settings: ' + this.assettings);
-            console.log('Sch: ' + this.assettings.schedules);
-            console.log('Sch count: ' + this.assettings.schedules.length);
+            
             })
             .catch(err => {
                 this.Homey.alert(err);
@@ -141,6 +135,42 @@ export default {
                 console.log('Err lang' + err);
             })
 
+        },
+
+        getSunWrapper : function () {
+            this.Homey.get('geolocation')
+            .then(geoinfo => {
+                let geo = JSON.parse(geoinfo)
+                let lat = geo.latitude;
+                let lon = geo.longitude;
+                console.log('Lat/lon: ' + lat + '/' + lon);
+                this.sunWrapper = new SunWrapper();
+                this.sunWrapper.webInit(lat,lon);
+            })
+            .catch(err => {
+                this.Homey.alert(err);
+                console.log('Err SunWrapper' + err);
+            })
+        },
+
+        setupWebApi : function () {
+            /*
+            this.Homey.api(('GET', '/getScheduleState/',
+            {
+                notify: true
+            }, function(err, result)
+            {
+                if (err)
+                {
+                    return Homey.alert(err);
+                }
+                else
+                {
+                    diagLogElement.value = result;
+                }
+            });
+            
+            */
         },
 
         addSchedule : function () {

@@ -14,6 +14,14 @@
     "Save_settings": "Save settings",
     "Reload_last_saved_settings": "Reload last saved settings",
 
+    "Sun_event_times":"Sun event times",
+    "List_of_solar_events_long":"List of solar events with corresponding times %date% at your location",
+    "Slide_to_select_a_date":"Slide to select a date",
+    "Event":"Event",
+    "Time_day":"Time",
+    "Will_not_occur":"Will not occur",
+
+
     "Help": "Help",
     "Help_page":"Help page",
     "Help_page_url":"https://fpalsson.github.io/com.fp.advanced-scheduler/",
@@ -105,6 +113,14 @@
     "sunriseEnd":"Sunrise End",
     "sunset":"Sunset",
     "sunsetStart":"Sunset Start",
+    "goldenHourMorningStart":"Golden Hour Morning Start",
+    "goldenHourEveningEnd":"Golden Hour Evening End",
+    "blueHourMorningEnd":"Blue Hour Morning End",
+    "blueHourEveningStart":"Blue Hour Evening Start",
+    "blueHourMorningStart":"Blue Hour Morning Start",
+    "blueHourEveningEnd":"Blue Hour Evening End",
+    "astronomicalDawn":"Astronomical Dawn",
+    "astronomicalDusk":"Astronomical Dusk",
     "before": "before",
     "after": "after",
 

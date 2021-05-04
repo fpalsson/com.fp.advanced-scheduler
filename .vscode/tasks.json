@@ -3,6 +3,15 @@
 	"tasks": [
 	
 		{
+			"label": "Build all except settings and run",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"Build all except settings",
+				"Homey run"
+			],
+			"problemMatcher": []
+		},
+		{
 			"label": "Build and run",
 			"dependsOrder": "sequence",
 			"dependsOn": [
@@ -20,10 +29,19 @@
 			"command": "homey app run"
 		},
 		{
-			"label": "Build All",
+			"label": "Build all except settings",
 			"dependsOrder": "sequence",
 			"dependsOn": [
 				"Copy from settings",
+				"tsc: build - tsconfig.json"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "Build All",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				//"Copy from settings",
 				"tsc: build - tsconfig.json",
 				"npm run build"
 			],

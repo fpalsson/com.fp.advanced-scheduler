@@ -38,6 +38,29 @@ Die im Zeitplan enthaltenen Tag-Definitionen sind ein einfacher Weg mit der "Au�
 
 Nach dem Einrichten der im Zeitplan enthaltenen Tag-Definitionen können diese zu den Zeitplanereignissen hinzugefügt werden. Wenn ein Zeitplanereignis erstellt wird, werden alle in diesem Zeitplan definierten Variablen automatisch zu dem Zeitplanereignis hinzugefügt. Für jedes Tag im Zeitplanereignis legen Sie einen Wert fest. Dieser Wert (oder diese Werte, wenn mehrere Tags verwendet werden) wird von der App gesetzt wenn das Zeitplanereignis ausgelöst wird.
 
+NEEDS TRANSLATION!
+## Details on schedule events
+
+A schedule can trigger based on a fixed time or solar events. Apart from this it is possible to make additions and exceptions to the triggers. 
+
+### Random trigger time
+
+If you specify a random time, the app will set a triggering time between the main trigger and the random time. The random time can be a fixed time or a solar event.
+
+### First or last 
+
+When using a solar event the triggering time varies depending on the time of year. If you for example want to turn on a lamp at sunset, but not later than 21:00 then you setup the schedule event to trigger at the first of sunset and 21:00. The same can be used but triggering the last of two times.
+
+### Only trigger if before and/or after
+
+When using a solar event the triggering time varies depending on the time of year. If you for example want to turn on a lamp at sunset, but not if later than 21:00 then you setup the schedule event to trigger at sunset but only if before 21:00. 
+
+### Combination of triggers and conditions
+
+The possibilities described above can be combined as desired. Please note that some combinations will result in the schedule event never triggering. Consider for example triggering at sunrise but not before 21:00. This will not happen in many places of the world :-)
+
+NEEDS TRANSLATION!
+
 ## Szenarien und Beispiele
 ### Szenario 1
 **Eine Lampe oder ein anderes Gerät zu regelmäßigen Zeiten ein-/ausschalten. In diesem Szenario jeden Tag um 19:00 Uhr ein- und um 07:00 Uhr ausschalten**
@@ -122,3 +145,8 @@ _Der Nachteil dabei ist, dass Sie einen zusätzlichen Flow für das zu dimmende 
 ## Details
 
 Es ist durchaus möglich Tags in einem Zeitplan zu definieren, die nicht in den Zeitplanereignissen verwendet werden. Die Tag-Werte für ein bestimmtes Tag werden nur geändert, wenn diesem Zeitplanereignis ein Tag hinzugefügt wird. Vielleicht möchten Sie nur in einigen Ereignissen einen bestimmten Tag-Wert ändern. In diesem Fall entfernen Sie einfach die betreffenden Tags mit der Schaltfläche "Papierkorb".
+
+Needs translation!
+## Solar events described with a picture
+
+![](./SunEvents.png)

@@ -2,16 +2,16 @@
 
 import { SendHandle } from "child_process";
 import { threadId } from "worker_threads";
-import { ASSettings, Schedule, DaysType, TimeInfo, TimeType, Token, TokenSetter, ScheduleItem, SolarInfo } from "./CommonContainerClasses";
+import { ASSettings, Schedule, DaysType, TimeInfo, TimeType, Token, TokenSetter, ScheduleItem } from "./CommonContainerClasses";
  
 export class SettingsPersistance {
     
     public settings:ASSettings; //Lets expose it publicly for now, refactor later.
 
     constructor() {
-        
+        //vad vet jag
     }
-  
+   
     
 
     getSettings():ASSettings{

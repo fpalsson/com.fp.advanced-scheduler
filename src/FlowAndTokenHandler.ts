@@ -45,7 +45,7 @@ export class FlowAndTokenHandler {
             myTrigger.register();
             let myTriggerMyArg = myTrigger.getArgument('schedule');
             myTriggerMyArg.registerAutocompleteListener( ( query, args ) => {
-
+                //refactor
                 let results = this.schedules;
 //                this.homeyApp.log(results);
                 results = results.filter( result => {
@@ -79,12 +79,29 @@ export class FlowAndTokenHandler {
             myAction.register();
             let myActionMyArg = myAction.getArgument('schedule');
             myActionMyArg.registerAutocompleteListener( ( query, args ) => {
-                let results = this.schedules.map(x=>x.name);
+                //refactor
+                let results = this.schedules;
+//                this.homeyApp.log(results);
                 results = results.filter( result => {
-                    return result.toLowerCase().indexOf( query.toLowerCase() ) > -1;
+                    return result.name.toLowerCase().indexOf( query.toLowerCase() ) > -1;
                 });
                 return Promise.resolve( results );
             }); 
+
+            myAction.registerRunListener (async ( args, state:MiniSchedule ) => {
+                try {
+                    this.homeyApp.log('Action Run');
+              
+                    let active:Boolean = args.state == 'active';
+                    let s = <Schedule>args.schedule;
+                    console.log ('Schedule with id ' + s.id + ' was set to state ' + active);
+
+                    return Promise.resolve( active );
+                        
+                } catch (error) {
+                    return Promise.reject(error);                    
+                }
+            })
                 
         } catch (error) {
             this.homeyApp.log('Not able to setup Flows! Error: ' + error);

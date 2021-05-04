@@ -14,6 +14,13 @@
     "Save_settings": "Spara inställningar",
     "Reload_last_saved_settings": "Ladda senaste sparade inställningar",
 
+    "Sun_event_times":"Solhändelser",
+    "List_of_solar_events_long":"Lista på solhändelser med tillhörande klockslag %date% där du finns",
+    "Slide_to_select_a_date":"Dra för att välja datum",
+    "Event":"Händelse",
+    "Time_day":"Klockslag",
+    "Will_not_occur":"Kommer inte inträffa",
+
     "Help": "Hjälp",
     "Help_page":"Hjälpsida",
     "Help_page_url":"https://fpalsson.github.io/com.fp.advanced-scheduler/",
@@ -104,6 +111,14 @@
     "sunriseEnd":"Soluppgång avslut",
     "sunset":"Solnedgång",
     "sunsetStart":"Soluppgång start",
+    "goldenHourMorningStart":"Morgon, gyllene timmen start",
+    "goldenHourEveningEnd":"Kväll, gyllene timmen slut",
+    "blueHourMorningEnd":"Morgon, blå timmen slut",
+    "blueHourEveningStart":"Kväll, blå timmen start",
+    "blueHourMorningStart":"Morgon, blå timmen start",
+    "blueHourEveningEnd":"Kväll, blå timmen slut",
+    "astronomicalDawn":"Astronomisk gryning",
+    "astronomicalDusk":"Astronomisk skymning",
     "before": "innan",
     "after": "efter",
 

@@ -8,6 +8,6 @@
   },
   "include": [
     "./app.ts",
-    "settings-src/src/SettingsPersistance.ts"
+    
   ]
 }

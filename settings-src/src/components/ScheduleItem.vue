@@ -212,7 +212,7 @@
 </template>
 
 <script>
-import { ScheduleItem } from '@/CommonContainerClasses';
+import { ScheduleItem } from '../../../src/CommonContainerClasses';
 import AsvTokenSetter from '@/components/TokenSetter';
 import AsvTimeSunEvent from '@/components/TimeSunEvent';
 

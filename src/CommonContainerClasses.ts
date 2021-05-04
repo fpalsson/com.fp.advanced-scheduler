@@ -183,6 +183,7 @@ export class Day{
     value:number;
 }
 
+//V
 export class TimeInfo{
     constructor (timeType:TimeType, time:string, sunEvent:string, solarOffset:string) {
         this.timeType = timeType;
@@ -422,7 +423,7 @@ export class TokenSetter {
     }
 }
 
-export class SolarInfo{
+/*export class SolarInfo{
     constructor(id:string,desc:string){//,time:Date){
         this.id = id;
         this.desc = desc;
@@ -451,8 +452,19 @@ export class SunWrapper{
             new SolarInfo("sunriseEnd","Sunrise End" ),
             new SolarInfo("sunset","Sunset" ),
             new SolarInfo("sunsetStart","Sunset Start" ),
+
+            //New
+            new SolarInfo("goldenHourMorningStart","Golden Hour Morning Start"),
+            new SolarInfo("goldenHourEveningEnd","Golden Hour Evening End"),
+            new SolarInfo("blueHourMorningEnd","Blue Hour Morning End"),
+            new SolarInfo("blueHourEveningStart","Blue Hour Evening Start"),
+            new SolarInfo("blueHourMorningStart","Blue Hour Morning Start"),
+            new SolarInfo("blueHourEveningEnd","Blue Hour Evening End"),
+            new SolarInfo("astronomicalDawn","Astronomical Dawn"),
+            new SolarInfo("astronomicalDusk","Astronomical Dusk"),
+            
         ]
     }
-}
+}*/
 
   

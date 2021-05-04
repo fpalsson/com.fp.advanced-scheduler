@@ -46,10 +46,8 @@ settings-src/src/SettingsPersistance.js.map
 Settings.v2.json
 src/CommonContainerClasses.js
 src/CommonContainerClasses.js.map
-src/CommonContainerClasses.ts
 src/SettingsPersistance.js
 src/SettingsPersistance.js.map
-src/SettingsPersistance.ts
 example settings.json
 ExampleSettings.v1.json
 app.js.map
@@ -61,3 +59,4 @@ Mysettings.v2.json
 test.json
 test2.json
 test3.json
+docs/~$SunEvents.pptx

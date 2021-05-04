@@ -53,8 +53,9 @@
 
 //The whole component expects a TimeInfo object in the v-model
 
-import { SunWrapper, TimeInfo } from '@/CommonContainerClasses';
-import { TimeType } from '../CommonContainerClasses';
+import { TimeInfo } from '../../../src/CommonContainerClasses';
+import { SunWrapper } from '../../../src/SunWrapper';
+ 
 
 export default {
   name: 'AsvTimeSunEvent',
@@ -126,14 +127,22 @@ export default {
 
         translateSunEvents: function (sunEvents) {
             sunEvents.forEach(se => {
-              se.desc = this.$t(se.id);
+              se.desc = this.$t(se.id) 
             })
             return sunEvents;
         },
 
+        addTimeToSunEvents: function (sunEvents) {
+            sunEvents.forEach(se => {
+              se.desc = se.desc + ' (' + se.time.toTimeString().substring(0,8) + ')';
+            })
+            return sunEvents;
+        },
+        
         getSunEvents : function (){
-            let sw = new SunWrapper();
-            let suntimes = sw.getSunTimes();
+            let sw = this.$root.$children[0].sunWrapper;
+
+            let suntimes = sw.getTimes(new Date());
             
             //console.log('suntimes');
             //console.log(suntimes);

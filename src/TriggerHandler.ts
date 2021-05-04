@@ -141,21 +141,37 @@ export class TriggerHandler {
         //this.homeyApp.log('addScheduleItemToTriggers, midnight: ' + dateAtMidnightToday);
 
         triggerTime = this.getTriggerTime(si, dateAtMidnightCallingDate);
-        
+        if (!this.isValidDate(triggerTime)) {
+            this.homeyApp.log('Not a valid date to trigger on. Not added.') ;
+            return; //
+        }
+
+
         if (si.onlyTriggerIfBefore.used){
             let onlyTriggerIfBeforeTime = this.getTimeInfoTime(si.onlyTriggerIfBefore, dateAtMidnightCallingDate)
-            if (triggerTime >= onlyTriggerIfBeforeTime) {
-                this.homeyApp.log('Not added as trigger is after before-condition: ' + triggerTime + ' >= ' + onlyTriggerIfBeforeTime) ;
-                return; //
+            if (this.isValidDate(onlyTriggerIfBeforeTime)) {
+                if (triggerTime >= onlyTriggerIfBeforeTime) {
+                    this.homeyApp.log('Not added as trigger is after before-condition: ' + triggerTime + ' >= ' + onlyTriggerIfBeforeTime) ;
+                    return; //
+                }
+            }
+            else {
+                this.homeyApp.log('Only trigger if before is not a valid date. Not evaluated');
             }
         }
 
         if (si.onlyTriggerIfAfter.used){
             let onlyTriggerIfAfterTime = this.getTimeInfoTime(si.onlyTriggerIfAfter, dateAtMidnightCallingDate)
-            if (triggerTime <= onlyTriggerIfAfterTime) {
-                this.homeyApp.log('Not added as trigger is before after-condition: ' + triggerTime + ' <= ' + onlyTriggerIfAfterTime) ;
-                return; //
+            if (this.isValidDate(onlyTriggerIfAfterTime)) {
+                if (triggerTime <= onlyTriggerIfAfterTime) {
+                    this.homeyApp.log('Not added as trigger is before after-condition: ' + triggerTime + ' <= ' + onlyTriggerIfAfterTime) ;
+                    return; //
+                }
             }
+            else {
+                this.homeyApp.log('Only trigger if after is not a valid date. Not evaluated');
+            }
+
         }
 
         if (!this.dayHitTest(si.daysType,si.daysArg,date)){
@@ -194,6 +210,10 @@ export class TriggerHandler {
         //this.homeyApp.log(trigger);
 
         
+    }
+
+    private isValidDate(d:Date) {
+        return d instanceof Date && !isNaN(d.getTime());
     }
 
     //return milliseconds offset

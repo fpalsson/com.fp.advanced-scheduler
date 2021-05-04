@@ -1,8 +1,8 @@
 {
-  "id": "change_schedule_state",
+  "id": "schedule_state_change",
   "title": {
-    "en": "Change schedule state (not yet implemented)",
-    "sv": "Ändra schema status (not yet implemented)"
+    "en": "Change schedule state (not yet fully implemented)",
+    "sv": "Ändra schema status (not yet fully implemented)"
   },
   "args": [
     {
@@ -28,7 +28,7 @@
           "id": "inactive",
           "label": {
             "en": "Inactive",
-            "sv": "Inktiv"
+            "sv": "Inaktiv"
           }
         }    
       ]
