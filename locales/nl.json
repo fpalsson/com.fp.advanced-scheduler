@@ -14,12 +14,12 @@
     "Save_settings": "Instellingen opslaan",
     "Reload_last_saved_settings": "Laatst opgeslagen instellingen herladen",
 
-    "Sun_event_times":"Sun event times",
-    "List_of_solar_events_long":"List of solar events with corresponding times %date% at your location",
-    "Slide_to_select_a_date":"Slide to select a date",
-    "Event":"Event",
-    "Time_day":"Time",
-    "Will_not_occur":"Will not occur",
+    "Sun_event_times":"Zonnestand tijdstippen",
+    "List_of_solar_events_long":"Lijst met zonnestanden en tijdstippen van %date% behorende tot uw locatie",
+    "Slide_to_select_a_date":"Schuif om een datum te selecteren",
+    "Event":"Gebeurtenis",
+    "Time_day":"Tijdstip",
+    "Will_not_occur":"Zal niet gebeuren",
 
     "Help": "Help",
     "Help_page":"Help pagina",
