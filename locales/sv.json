@@ -156,6 +156,10 @@
     "Enter_a_numeric_value":"Mata in numeriskt värde",
     "Value":"Värde",
     "Delete_token_setter_question":"Ta bort tagändring?",
-    "Do_you_want_to_delete_token_setter_question":"Vill du ta bort tagändring?"
+    "Do_you_want_to_delete_token_setter_question":"Vill du ta bort tagändring?",
+
+    "//For date conversion and similar":"_comment",
+    "extended-locale":"sv-SE"
+
 
 }

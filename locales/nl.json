@@ -156,6 +156,9 @@
     "Enter_a_numeric_value":"Vul een nummer in",
     "Value":"Waarde",
     "Delete_token_setter_question":"Tag verwijderen?",
-    "Do_you_want_to_delete_token_setter_question":"Wilt u de tag instelling verwijderen?"
+    "Do_you_want_to_delete_token_setter_question":"Wilt u de tag instelling verwijderen?",
+
+    "//For date conversion and similar":"_comment",
+    "extended-locale":"nl-NL"
 
 }

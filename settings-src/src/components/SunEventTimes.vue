@@ -4,19 +4,21 @@
             {{ longStringWithDate }}
         </div>
         <v-slider
-              v-model="slider"
-              :max="365"
-              :min="0"
-              :hint="$t('Slide_to_select_a_date')"
-              persistent-hint
+            class="mb-6"
+            v-model="slider"
+            max="365"
+            min="0"
+            :hint="$t('Slide_to_select_a_date')"
+            persistent-hint
             >
         </v-slider>
         <v-simple-table>
             <thead>
+                
                 <tr>
-                    <th>{{ $t('Event') }}</th>
-                    <th>{{ $t('Time') }}</th>
-                </tr>
+                    <th> <b><p style="font-size:16px"> {{ $t('Event') }} </p> </b></th>
+                    <th> <b><p style="font-size:16px"> {{ $t('Time') }} </p> </b></th>
+               </tr>
             </thead>
             <tbody>
                 <tr v-for="se in sunEvents" :key="se.id">
@@ -75,13 +77,17 @@ export default {
         longStringWithDate : function () {
             let res = this.$t('List_of_solar_events_long');
             let d = this.sliderDate;
-            return res.replace('%date%',d.toDateString());
+            return res.replace('%date%', this.sliderDateText);
         },
         sliderDate : function() {
             let d = new Date();
             d.setTime(d.getTime()+this.slider*1000*3600*24);
             return d;
         },
+        sliderDateText : function() {
+            return this.sliderDate.toLocaleDateString(this.$t('extended-locale'));
+        },
+        
         sunEvents : function() {
             let sw = this.$root.$children[0].sunWrapper;
             let d = this.sliderDate;

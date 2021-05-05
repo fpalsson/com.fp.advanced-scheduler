@@ -100,6 +100,12 @@
   },
   "0.2.6": {
     "en": "German readme updated. Corrected bug in UI when using trigger first/last of. Minor layout improvements."
+  },
+  "0.3.0": {
+    "en": "Partial implementation of flow card to change schedule state. Implemented Blue Hour, Astronomical dusk/dawn, added golden hour adjecent blue hour. Added tab with all solar events and tab to check changes during the year (date needs localisation). Added some info to the docs. Moved CommonContainerClasses and SettingsPersistance to .\\src and referencing them from settings-src instead. Refactored SunWrapper. It is now used from settingas and app."
+  },
+  "0.3.1": {
+    "en": "Finnished implementation of Sun Event Times tab."
   }
 
 }

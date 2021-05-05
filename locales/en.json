@@ -101,8 +101,8 @@
     "Sunday":"Sunday",
     "dawn":"Dawn",
     "dusk":"Dusk",
-    "goldenHourEveningStart":"Evening Golden Hour Start",
-    "goldenHourMorningEnd":"Morning Golden Hour End",
+    "goldenHourEveningStart":"Golden Hour Evening Start",
+    "goldenHourMorningEnd":"Golden Hour Morning End",
     "nadir":"Nadir",
     "nauticalDawn":"Nautical Dawn",
     "nauticalDusk":"Nautical Dusk",
@@ -158,6 +158,9 @@
     "Enter_a_numeric_value":"Enter a numeric value",
     "Value":"Value",
     "Delete_token_setter_question":"Delete tag setter?",
-    "Do_you_want_to_delete_token_setter_question":"Do you want to delete tag setter?"
+    "Do_you_want_to_delete_token_setter_question":"Do you want to delete tag setter?",
+
+    "//For date conversion and similar":"_comment",
+    "extended-locale":"en-GB"
 
 }
