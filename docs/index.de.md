@@ -38,28 +38,27 @@ Die im Zeitplan enthaltenen Tag-Definitionen sind ein einfacher Weg mit der "Au�
 
 Nach dem Einrichten der im Zeitplan enthaltenen Tag-Definitionen können diese zu den Zeitplanereignissen hinzugefügt werden. Wenn ein Zeitplanereignis erstellt wird, werden alle in diesem Zeitplan definierten Variablen automatisch zu dem Zeitplanereignis hinzugefügt. Für jedes Tag im Zeitplanereignis legen Sie einen Wert fest. Dieser Wert (oder diese Werte, wenn mehrere Tags verwendet werden) wird von der App gesetzt wenn das Zeitplanereignis ausgelöst wird.
 
-NEEDS TRANSLATION!
-## Details on schedule events
 
-A schedule can trigger based on a fixed time or solar events. Apart from this it is possible to make additions and exceptions to the triggers. 
+## Details zu den geplanten Ereignissen
 
-### Random trigger time
+Ein Ereignis kann auf der Grundlage einer festen Zeit oder von Sonnenereignissen ausgelöst werden. Darüber hinaus ist es möglich, Ergänzungen und Ausnahmen zu den Auslösern vorzunehmen. 
 
-If you specify a random time, the app will set a triggering time between the main trigger and the random time. The random time can be a fixed time or a solar event.
+### Zufällige Auslösezeit
 
-### First or last 
+Wenn Sie eine Zufallszeit angeben, legt die App eine Auslösezeit zwischen dem Hauptauslöser und der Zufallszeit fest. Die Zufallszeit kann eine feste Zeit oder ein Sonnenereignis sein.
 
-When using a solar event the triggering time varies depending on the time of year. If you for example want to turn on a lamp at sunset, but not later than 21:00 then you setup the schedule event to trigger at the first of sunset and 21:00. The same can be used but triggering the last of two times.
+### Erster oder letzter
 
-### Only trigger if before and/or after
+Wenn Sie ein Solarereignis verwenden, variiert die Auslösezeit je nach der Jahreszeit. Wenn Sie beispielsweise eine Lampe bei Sonnenuntergang, jedoch nicht später als 21:00 Uhr einschalten möchten, richten Sie das Ereignis so ein, dass es bei Sonnenuntergang und 21:00 Uhr ausgelöst wird. Es ist auch möglich, das nicht das erste sondern das zweite Ereignis als Auslöser dient.
 
-When using a solar event the triggering time varies depending on the time of year. If you for example want to turn on a lamp at sunset, but not if later than 21:00 then you setup the schedule event to trigger at sunset but only if before 21:00. 
+### Nur auslösen, wenn vor und/oder nach
 
-### Combination of triggers and conditions
+Bei Verwendung eines Solarereignisses variiert die Auslösezeit je nach Jahreszeit. Wenn Sie beispielsweise eine Lampe bei Sonnenuntergang einschalten möchten, jedoch nicht später als 21:00 Uhr, richten Sie das Ereignis so ein, dass es bei Sonnenuntergang ausgelöst wird, jedoch nur vor 21:00 Uhr.
 
-The possibilities described above can be combined as desired. Please note that some combinations will result in the schedule event never triggering. Consider for example triggering at sunrise but not before 21:00. This will not happen in many places of the world :-)
+### Kombination von Auslösern und Bedingungen
 
-NEEDS TRANSLATION!
+Die oben beschriebenen Möglichkeiten können beliebig kombiniert werden. Bitte beachten Sie, dass einige Kombinationen dazu führen, dass das Ereigni nie ausgelöst wird. Nehmen wir zum Beispiel das Auslösen bei Sonnenaufgang, aber nicht vor 21:00 Uhr. Dies wird an vielen Orten der Welt nicht passieren :-)
+
 
 ## Szenarien und Beispiele
 ### Szenario 1
@@ -146,7 +145,7 @@ _Der Nachteil dabei ist, dass Sie einen zusätzlichen Flow für das zu dimmende 
 
 Es ist durchaus möglich Tags in einem Zeitplan zu definieren, die nicht in den Zeitplanereignissen verwendet werden. Die Tag-Werte für ein bestimmtes Tag werden nur geändert, wenn diesem Zeitplanereignis ein Tag hinzugefügt wird. Vielleicht möchten Sie nur in einigen Ereignissen einen bestimmten Tag-Wert ändern. In diesem Fall entfernen Sie einfach die betreffenden Tags mit der Schaltfläche "Papierkorb".
 
-Needs translation!
-## Solar events described with a picture
+
+## Darstellung von Sonnenereignissen
 
 ![](./SunEvents.png)
