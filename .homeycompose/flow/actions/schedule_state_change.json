@@ -2,7 +2,8 @@
   "id": "schedule_state_change",
   "title": {
     "en": "Change schedule state (not yet fully implemented)",
-    "sv": "Ändra schema status (not yet fully implemented)"
+    "sv": "Ändra schema status (not yet fully implemented)",
+    "de": "Zeitplanstatus ändern (noch nicht vollständig implementiert)"
   },
   "args": [
     {
@@ -10,7 +11,8 @@
       "type": "autocomplete",
       "placeholder": {
         "en": "Schedule",
-        "sv": "Schema"
+        "sv": "Schema",
+        "de": "Zeitplan"
       }
     },
     {
@@ -21,14 +23,16 @@
           "id": "active",
           "label": {
             "en": "Active",
-            "sv": "Aktiv"
+            "sv": "Aktiv",
+            "de": "Aktiv"
           }
         },
         {
           "id": "inactive",
           "label": {
             "en": "Inactive",
-            "sv": "Inaktiv"
+            "sv": "Inaktiv",
+            "de": "Inaktiv"
           }
         }    
       ]
