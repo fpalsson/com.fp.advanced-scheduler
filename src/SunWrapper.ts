@@ -1,13 +1,10 @@
 'use strict';
 
-
-//import { App as HomeyApp } from "homey";
-//import { ManagerGeolocation } from "homey";
-
 import SunCalc = require('suncalc');
 
 
 export class SunWrapper {
+    private homey;
 //    private homeyApp:HomeyApp;
     private homeyApp;
     private lat:number;
@@ -21,6 +18,7 @@ export class SunWrapper {
 //    init(homeyApp:HomeyApp) {
     init(homeyApp,lat,lon) {
         this.homeyApp=homeyApp;
+        this.homey = this.homeyApp.homey;
 
         this.homeyApp.log('Advanced Scheduler SunWrapper is initializing...');
 

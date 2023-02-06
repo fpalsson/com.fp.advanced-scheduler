@@ -60,3 +60,7 @@ test.json
 test2.json
 test3.json
 docs/~$SunEvents.pptx
+
+
+# Added by Homey CLI
+/.homeybuild/

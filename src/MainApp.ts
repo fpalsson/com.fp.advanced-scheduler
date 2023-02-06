@@ -1,6 +1,6 @@
 'use strict';
 
-import { App as HomeyApp, ManagerGeolocation } from "homey";
+import { App as HomeyApp } from "homey";
 
 // this is copied from settings-src/src by build task. Not elegant, but...
 import { ASSettings } from './CommonContainerClasses';
@@ -9,11 +9,12 @@ import { SettingsPersistance } from './SettingsPersistance';
 
 import { FlowAndTokenHandler } from "./FlowAndTokenHandler";
 import { TriggerHandler } from "./TriggerHandler";
-import { ManagerSettings } from "homey";
+
 import { SunWrapper } from "./SunWrapper";
 
 export class MainApp {
     private homeyApp:HomeyApp;
+    private homey;
     private asSettings:ASSettings;
     private flowAndTokenHandler:FlowAndTokenHandler;
     private triggerHandler:TriggerHandler;
@@ -21,21 +22,23 @@ export class MainApp {
     
     constructor(homeyApp:HomeyApp) {
         this.homeyApp=homeyApp;
+        this.homey = this.homeyApp.homey;
     }
 
     init() {
 
         this.homeyApp.log('Advanced Scheduler MainApp is initializing...');
 
-        let settingsTxt = ManagerSettings.get('settings');
+        let settingsTxt = this.homey.settings.get('settings');
         let sp = new SettingsPersistance();
-        sp.readSettings(settingsTxt);
+        let version = sp.readSettings(settingsTxt);
+        this.homeyApp.log('version', version);
         this.asSettings = sp.getSettings();
 
         this.saveGeolocation();
 
         this.sunWrapper = new SunWrapper();
-        this.sunWrapper.init(this.homeyApp, ManagerGeolocation.getLatitude(), ManagerGeolocation.getLongitude());
+        this.sunWrapper.init(this.homeyApp,this.homey.geolocation.getLatitude(), this.homey.geolocation.getLongitude());
 
         this.flowAndTokenHandler = new FlowAndTokenHandler(this.homeyApp, this.asSettings.schedules);
         this.flowAndTokenHandler.setupFlows();
@@ -60,7 +63,7 @@ export class MainApp {
 
         this.triggerHandler.stopTimer();
 
-        let settingsTxt = ManagerSettings.get('settings');
+        let settingsTxt = this.homey.settings.get('settings');
         let sp = new SettingsPersistance();
         sp.readSettings(settingsTxt);
         this.asSettings = sp.getSettings();
@@ -78,7 +81,7 @@ export class MainApp {
     private watchsettings(){
         this.homeyApp.log('Soon watching settings.');
 
-        ManagerSettings.on('set', (variable) => {
+        this.homey.settings.on('set', (variable) => {
             if ( variable === 'settings' ) {
                 this.homeyApp.log('SettingsWatcher notised settings change. Reinitializing!');
                 this.reinit();
@@ -92,10 +95,10 @@ export class MainApp {
 
     private saveGeolocation() {
         let geo = {
-            "latitude":ManagerGeolocation.getLatitude(), 
-            "longitude":ManagerGeolocation.getLongitude()
+            "latitude":this.homey.geolocation.getLatitude(), 
+            "longitude":this.homey.geolocation.getLongitude()
         }
         
-        ManagerSettings.set('geolocation', JSON.stringify(geo))
+        this.homey.settings.set('geolocation', JSON.stringify(geo))
     }
 }

@@ -2,7 +2,7 @@
 
 import { App as HomeyApp } from "homey";
 //import { Settings as AppSettings } from "./Settings";
-import { FlowCardTrigger, FlowCardAction, FlowToken, ManagerFlow } from "homey";
+import { FlowCardTrigger, FlowCardAction, FlowToken } from "homey";
 import { Trigger } from "./TriggerHandler";
 
 // this is copied from settings-src/src by build task. Not elegant, but...
@@ -19,11 +19,13 @@ class TokenWrapper{
 
 export class FlowAndTokenHandler {
     private homeyApp:HomeyApp;
+    private homey;
     private schedules:MiniSchedule[];
     private tokenWrappers:TokenWrapper[];
     
     constructor(homeyApp:HomeyApp, schedules:Schedule[]) {
         this.homeyApp=homeyApp;
+        this.homey = homeyApp.homey;
         this.setSchedules(schedules);
     }
 
@@ -39,10 +41,10 @@ export class FlowAndTokenHandler {
         this.homeyApp.log('Setting upp Flows');
 
         try {
-            let myTrigger = new FlowCardTrigger('schedule_trigger');
+            let myTrigger = this.homey.flow.getTriggerCard('schedule_trigger');
 
             //Needed?
-            myTrigger.register();
+            //myTrigger.register();
             let myTriggerMyArg = myTrigger.getArgument('schedule');
             myTriggerMyArg.registerAutocompleteListener( ( query, args ) => {
                 //refactor
@@ -73,10 +75,10 @@ export class FlowAndTokenHandler {
           
             })
         
-            let myAction = new FlowCardAction('change_schedule_state');
+            let myAction = this.homey.flow.getActionCard('change_schedule_state');
               
             //Needed?
-            myAction.register();
+            //myAction.register();
             let myActionMyArg = myAction.getArgument('schedule');
             myActionMyArg.registerAutocompleteListener( ( query, args ) => {
                 //refactor
@@ -118,7 +120,7 @@ export class FlowAndTokenHandler {
             if (this.tokenWrappers==null) {
                 this.tokenWrappers = new Array();    
             }
-            let mf = ManagerFlow;
+            let mf = this.homey.flow;
             let ps:Promise<any>[] = new Array();
             this.tokenWrappers.forEach(tw => {
                 this.homeyApp.log('Unregistering token with id: ' + tw.token.id + ", name: " + tw.token.name);
@@ -136,7 +138,7 @@ export class FlowAndTokenHandler {
                 this.schedules.forEach(schedule => {
                     schedule.tokens.forEach(token => {
     
-                        let myToken = new FlowToken('schedule' + schedule.id + '-token' + token.id, {
+                        let myToken = this.homey.flow.createToken('schedule' + schedule.id + '-token' + token.id, {
                         type: token.type,
                         title: schedule.name + ' - ' + token.name
                         })
@@ -187,7 +189,7 @@ export class FlowAndTokenHandler {
 
     triggerFlow(tokens:Token[],trigger:Trigger){
         //this.homeyApp.log('Trigger Flow started');
-        let fct:FlowCardTrigger = <FlowCardTrigger>ManagerFlow.getCard('trigger','schedule_trigger');
+        let fct:FlowCardTrigger = <FlowCardTrigger>this.homey.flow.getTriggerCard('schedule_trigger');
         
         let ms = new MiniSchedule(trigger.schedule);
         let mts:MiniToken[] = new Array();
