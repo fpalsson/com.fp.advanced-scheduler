@@ -1,7 +1,7 @@
 'use strict';
 
 import { executionAsyncResource } from "async_hooks";
-import { App as HomeyApp, ManagerFlow } from "homey";
+import { App as HomeyApp } from "homey";
 import { FlowAndTokenHandler } from "./FlowAndTokenHandler";
 import { SunWrapper, SunEventInfo } from "./SunWrapper";
 import  * as moment  from 'moment';

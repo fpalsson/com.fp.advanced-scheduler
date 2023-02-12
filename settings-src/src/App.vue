@@ -59,7 +59,6 @@
 import { ASSettings } from '../../src/CommonContainerClasses';
 import { SettingsPersistance } from '../../src/SettingsPersistance';
 import { SunWrapper } from '../../src/SunWrapper';
-//const { ManagerGeolocation } = require('homey');
 
 import AsvSchedule from '@/components/Schedule';
 import AsvSunEventTimes from '@/components/SunEventTimes';
