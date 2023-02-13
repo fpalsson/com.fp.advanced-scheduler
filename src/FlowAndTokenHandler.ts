@@ -145,9 +145,10 @@ export class FlowAndTokenHandler {
 
 
                         this.tokenWrappers.push(new TokenWrapper(myToken,token));
-                        let promise = myToken.register()
-                            .catch(e => {console.log('Error registering token: ' + token.id + ', ' + token.name )});
-                        this.homeyApp.log('Registered token with id: ' + token.id + ", name: " + token.name);
+                        // this.homey.flow.
+                        // let promise = myToken.register()
+                        //     .catch(e => {console.log('Error registering token: ' + token.id + ', ' + token.name )});
+                        // this.homeyApp.log('Registered token with id: ' + token.id + ", name: " + token.name);
                 //     promise.then(()=>{
                 //             if (token.type == 'boolean') this.setTokenValue(token,false);
                 //             else if (token.type == 'string') this.setTokenValue(token,'Not set');
