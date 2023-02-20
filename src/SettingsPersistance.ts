@@ -1,7 +1,7 @@
 'use strict';
 
-import { SendHandle } from "child_process";
-import { threadId } from "worker_threads";
+//import { SendHandle } from "child_process";
+//import { threadId } from "worker_threads";
 import { ASSettings, Schedule, DaysType, TimeInfo, TimeType, Token, TokenSetter, ScheduleItem } from "./CommonContainerClasses";
  
 export class SettingsPersistance {
@@ -199,12 +199,16 @@ export class SettingsPersistance {
         let version = this.getSettingsVersion(settings);
         
         if (version == 1) {
-            return this.readSettingsVersion1(settings);
+            this.readSettingsVersion1(settings);
+            return version;
         }
         else if (version == 2){
-            return this.readSettingsVersion2(settings);
+            this.readSettingsVersion2(settings);
+            return version;
         }
         else {
+            //create empty settings
+            this.settings = new ASSettings();
             return -1;
         }
     }
@@ -232,6 +236,8 @@ export class SettingsPersistance {
             console.log('Reading settings version 1');
             let rs = settings;
 
+            this.settings = new ASSettings();
+
             if (rs == null) { 
                 //if (this.homeyApp != null) this.homeyApp.log('Settings not found, starting blank')
                 return -1;
@@ -243,16 +249,14 @@ export class SettingsPersistance {
                 return -1;
             }
     
-            this.settings = new ASSettings();
-            
             jsonsettings.settings.schedules.forEach(sched => {
                 let localschedule = this.settings.addNewScheduleInternal(parseInt(sched.id),sched.name, Boolean(sched.active));
                 console.log('Added schedule: ' + localschedule.id +  ' ' + localschedule.name );
                 sched.tokens.forEach (token => {
                     let localtoken = new Token(localschedule, parseInt(token.id), token.name, token.type)   
-                    console.log('created token: ' + localtoken.id +  ' ' + localtoken.name );
+                    //console.log('created token: ' + localtoken.id +  ' ' + localtoken.name );
                     localschedule.tokens.push(localtoken);            
-                    console.log('pushed token: ' + localtoken.id +  ' ' + localtoken.name );
+                    //console.log('pushed token: ' + localtoken.id +  ' ' + localtoken.name );
                 });    
                 sched.scheduleitems.forEach(si => {
                     let dt:DaysType;
@@ -296,10 +300,10 @@ export class SettingsPersistance {
                 //this.schedules.addNewSchedule(localschedule);
             });
 
-            console.log('Settings read');
+            console.log('Settings v1 read');
                 
         } catch (error) {
-            console.log('Settings NOT read!');
+            console.log('Settings v1 NOT read!');
             console.log('Error: ' + error);
             return -1;
         }
@@ -314,6 +318,8 @@ export class SettingsPersistance {
 
             let rs = settings;
 
+            this.settings = new ASSettings();
+
             if (rs == null) { 
                 //if (this.homeyApp != null) this.homeyApp.log('Settings not found, starting blank')
                 return -1;
@@ -324,17 +330,15 @@ export class SettingsPersistance {
                 //if (this.homeyApp != null) this.homeyApp.log('Settings not possible to parse, starting blank')
                 return -1;
             }
-    
-            this.settings = new ASSettings();
             
             jsonsettings.settings.schedules.forEach(sched => {
                 let localschedule = this.settings.addNewScheduleInternal(parseInt(sched.id),sched.name, Boolean(sched.active));
                 console.log('Added schedule: ' + localschedule.id +  ' ' + localschedule.name );
                 sched.tokens.forEach (token => {
                     let localtoken = new Token(localschedule, parseInt(token.id), token.name, token.type)   
-                    console.log('created token: ' + localtoken.id +  ' ' + localtoken.name );
+                    //console.log('created token: ' + localtoken.id +  ' ' + localtoken.name );
                     localschedule.tokens.push(localtoken);            
-                    console.log('pushed token: ' + localtoken.id +  ' ' + localtoken.name );
+                    //console.log('pushed token: ' + localtoken.id +  ' ' + localtoken.name );
                 });    
                 sched.scheduleItems.forEach(si => {
                     let dt:DaysType;
@@ -361,23 +365,23 @@ export class SettingsPersistance {
                         else { 
                         //    if (this.homeyApp != null) this.homeyApp.log('Incorrect type for tokenSetter');
                             }
-                        console.log('pushing setter');
+                        //console.log('pushing setter');
 
                         localsi.tokenSetters.push(localTokenSetter);
-                        console.log('pushed setter');
+                        //console.log('pushed setter');
                     });
 
-                    console.log('pushing si');
+                    //console.log('pushing si');
                     localschedule.scheduleItems.push(localsi);            
-                    console.log('pushed si');
+                    //console.log('pushed si');
                 });     
     
             });
 
-            console.log('Settings read');
+            console.log('Settings v2 read');
                 
         } catch (error) {
-            console.log('Settings NOT read!');
+            console.log('Settings v2 NOT read!');
             console.log('Error: ' + error);
             return -1;
         }
@@ -386,10 +390,10 @@ export class SettingsPersistance {
     }
  
     parseJsonTimeInfo(timeInfo:any):TimeInfo {
-        console.log('parse start');
+        //console.log('parse start');
 
         if (timeInfo === undefined) {
-            console.log('returning blank TimeInfo');
+            //console.log('returning blank TimeInfo');
             return new TimeInfo(TimeType.TimeOfDay,"","","");
         }
 

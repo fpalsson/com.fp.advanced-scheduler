@@ -201,7 +201,7 @@ export class TimeInfo{
         if (this.time == "") this.time="00:00";
         if (this.solarOffset == "") this.solarOffset="00:00";
 
-        console.log('TimeInfo created: ' + this.timeType + ' ' + this.time + ' ' + this.sunEvent + ' ' + this.solarOffset);
+        //console.log('TimeInfo created: ' + this.timeType + ' ' + this.time + ' ' + this.sunEvent + ' ' + this.solarOffset);
 
     }
 

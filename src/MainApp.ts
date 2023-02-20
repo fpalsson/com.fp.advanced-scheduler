@@ -1,5 +1,6 @@
 'use strict';
 
+
 import { App as HomeyApp } from "homey";
 
 // this is copied from settings-src/src by build task. Not elegant, but...
@@ -32,7 +33,7 @@ export class MainApp {
         let settingsTxt = this.homey.settings.get('settings');
         let sp = new SettingsPersistance();
         let version = sp.readSettings(settingsTxt);
-        this.homeyApp.log('version', version);
+        this.homeyApp.log('settings version (-1 means no settings has been stored) ', version);
         this.asSettings = sp.getSettings();
 
         this.saveGeolocation();

@@ -1,7 +1,7 @@
 'use strict';
 
 import SunCalc = require('suncalc');
-
+import { DateTime } from "luxon";
 
 export class SunWrapper {
     private homey;
@@ -16,8 +16,8 @@ export class SunWrapper {
     }
 
 //    init(homeyApp:HomeyApp) {
-    init(homeyApp,lat,lon) {
-        this.homeyApp=homeyApp;
+    init(homeyApp, lat, lon) {
+        this.homeyApp = homeyApp;
         this.homey = this.homeyApp.homey;
 
         this.homeyApp.log('Advanced Scheduler SunWrapper is initializing...');
@@ -49,11 +49,15 @@ export class SunWrapper {
         SunCalc.addTime(-18, "astronomicalDawn","astronomicalDusk");        
     }
 
+    
     private getTimes(date: Date){
-        var midday = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0, 0);
+
+        //let d = DateTime.fromJSDate(date);
+        //var midday = d.startOf("day").toJSDate();
+        //var midday = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0, 0);
         
 //        let times = SunCalc.getTimes(midday, this.lat, this.lon);        
-        let times = SunCalc.getTimes(midday, this.lat, this.lon);        
+        let times = SunCalc.getTimes(date, this.lat, this.lon);        
 
         return [ 
             new SunEventInfo("nightEnd","Night End", times.nightEnd),
@@ -83,7 +87,7 @@ export class SunWrapper {
             new SunEventInfo("nadir","Nadir", times.nadir),
             
             //New
-        ]
+        ];
     }
 
     //getTimes() {

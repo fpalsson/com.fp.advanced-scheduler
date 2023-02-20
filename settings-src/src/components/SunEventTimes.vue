@@ -68,6 +68,7 @@ export default {
             return suntimes;
         },
         isValidDate(d) {
+            //console.log('isValidDate: ' + d);
             return d instanceof Date && !isNaN(d.getTime());
         },
         

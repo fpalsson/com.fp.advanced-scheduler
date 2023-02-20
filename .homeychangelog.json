@@ -106,6 +106,21 @@
   },
   "0.3.1": {
     "en": "Finnished implementation of Sun Event Times tab."
+  },
+  "0.4.0": {
+    "en": "Test version: Updated app to SDK 3.0."
+  },
+  "0.4.9": {
+    "en": "Update to first SDK3 release. More rubust startup reading config. Refactored Triggerhandler using luxon. Changed time handling for better robustnes of DST changes. Some additional input checks on sun event triggers. Added formatted title and hint to flowcard. Updated some translations."
+  },
+  "0.4.10": {
+    "en": "Corrected error for sun events in settings dialog. Attempt to fix the error that no triggers executed between 00:00 and 01:00 for GMT+1 zones."
+  },
+  "0.4.11": {
+    "en": "Corrected another error for sun events in settings dialog, where sun times were not shown."
+  },
+  "0.4.12": {
+    "en": "Corrected error where seemingly bad config (likely from raw settings restore) sneaks into app and crashes it at startup."
   }
 
 }

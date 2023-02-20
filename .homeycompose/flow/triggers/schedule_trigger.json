@@ -6,6 +6,18 @@
     "de": "Zeitplan ausgelöst",
     "nl": "Schema geactiveerd"
   },
+  "titleFormatted": {
+    "en": "Schedule [[schedule]] triggered",
+    "sv": "Schema [[schedule]] aktiverat",
+    "de": "Zeitplan [[schedule]] ausgelöst",
+    "nl": "Schema [[schedule]] geactiveerd"
+  },
+  "hint": {
+    "en": "Triggers when a shedule item time or sun event in selected shedule is occuring.",
+    "sv": "Aktiveras när en schemahändelse eller solhändelse i valt schema inträffar",
+    "de": "Wird ausgelöst, wenn eine Zeitplanelement oder ein Sonnenereignis in ausgewählten Zeitplan auftritt.",
+    "nl": "Activeert wanneer er een schema(tijd)- of zongebeurtenis in het geselecteerde schema plaatsvindt."
+  },
   "args": [
     {
       "name": "schedule",

@@ -75,7 +75,7 @@ export class FlowAndTokenHandler {
           
             })
         
-            let myAction = this.homey.flow.getActionCard('change_schedule_state');
+        /*    let myAction = this.homey.flow.getActionCard('change_schedule_state');
               
             //Needed?
             //myAction.register();
@@ -104,7 +104,8 @@ export class FlowAndTokenHandler {
                     return Promise.reject(error);                    
                 }
             })
-                
+                */
+
         } catch (error) {
             this.homeyApp.log('Not able to setup Flows! Error: ' + error);
         }
@@ -138,16 +139,21 @@ export class FlowAndTokenHandler {
                 this.schedules.forEach(schedule => {
                     schedule.tokens.forEach(token => {
     
-                        let myToken = this.homey.flow.createToken('schedule' + schedule.id + '-token' + token.id, {
+                        let myTokenPromise:Promise<FlowToken> = this.homey.flow.createToken('schedule' + schedule.id + '-token' + token.id, {
                         type: token.type,
                         title: schedule.name + ' - ' + token.name
                         })
-
-
-                        this.tokenWrappers.push(new TokenWrapper(myToken,token));
-                        let promise = myToken.register()
-                            .catch(e => {console.log('Error registering token: ' + token.id + ', ' + token.name )});
-                        this.homeyApp.log('Registered token with id: ' + token.id + ", name: " + token.name);
+                        
+                        myTokenPromise.then(myToken => {
+                            this.tokenWrappers.push(new TokenWrapper(myToken,token));
+                        
+                            //Not needed in SDK3
+                            //Promise = myToken.register()
+                            //   .catch(e => {console.log('Error registering token: ' + token.id + ', ' + token.name )});
+                            this.homeyApp.log('Created token with id: ' + token.id + ", name: " + token.name);
+                        }).catch(
+                            err => this.homeyApp.log('Unable to create token with id: ' + token.id + ", name: " + token.name + ". Error: " + err))
+                        
                 //     promise.then(()=>{
                 //             if (token.type == 'boolean') this.setTokenValue(token,false);
                 //             else if (token.type == 'string') this.setTokenValue(token,'Not set');
@@ -155,22 +161,24 @@ export class FlowAndTokenHandler {
                 //      })
                     })
                     
+                        
                 });
-                    
+
+                this.homeyApp.log('Setting up Tokens done');
             })
     
         } catch (error) {
             this.homeyApp.log('Not able to setup Tokens! Error: ' + error);
         }
 
-        this.homeyApp.log('Setting up Tokens done');
+        
     }
 
     setTokenValue(token:Token, value:any) {
         let ftw:TokenWrapper;
 
         //this.homeyApp.log('Looking for token: ' + token.name + ', with id: ' + token.id);
-        //this.homeyApp.log('in list with ' + this.tokenwrappers.length + ' elements.');
+        //this.homeyApp.log('in list with ' + this.tokenWrappers.length + ' elements.');
         //this.homeyApp.log(this.tokenwrappers);
 
         ftw = this.tokenWrappers.find(tw=>tw.token.id == token.id);
