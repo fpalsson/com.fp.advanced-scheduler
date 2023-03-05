@@ -220,7 +220,13 @@ export class SettingsPersistance {
             return -1;
         }
 
-        let jsonsettings = JSON.parse(rs);
+        let jsonsettings;
+        try {
+            jsonsettings = JSON.parse(rs);            
+        } catch (error) {
+            console.log('Error parsing settings version. Blank settings will be used. Error: ' + error);
+            return -1;
+        }
         if (jsonsettings == null) { 
             return -1;
         }

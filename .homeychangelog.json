@@ -121,6 +121,22 @@
   },
   "0.4.12": {
     "en": "Corrected error where seemingly bad config (likely from raw settings restore) sneaks into app and crashes it at startup."
+  },
+  "0.4.13": {
+    "en": "Trying to reduce storage footprint."
+  },
+  "0.4.14": {
+    "en": "Resolving versioning conflict."
+  },
+  "0.4.15": {
+    "en": "Again trying to correct error where seemingly bad config (likely from raw settings restore) sneaks into app and crashes it at startup."
+  },
+  "0.4.16": {
+    "en": "Corrected startup bug."
+  },
+  "0.4.17": {
+    "en": "Updated Dutch language translation, and some minor Swedish translation as well."
   }
-
 }
+
+
