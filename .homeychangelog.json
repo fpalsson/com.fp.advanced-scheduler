@@ -136,7 +136,14 @@
   },
   "0.4.17": {
     "en": "Updated Dutch language translation, and some minor Swedish translation as well."
+  }, 
+  "0.4.18": {
+    "en": "Made new change to reduce storage footprint."
+  }, 
+  "0.4.19": {
+    "en": "Updated some German translations."
   }
+
 }
 
 
