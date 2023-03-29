@@ -131,7 +131,7 @@ export class TriggerHandler {
 
     //return local time midnight, based on date in local timezone
     private getMidnightLocalTimeForDate(date:DateTime):DateTime {
-        let midnight = date.setZone(this.localTimeZone) .startOf("day"); //.plus({days:1});
+        let midnight = date.setZone(this.localTimeZone).startOf("day"); //.plus({days:1});
         //this.homeyApp.log("date: " + date.toString() + " midnight: " + midnight.toString());
         return midnight;
     }
@@ -203,7 +203,7 @@ export class TriggerHandler {
             }
         }
 
-        if (!this.dayHitTest(si.daysType,si.daysArg,date)){
+        if (!this.dayHitTest(si.daysType, si.daysArg, date)){
             this.homeyApp.log('Dayhit failed ' + s.name + ', time: ' + triggerTime.toString()) ;
             return;
         }
@@ -274,7 +274,7 @@ export class TriggerHandler {
     } 
 
     private dayHitTest(daystype:DaysType, days:number, date:DateTime){
-        let dayofweek = date.weekday;
+        let dayofweek = date.setZone(this.localTimeZone).weekday;
         //if (dayofweek===0) dayofweek=7; //sunday returns 0 we want it to be 7
 
         let dayofweekbit = 1 << (dayofweek - 1);
@@ -320,13 +320,14 @@ export class TriggerHandler {
             if (earliesttrigger != null) {
                 //let now = new Date();
                 
+                //let delta = earliesttrigger.triggerTime.diffNow('milliseconds', { conversionAccuracy: 'longterm' }).toMillis();
                 let delta = earliesttrigger.triggerTime.diffNow().toMillis();
                 if (delta < 100) delta = 100;
                 if (delta > 60000) {
                     delta = 60000;
                     this.runningtimer = setTimeout(function() { this.timerCallback('next'); }.bind(this), delta);
                 }
-                else{
+                else {
                     this.runningtimer = setTimeout(function() { this.timerCallback('execute'); }.bind(this), delta);                  
                 }
             }
@@ -344,6 +345,7 @@ export class TriggerHandler {
             let midnight = this.getMidnightLocalTimeForDate(now).plus({days:1});
 
             let delta = midnight.diffNow().toMillis();
+            //let delta = midnight.diffNow('milliseconds', { conversionAccuracy: 'longterm' }).toMillis();
             if (delta > 60000) {
                 delta = 60000;
                 this.runningtimer = setTimeout(function() { this.timerCallback('idle'); }.bind(this), delta);
@@ -355,6 +357,7 @@ export class TriggerHandler {
         }
         else if (arg === 'midnight') {
             this.homeyApp.log('Midnight, getting new triggers for today!');
+            this.homeyApp.log('Time is: ' + DateTime.now().toISOTime());
             this.setupTriggers('midnight');
             this.runningtimer = setTimeout(function() { this.timerCallback('next'); }.bind(this), 100);
             
