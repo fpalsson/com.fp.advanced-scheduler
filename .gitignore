@@ -66,3 +66,6 @@ docs/~$SunEvents.pptx
 # Added by Homey CLI
 /.homeybuild/
 test settings.json
+
+# Claude Security-skanningar: rapporten beskriver hur sårbarheter utnyttjas — committas aldrig
+CLAUDE-SECURITY-*/
